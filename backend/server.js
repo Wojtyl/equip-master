@@ -8,7 +8,7 @@ const boxModel = require("./models/boxModel");
 
 //Setting path of config file for NODE_ENV variables
 // dotenv.config({ path: "./config.env" });
-dotenv.config({ path: "./.env" });
+// dotenv.config({ path: "./.env" });
 
 // Database connection
 const DB =
