@@ -57,10 +57,20 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.auth = async (req, res, next) => {
-  if (!req.cookies.jwt) {
-    return next(new AppError("Login first", 403));
+  if (!req.cookies.jwt && !req.headers.authorization) {
+    return next(new AppError("You need to login first.", 403));
   }
-  const token = req.cookies.jwt;
+
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
   try {
     const decodedToken = await promisify(jwt.verify)(
       token,

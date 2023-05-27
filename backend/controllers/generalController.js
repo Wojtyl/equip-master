@@ -4,8 +4,9 @@ const getModelName = (Model) => Model.modelName.toLowerCase();
 
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    const user = req.user;
     const modelName = getModelName(Model);
-    const newModel = await Model.create(req.body);
+    const newModel = await Model.create({ ...req.body, createdBy: user.id });
     res.status(200).json({
       status: "success",
       [modelName]: newModel,
