@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
@@ -24,12 +25,15 @@ app.use(cors());
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
+//Cookies parser to get req.cookies
+app.use(cookieParser());
+
 // Dev logging
 console.log(process.env.DB_CONNECTION);
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use("/api/v1/login", authRoute);
+app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/suppliers", supplierRoute);
 app.use("/api/v1/deliveries", deliveryRoute);
 app.use("/api/v1/products", productRoute);
