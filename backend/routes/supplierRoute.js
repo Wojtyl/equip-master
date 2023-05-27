@@ -4,10 +4,11 @@ const router = express.Router();
 const Supplier = require("../models/supplierModel");
 
 const supplierController = require("../controllers/supplierController");
+const authController = require("../controllers/authController");
 
 router
   .route("/")
-  .get(supplierController.getAllSuppliers)
+  .get(authController.auth, supplierController.getAllSuppliers)
   .post(supplierController.createSupplier)
   .delete(supplierController.deleteAllSuppliers);
 
