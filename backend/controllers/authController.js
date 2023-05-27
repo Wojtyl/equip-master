@@ -70,7 +70,11 @@ exports.auth = async (req, res, next) => {
     req.user = await User.findById(decodedToken.id);
 
     next();
-  } catch {
-    return next(new AppError("expired session", 403));
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      return next(
+        new AppError("Your session has expired. Please log in again!", 401)
+      );
+    }
   }
 };
