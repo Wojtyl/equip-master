@@ -36,6 +36,9 @@ const supplierSchema = new mongoose.Schema({
   contact: {
     type: String,
   },
+  createdBy: {
+    type: mongoose.Types.ObjectId,
+  },
   productsIds: [
     {
       type: mongoose.Types.ObjectId,
