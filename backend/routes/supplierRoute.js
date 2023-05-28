@@ -9,7 +9,7 @@ const authController = require("../controllers/authController");
 router
   .route("/")
   .get(authController.auth, supplierController.getAllSuppliers)
-  .post(supplierController.createSupplier)
+  .post(authController.auth, supplierController.createSupplier)
   .delete(supplierController.deleteAllSuppliers);
 
 router
