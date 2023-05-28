@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { apiUrl } from 'src/assets/apiurl';
 
 @Component({
@@ -7,16 +7,23 @@ import { apiUrl } from 'src/assets/apiurl';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterContentInit {
   constructor(private http: HttpClient) {}
+
   title = 'equip-master';
 
   suppliers: any[] = [];
 
-  ngOnInit(): void {
-    this.http.get<any>(`${apiUrl}suppliers`).subscribe((sup) => {
-      console.log(sup.supplier);
-      this.suppliers = sup.supplier;
-    });
+  ngOnInit(): void {}
+
+  ngAfterContentInit(): void {
+    this.http
+      .get<any>(`${apiUrl}suppliers`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('bearer')}` },
+      })
+      .subscribe((sup) => {
+        console.log(sup.supplier);
+        this.suppliers = sup.supplier;
+      });
   }
 }
