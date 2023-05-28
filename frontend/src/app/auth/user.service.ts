@@ -12,6 +12,8 @@ export class UserService {
 
   user: any = new BehaviorSubject(undefined);
 
+  isAuth: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   token: string;
 
   getUser(): void {
@@ -29,11 +31,13 @@ export class UserService {
           role: user.role,
         });
         localStorage.setItem('bearer', res.token);
+        this.isAuth.next(true);
       });
   }
 
   logout() {
     this.user.next(undefined);
     localStorage.removeItem('bearer');
+    this.isAuth.next(false);
   }
 }
