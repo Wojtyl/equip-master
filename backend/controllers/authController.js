@@ -88,3 +88,41 @@ exports.auth = async (req, res, next) => {
     }
   }
 };
+
+exports.isLoggedIn = async (req, res, next) => {
+  if (!req.cookies.jwt && !req.headers.authorization) {
+    return next(new AppError("You need to login first.", 403));
+  }
+
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  try {
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      },
+    });
+  } catch (err) {
+    res.status(401).json({
+      status: "fail",
+      data: null,
+    });
+  }
+};

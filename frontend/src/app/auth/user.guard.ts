@@ -1,24 +1,33 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { inject } from "@angular/core";
+import { CanActivateFn, Router } from "@angular/router";
 import { UserService } from "./user.service";
+import { map, take } from "rxjs";
 
-@Injectable({
-  providedIn: "root",
-})
-export class UserGuard implements CanActivate {
-  constructor(private userService: UserService) {}
+export const UserGuard: CanActivateFn = async (route, state) => {
+  const userService = inject(UserService);
+  const router = inject(Router);
 
-  isAuth: boolean = false;
+  // let isAuth;
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.userService.isAuth.subscribe((res) => (this.isAuth = res));
+  // if (localStorage.getItem("bearer")) {
+  //   await userService.isLoggedIn();
+  //   userService.isAuth.subscribe((res) => (isAuth = res));
+  //   console.log(isAuth);
+  // }
 
-    if (this.isAuth) {
-      return true;
-    } else {
-      console.log(route, state);
-      return false;
-    }
-  }
-}
+  // if (isAuth) {
+  //   return true;
+  // }
+
+  // return router.createUrlTree(["login"]);
+  let retur = true;
+  userService.isLoggedIn()!.pipe(
+    take(1),
+    map((res) => {
+      console.log(res);
+      retur = false;
+    })
+  );
+
+  return false;
+};
