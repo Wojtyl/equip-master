@@ -1,5 +1,7 @@
 <p>login works!</p>
 
+<h2 *ngIf="isExpired">Your session has expired</h2>
+
 <button (click)="login()">login</button>
 <button (click)="logout()">log out</button>
 <button routerLink="/">Home page</button>

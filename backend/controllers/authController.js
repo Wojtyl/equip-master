@@ -90,7 +90,8 @@ exports.auth = async (req, res, next) => {
 };
 
 exports.isLoggedIn = async (req, res, next) => {
-  if (!req.cookies.jwt && !req.headers.authorization) {
+  if (!req.cookies.jwt && (!req.headers.authorization ||
+    req.headers.authorization.includes("null"))) {
     return next(new AppError("You need to login first.", 403));
   }
 
@@ -121,8 +122,8 @@ exports.isLoggedIn = async (req, res, next) => {
     });
   } catch (err) {
     res.status(401).json({
-      status: "fail",
-      data: null,
+      status: "expired",
+      message: "Your session has expired. Log in again."
     });
   }
 };

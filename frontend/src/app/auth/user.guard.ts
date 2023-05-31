@@ -1,33 +1,29 @@
-import { inject } from "@angular/core";
-import { CanActivateFn, Router } from "@angular/router";
-import { UserService } from "./user.service";
-import { map, take } from "rxjs";
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { UserService } from './user.service';
+import { catchError, map, of, take } from 'rxjs';
 
-export const UserGuard: CanActivateFn = async (route, state) => {
+export const UserGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService);
   const router = inject(Router);
 
-  // let isAuth;
-
-  // if (localStorage.getItem("bearer")) {
-  //   await userService.isLoggedIn();
-  //   userService.isAuth.subscribe((res) => (isAuth = res));
-  //   console.log(isAuth);
-  // }
-
-  // if (isAuth) {
-  //   return true;
-  // }
-
-  // return router.createUrlTree(["login"]);
-  let retur = true;
-  userService.isLoggedIn()!.pipe(
+  return userService.isLoggedIn().pipe(
+    catchError((err) => {
+      if (err.error.status === 'expired') {
+        userService.expiredNotification();
+        localStorage.removeItem('token');
+      }
+      router.navigate(['login']);
+      return of(false);
+    }),
     take(1),
     map((res) => {
-      console.log(res);
-      retur = false;
+      if (res.status === 'success') {
+        return true;
+      } else {
+        router.navigate(['login']);
+        return false;
+      }
     })
   );
-
-  return false;
 };

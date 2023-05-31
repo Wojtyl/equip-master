@@ -1,33 +1,33 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { apiUrl } from "src/assets/apiurl";
-import { User } from "../models/userModel";
-import { BehaviorSubject, Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { apiUrl } from 'src/assets/apiurl';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/userModel';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  user: any = new BehaviorSubject(undefined);
+  user: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  isAuth: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
+  isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
   token: string;
 
   isLoggedIn() {
-    if (localStorage.getItem("bearer")) {
-      return this.http.get<any>(`${apiUrl}auth/isloggedin`, { headers: { Authorization: `Bearer ${localStorage.getItem("bearer")}` } });
-    }
-    return;
+    return this.http.get<any>(`${apiUrl}auth/isloggedin`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
   }
 
   getUser(): void {
     this.http
       .post<any>(`${apiUrl}auth/login`, {
-        email: "dev4@eqmaster.pl",
-        password: "123456",
+        email: 'dev4@eqmaster.pl',
+        password: '123456',
       })
       .subscribe((res) => {
         const user = res.data.user;
@@ -37,14 +37,19 @@ export class UserService {
           email: user.email,
           role: user.role,
         });
-        localStorage.setItem("bearer", res.token);
-        this.isAuth.next(true);
+        localStorage.setItem('token', res.token);
       });
   }
 
   logout() {
     this.user.next(undefined);
-    localStorage.removeItem("bearer");
-    this.isAuth.next(false);
+    localStorage.removeItem('token');
+  }
+
+  expiredNotification(){
+    this.isExpired.next(true);
+    setTimeout(() => {
+      this.isExpired.next(false);
+    }, 3000);
   }
 }
