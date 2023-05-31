@@ -46,7 +46,7 @@ export class UserService {
     localStorage.removeItem('token');
   }
 
-  expiredNotification(){
+  expiredNotification() {
     this.isExpired.next(true);
     setTimeout(() => {
       this.isExpired.next(false);
