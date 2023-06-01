@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         alterbridge: "#faa32a",
       },
+      borderWidth: {
+        '1': '1px'
+      }
     },
   },
   plugins: [],

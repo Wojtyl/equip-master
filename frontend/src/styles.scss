@@ -5,3 +5,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+button {
+  @apply py-2 px-3 mx-2 my-1 border-black border-solid border-1 rounded-2xl text-xs;
+
+  &:hover {
+    @apply bg-cyan-400;
+  }
+}

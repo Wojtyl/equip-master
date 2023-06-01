@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 })
 export class UserService {
   constructor(private http: HttpClient, private router: Router) {
-    if(localStorage.getItem('token')){
-      this.user.next({token: localStorage.getItem('token')});
+    if (localStorage.getItem('token')) {
+      this.user.next({ token: localStorage.getItem('token') });
     }
   }
 
@@ -22,15 +22,14 @@ export class UserService {
   token: string;
 
   isLoggedIn() {
-     return this.http.get<any>(`${apiUrl}auth/isloggedin`);
+    return this.http.get<any>(`${apiUrl}auth/isloggedin`);
   }
 
   getUser(email: string, password: string) {
-    return this.http
-      .post<any>(`${apiUrl}auth/login`, {
-        email,
-        password,
-      })
+    return this.http.post<any>(`${apiUrl}auth/login`, {
+      email,
+      password,
+    });
   }
 
   logout() {
@@ -43,5 +42,9 @@ export class UserService {
     setTimeout(() => {
       this.isExpired.next(false);
     }, 3000);
+  }
+
+  refreshUserAuthToken() {
+    return;
   }
 }
