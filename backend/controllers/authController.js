@@ -91,7 +91,7 @@ exports.auth = async (req, res, next) => {
 
 exports.isLoggedIn = async (req, res, next) => {
   if (!req.cookies.jwt && (!req.headers.authorization ||
-    req.headers.authorization.includes("null"))) {
+    req.headers.authorization.includes(null || undefined))) {
     return next(new AppError("You need to login first.", 403));
   }
 
@@ -117,6 +117,7 @@ exports.isLoggedIn = async (req, res, next) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          token
         },
       },
     });

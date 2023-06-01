@@ -3,42 +3,34 @@ import { Injectable } from '@angular/core';
 import { apiUrl } from 'src/assets/apiurl';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../models/userModel';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    if(localStorage.getItem('token')){
+      this.user.next({token: localStorage.getItem('token')});
+    }
+  }
 
-  user: BehaviorSubject<any> = new BehaviorSubject(null);
+  user: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   token: string;
 
   isLoggedIn() {
-    return this.http.get<any>(`${apiUrl}auth/isloggedin`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+     return this.http.get<any>(`${apiUrl}auth/isloggedin`);
   }
 
-  getUser(): void {
-    this.http
+  getUser(email: string, password: string) {
+    return this.http
       .post<any>(`${apiUrl}auth/login`, {
-        email: 'dev4@eqmaster.pl',
-        password: '123456',
+        email,
+        password,
       })
-      .subscribe((res) => {
-        const user = res.data.user;
-        this.user.next({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        });
-        localStorage.setItem('token', res.token);
-      });
   }
 
   logout() {
