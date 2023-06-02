@@ -1,7 +1,16 @@
-<header>
-  <nav>
-    <a routerLink="login" routerLinkActive="router-link-active" (click)="logout()">Logout</a>
-    <a routerLink="/" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact:
-      true}">Home</a>
+<header
+  class="flex flex-col items-center h-screen w-40 py-10 px-5 border-r-1 border-gray-300"
+>
+  <div class="mb-12">
+    <h1>LOGO</h1>
+  </div>
+  <nav class="flex flex-col justify-between h-full">
+    <a
+      routerLink="/"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+    <a class="" routerLink="login" (click)="logout()">Log out</a>
   </nav>
 </header>
