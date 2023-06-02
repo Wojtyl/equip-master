@@ -1,0 +1,40 @@
+<div>
+  <form [formGroup]="invoiceForm" class="flex flex-col bg-cyan-100 w-3/6 p-4" (ngSubmit)="onSubmit()">
+    <label for="supplier">Dostawca</label>
+    <input type="text" formControlName="supplier">
+    <label for="invoiceDate">Data faktury</label>
+    <input type="date" id="invoiceDate" formControlName="invoiceDate">
+    <label for="invoiceNumber">Numer Faktury</label>
+    <input type="text" id="invoiceNumber" formControlName="invoiceNumber">
+    <label for="nettoPrice">Wartość netto</label>
+    <input type="number" id="nettoPrice" formControlName="nettoPrice">
+    <div class='flex justify-between'>
+      <p>Artykuły</p>
+      <button type="button" (click)="addItemsFormInit()">+</button>
+    </div>
+    <div *ngIf="isAdding" class="new-item flex" [formGroup]="items">
+      <div>
+        <label for="">Indeks</label>
+        <input type="text" formControlName="itemId">
+      </div>
+      <div>
+        <label for="">Ilość</label>
+        <input type="number" formControlName="quantity">
+      </div>
+      <div>
+        <label for="">Cena</label>
+        <input type="number" formControlName="price">
+      </div>
+      <button type="button" (click)="addItems()">add</button>
+    </div>
+    <div formArrayName="items">
+
+      <div *ngFor="let item of getItems(); let i = index" class="flex gap-3">
+        <p>{{item.value.itemId}}</p>
+      </div>
+    </div>
+    <button type="submit">
+      Save
+    </button>
+  </form>
+</div>
