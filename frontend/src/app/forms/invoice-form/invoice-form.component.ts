@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { InvoiceService } from './invoice.service';
+import { invoiceProducts } from 'src/app/models/invoiceProductsModel';
 
 @Component({
   selector: 'app-invoice-form',
@@ -7,52 +9,57 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
   styleUrls: ['./invoice-form.component.scss'],
 })
 export class InvoiceFormComponent implements OnInit {
-
   invoiceForm: FormGroup;
 
   isAdding = false;
 
-  items: FormGroup;
+  products: FormGroup;
 
-  constructor(private formBuilder: FormBuilder){}
+  constructor(private formBuilder: FormBuilder, private invoiceService: InvoiceService) {}
 
   ngOnInit(): void {
     this.initForm();
   }
   initForm() {
     this.invoiceForm = this.formBuilder.group({
-      supplier: [null, Validators.required],
+      supplier: ['6471f804717a2af5865e3c8e', Validators.required],
       invoiceDate: [null, Validators.required],
       invoiceNumber: [null, Validators.required],
       nettoPrice: [null, Validators.required],
-      items: new FormArray([])
+      products: new FormArray([]),
     });
   }
 
-  onSubmit(){
-    console.log(this.invoiceForm.value)
-    console.log((<FormArray>this.invoiceForm.get('items')).controls)
+  onSubmit() {
+    const values = this.getAllInvoiceValues();
+    this.invoiceService.addInvoice(values).subscribe((res) => console.log(res));
   }
 
-  addItemsFormInit(){
+  addProductsFormInit() {
     this.isAdding = true;
-    this.items = this.formBuilder.group({
-      itemId: '123',
+    this.products = this.formBuilder.group<invoiceProducts>({
+      productName: 'Product 1',
       quantity: 1,
-      price: 2
-    })
+      price: 2,
+    });
   }
 
-  getItems(){
-    return (<FormArray>this.invoiceForm.get('items')).controls;
+  getProductsControls() {
+    return (<FormArray>this.invoiceForm.get('products')).controls;
   }
 
-  consoleMe(item: any){
-    console.log(item);
+  addProduct() {
+    const control = new FormControl(this.products.value);
+    (<FormArray>this.invoiceForm.get('products')).push(control);
   }
 
-  addItems() {
-    const control = new FormControl(this.items.value);
-    (<FormArray>this.invoiceForm.get('items')).push(control)
+  getAllInvoiceValues() {
+    return {
+      invoiceNumber: this.invoiceForm.get('invoiceNumber')?.value,
+      supplierId: '6471f804717a2af5865e3c8e',
+      date: this.invoiceForm.get('invoiceDate')!.value,
+      nettoPrice: this.invoiceForm.get('nettoPrice')?.value,
+      products: this.invoiceForm.get('products')!.value,
+    };
   }
 }
