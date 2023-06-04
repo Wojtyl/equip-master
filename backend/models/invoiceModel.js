@@ -5,22 +5,32 @@ const invoiceSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
   },
   invoiceNumber: {
-    type: Number,
+    type: String,
     required: [true, "Invoice must have a number"],
   },
   supplierId: {
     type: mongoose.Types.ObjectId,
   },
-  productOnInvoice: [
+  products: [
     {
-      type: mongoose.Types.ObjectId,
+      _id: false,
+      productName: {
+        type: String,
+      },
+      quantity: {
+        type: Number,
+      },
+      price: {
+        type: Number,
+      },
+      // type: mongoose.Types.ObjectId
     },
   ],
   date: {
     type: Date,
     required: [true, "Invoice must have a date"],
   },
-  invoiceValue: {
+  nettoPrice: {
     type: Number,
     required: [true, "Invoice must have netto price"],
   },

@@ -37,6 +37,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/suppliers", supplierRoute);
 app.use("/api/v1/deliveries", deliveryRoute);
 app.use("/api/v1/products", productRoute);
+app.use("/api/v1/invoices", invoiceRoute);
 
 app.use(errorController);
 
