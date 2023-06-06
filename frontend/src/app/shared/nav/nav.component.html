@@ -5,12 +5,25 @@
     <h1>LOGO</h1>
   </div>
   <nav class="flex flex-col justify-between h-full">
-    <a
-      routerLink="/"
-      routerLinkActive="router-link-active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >Home</a
-    >
-    <a class="" routerLink="login" (click)="logout()">Log out</a>
+    <div class="flex flex-col gap-6">
+      <a
+        routerLink="/"
+        routerLinkActive="router-link-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Home
+      </a>
+
+      <a routerLink="/invoices" routerLinkActive="router-link-active">
+        Invoices
+      </a>
+
+      <a routerLink="/suppliers" routerLinkActive="router-link-active">
+        Suppliers
+      </a>
+    </div>
+
+    <a *ngIf="isAuth" class="" routerLink="login" (click)="logout()">Log out</a>
+    <a *ngIf="!isAuth" class="" routerLink="login" (click)="logout()">Login</a>
   </nav>
 </header>

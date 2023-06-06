@@ -1,0 +1,39 @@
+<div>
+  <form action="" [formGroup]="supplierForm">
+    <div>
+      <label for="">Nazwa</label>
+      <input type="text" formControlName="name" />
+    </div>
+    <div>
+      <label for="">Numer NIP</label>
+      <input type="text" formControlName="taxIdNum" />
+    </div>
+    <div>
+      <label for="">Opis</label>
+      <input type="text" formControlName="description" />
+    </div>
+    <div formGroupName="address">
+      <div>
+        <label for="">Adres</label>
+        <input type="text" formControlName="street" />
+      </div>
+      <div>
+        <label for="">Kod pocztowy</label>
+        <input type="text" formControlName="postalCode" />
+      </div>
+      <div>
+        <label for="">Miasto</label>
+        <input type="text" formControlName="city" />
+      </div>
+      <div>
+        <label for="">Województwo</label>
+        <input type="text" formControlName="state" />
+      </div>
+      <div>
+        <label for="">Kraj</label>
+        <input type="text" formControlName="country" />
+      </div>
+    </div>
+    <button (click)="onSubmit()">Submit</button>
+  </form>
+</div>

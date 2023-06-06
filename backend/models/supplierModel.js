@@ -3,26 +3,35 @@ const mongoose = require("mongoose");
 const supplierSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: [true, "Please provide supplier name"],
   },
   taxIdNum: {
     type: Number,
+    required: [true, "Please provide a Tax ID"],
   },
   description: {
     type: String,
   },
   address: {
+    street: {
+      type: String,
+      required: [true, "Please provide supplier address"],
+    },
     postalCode: {
       type: String,
+      required: [true, "Please provide supplier address"],
     },
     state: {
       type: String,
-      required: true,
+      required: [true, "Please provide supplier address"],
     },
     city: {
       type: String,
+      required: [true, "Please provide supplier address"],
     },
     country: {
       type: String,
+      required: [true, "Please provide supplier address"],
     },
   },
   active: {

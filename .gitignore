@@ -3,3 +3,4 @@ backend/.DS_Store
 .DS_Store
 */.DS_Store
 .gitignore
+*.code-workspace

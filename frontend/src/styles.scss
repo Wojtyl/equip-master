@@ -228,7 +228,6 @@ $rose-700: #be123c;
 $rose-800: #9f1239;
 $rose-900: #881337;
 
-
 button {
   @apply py-2 px-3 mx-2 my-1 border-black border-solid border-1 rounded-2xl text-xs;
 
@@ -238,5 +237,5 @@ button {
 }
 
 input {
-  @apply border-solid border-1
+  @apply border-solid border-1;
 }

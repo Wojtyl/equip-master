@@ -1,16 +1,15 @@
 @import "../../../styles.scss";
 
-.router-link-active{
+.router-link-active {
   color: $stone-900;
   text-decoration: none;
   background-color: antiquewhite;
-
 }
 
-.router-link-active:visited{
+.router-link-active:visited {
   text-decoration: none;
 }
 
 a {
-  @apply text-gray-400 w-28 text-center py-1 rounded
+  @apply text-gray-500 w-28 text-center py-1 rounded;
 }

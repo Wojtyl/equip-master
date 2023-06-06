@@ -12,11 +12,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserInterceptorService } from './auth/user-interceptor.service';
 import { InvoiceFormComponent } from './forms/invoice-form/invoice-form.component';
+import { SupplierFormComponent } from './forms/supplier-form/supplier-form.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, NavComponent, InvoiceFormComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, NavComponent, InvoiceFormComponent, SupplierFormComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FontAwesomeModule, NgbModule, ReactiveFormsModule],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true}],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

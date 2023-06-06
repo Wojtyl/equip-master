@@ -1,15 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/auth/user.service';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
 })
-export class NavComponent {
-  constructor(private userService: UserService){}
+export class NavComponent implements OnInit {
+  constructor(private userService: UserService) {}
 
-  logout(){
+  isAuth: boolean;
+
+  ngOnInit(): void {
+    this.userService.user.subscribe((res) => {
+      if (res?.id) {
+        this.isAuth = true;
+      } else {
+        this.isAuth = false;
+      }
+    });
+  }
+
+  logout() {
     this.userService.logout();
   }
 }
