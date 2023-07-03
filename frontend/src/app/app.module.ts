@@ -14,10 +14,15 @@ import { UserInterceptorService } from './auth/user-interceptor.service';
 import { InvoiceFormComponent } from './forms/invoice-form/invoice-form.component';
 import { SupplierFormComponent } from './forms/supplier-form/supplier-form.component';
 import { ProductFormComponent } from './forms/product-form/product-form.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { ChipsModule } from 'primeng/chips';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent, NavComponent, InvoiceFormComponent, SupplierFormComponent, ProductFormComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FontAwesomeModule, NgbModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FontAwesomeModule, NgbModule, ReactiveFormsModule, InputTextModule, ChipsModule, MultiSelectModule, BrowserAnimationsModule, AutoCompleteModule],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],
 })

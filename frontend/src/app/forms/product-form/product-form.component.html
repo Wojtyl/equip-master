@@ -1,1 +1,40 @@
-<p>product-form works!</p>
+<div>
+  <form action="" [formGroup]="productForm">
+    <div class="flex flex-col">
+      <span class="p-float-label">
+        <input type="text" id="name" pInputText formControlName="name" />
+        <label for="name">Nazwa produktu</label>
+      </span>
+      <span class="p-float-label">
+        <input type="text" id="index" pInputText formControlName="index" />
+        <label for="index">Indeks</label>
+      </span>
+      <span class="p-float-label">
+        <p-chips id="category" formControlName="category" />
+        <label for="category">Kategoria</label>
+      </span>
+      <span class="p-float-label">
+        <input
+          type="text"
+          id="supplier"
+          pInputText
+          formControlName="supplier"
+        />
+        <label for="supplier">Dostawca</label>
+      </span>
+    </div>
+    <p-multiSelect
+      [options]="suppliers"
+      defaultLabel="Select a City"
+      optionLabel="name"
+      display="chip"
+    ></p-multiSelect>
+    <p-autoComplete
+      formControlName="selectedCountry"
+      [suggestions]="suppliers"
+      field="name"
+    ></p-autoComplete>
+
+    <button (click)="onSubmit()"></button>
+  </form>
+</div>
