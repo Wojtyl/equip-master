@@ -1,20 +1,24 @@
-const express = require("express");
-const router = express.Router();
+import e from "express";
 
-const Supplier = require("../models/supplierModel");
+const supplierRouter = e.Router();
 
-const supplierController = require("../controllers/supplierController");
+// const supplierController = require("../controllers/supplierController");
+import * as supplierController from "../controllers/supplierController"
 const authController = require("../controllers/authController");
 
-router
+
+
+supplierRouter
   .route("/")
   .get(authController.auth, supplierController.getAllSuppliers)
   .post(authController.auth, supplierController.createSupplier)
   .delete(supplierController.deleteAllSuppliers);
 
-router
+supplierRouter
   .route("/:id")
   .get(supplierController.getSupplier)
   .patch(supplierController.updateSupplier)
   .delete(supplierController.deleteSupplier);
-module.exports = router;
+module.exports = supplierRouter;
+
+export { supplierRouter }
