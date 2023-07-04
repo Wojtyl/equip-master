@@ -37,9 +37,8 @@ class ServerApp {
     if (process.env.NODE_ENV === "development") {
       app.use(morgan("dev"));
     }
-    const supplierRoute = supplierRouter;
     // app.use("/api/v1/auth", authRouter);
-    app.use("/api/v1/suppliers", supplierRoute!);
+    app.use("/api/v1/suppliers", supplierRouter);
     // app.use("/api/v1/deliveries", deliveryRouter);
     // app.use("/api/v1/products", productRouter);
     // app.use("/api/v1/invoices", invoiceRouter);

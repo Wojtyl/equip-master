@@ -1,6 +1,8 @@
 const Supplier = require("./../models/supplierModel");
 
-const generalController = require("./generalController");
+// const generalController = require("./generalController");
+
+import * as generalController from "./generalController" 
 
 // class supplierController {
   

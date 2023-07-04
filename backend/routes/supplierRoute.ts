@@ -19,6 +19,5 @@ supplierRouter
   .get(supplierController.getSupplier)
   .patch(supplierController.updateSupplier)
   .delete(supplierController.deleteSupplier);
-module.exports = supplierRouter;
 
 export { supplierRouter }

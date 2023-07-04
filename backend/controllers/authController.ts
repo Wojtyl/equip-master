@@ -1,8 +1,11 @@
-const generalController = require("./generalController");
+// const generalController = require("./generalController");
+import * as generalController from "./generalController"
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
-const catchAsync = require("../utils/catchAsync");
-const User = require("../models/userModel");
+// const catchAsync = require("../utils/catchAsync");
+import { catchAsync } from "../utils/catchAsync";
+// const User = require("../models/userModel");
+import { User } from "../models/userModel";
 const AppError = require("../utils/appError");
 
 const signToken = (id) =>
@@ -13,7 +16,7 @@ const signToken = (id) =>
 const createSignToken = (user, statusCode, res) => {
   user.password = undefined;
   const token = signToken(user.id);
-  const cookieOptions = {
+  const cookieOptions: any = {
     expires: new Date(Date.now() + 10 * 60 * 1000),
     httpOnly: true,
   };
@@ -30,7 +33,7 @@ const createSignToken = (user, statusCode, res) => {
   });
 };
 
-exports.login = catchAsync(async (req, res, next) => {
+const login = catchAsync(async (req, res, next) => {
   const data = req.body;
 
   //Check if user provided login and password
@@ -41,14 +44,14 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: data.email });
 
   //Check if user exists and password is correct
-  if (!user || !(await user.correctPassword(data.password, user.password))) {
+  if (!user || !(await user.correctPassword!(data.password, user.password!))) {
     throw new AppError("Wrong email or password", 400);
   }
 
   createSignToken(user, 200, res);
 });
 
-exports.signup = catchAsync(async (req, res, next) => {
+const signup = catchAsync(async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
     return next(new AppError("Please provide email and password"));
   }
@@ -56,7 +59,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   createSignToken(user, 200, res);
 });
 
-exports.auth = async (req, res, next) => {
+const auth = async (req, res, next) => {
   if (!req.cookies.jwt && !req.headers.authorization) {
     return next(new AppError("You need to login first.", 403));
   }
@@ -80,7 +83,7 @@ exports.auth = async (req, res, next) => {
     req.user = await User.findById(decodedToken.id);
 
     next();
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === "jwt expired") {
       return next(
         new AppError("Your session has expired. Please log in again!", 401)
@@ -89,7 +92,7 @@ exports.auth = async (req, res, next) => {
   }
 };
 
-exports.isLoggedIn = async (req, res, next) => {
+const isLoggedIn = async (req, res, next) => {
   if (!req.cookies.jwt && (!req.headers.authorization ||
     req.headers.authorization.includes(null || undefined))) {
     return next(new AppError("You need to login first.", 403));
@@ -113,10 +116,10 @@ exports.isLoggedIn = async (req, res, next) => {
       status: "success",
       data: {
         user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
+          id: user!.id,
+          name: user!.name,
+          email: user!.email,
+          role: user!.role,
           token
         },
       },
@@ -128,3 +131,5 @@ exports.isLoggedIn = async (req, res, next) => {
     });
   }
 };
+
+export { isLoggedIn, auth, signup, login }
