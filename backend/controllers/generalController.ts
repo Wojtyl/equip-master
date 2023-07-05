@@ -74,4 +74,4 @@ const deleteAll = (Model) =>
     });
   });
 
-export { deleteAll, deleteOne, updateOne, getOne, getAll, createOne }
+export { deleteAll, deleteOne, updateOne, getOne, getAll, createOne };

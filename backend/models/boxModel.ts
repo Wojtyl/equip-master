@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose, { Model } from "mongoose";
 
 const boxSchema = new mongoose.Schema(
   {

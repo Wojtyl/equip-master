@@ -1,7 +1,7 @@
-const express = require("express");
-const deliveryRouter = express.Router();
-
-const deliveryController = require("./../controllers/deliveryController");
+import e from "express";
+const deliveryRouter = e.Router();
+import * as deliveryController from "../controllers/deliveryController";
+// const deliveryController = require("./../controllers/deliveryController");
 
 deliveryRouter
   .route("/")
@@ -10,6 +10,4 @@ deliveryRouter
 
 deliveryRouter.route("/:id").get(deliveryController.getDelivery);
 
-module.exports = deliveryRouter;
-
-export { deliveryRouter }
+export { deliveryRouter };

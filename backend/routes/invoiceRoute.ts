@@ -1,7 +1,6 @@
-const express = require("express");
-const invoiceRouter = express.Router();
+import e from "express";
 
-const Invoice = require("../models/invoiceModel");
+const invoiceRouter = e.Router();
 
 const invoiceController = require("../controllers/invoiceController");
 const authController = require("../controllers/authController");
@@ -17,6 +16,5 @@ invoiceRouter
   .get(invoiceController.getInvoice)
   .patch(invoiceController.updateInvoice)
   .delete(invoiceController.deleteInvoice);
-module.exports = invoiceRouter;
 
-export { invoiceRouter }
+export { invoiceRouter };

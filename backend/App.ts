@@ -1,12 +1,8 @@
-// const express = require("express");
 import e from "express";
-const morgan = require("morgan");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-
-dotenv.config({ path: "./.env" });
+import morgan from "morgan";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 
 // Routes
 import { supplierRouter } from "./routes/supplierRoute";
@@ -14,10 +10,10 @@ import { deliveryRouter } from "./routes/deliveryRoute";
 import { invoiceRouter } from "./routes/invoiceRoute";
 import { authRouter } from "./routes/authRoute";
 import { productRouter } from "./routes/productRoute";
+import { errorController } from "./controllers/errorController";
 
+dotenv.config({ path: "./.env" });
 
-const errorController = require("./controllers/errorController");
-// const app = express();
 const app = e();
 
 class ServerApp {
@@ -33,15 +29,15 @@ class ServerApp {
     app.use(cookieParser());
 
     // Dev logging
-    console.log(process.env.DB_CONNECTION);
     if (process.env.NODE_ENV === "development") {
+      console.log(process.env.DB_CONNECTION);
       app.use(morgan("dev"));
     }
-    // app.use("/api/v1/auth", authRouter);
+    app.use("/api/v1/auth", authRouter);
     app.use("/api/v1/suppliers", supplierRouter);
-    // app.use("/api/v1/deliveries", deliveryRouter);
-    // app.use("/api/v1/products", productRouter);
-    // app.use("/api/v1/invoices", invoiceRouter);
+    app.use("/api/v1/deliveries", deliveryRouter);
+    app.use("/api/v1/products", productRouter);
+    app.use("/api/v1/invoices", invoiceRouter);
 
     app.use(errorController);
   }

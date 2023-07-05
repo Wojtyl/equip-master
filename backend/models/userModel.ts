@@ -2,16 +2,19 @@ import mongoose, { Model } from "mongoose";
 import bcrypt from "bcryptjs/dist/bcrypt";
 
 interface IUser {
-  name: string,
-  email: string,
-  password: string,
-  passwordConfirm?: string,
-  role: string,
-  signupDate: Date
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+  role: string;
+  signupDate: Date;
 }
 
 interface IUserMethods {
-  correctPassword(candidatePassword: string, userPassword: string): Promise<any>,
+  correctPassword(
+    candidatePassword: string,
+    userPassword: string
+  ): Promise<any>;
 }
 
 type UserModel = Model<IUser, {}, IUserMethods>;
@@ -42,7 +45,7 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     required: [true, "Please confirm password"],
     validate: {
       validator: function (val) {
-        return val === this.password;
+        return val === (this as IUser).password;
       },
       message: "Passwords are not the same",
     },
@@ -84,4 +87,4 @@ userSchema.methods.correctPassword = async function (
 
 const User = mongoose.model("User", userSchema);
 
-export { User }
+export { User };

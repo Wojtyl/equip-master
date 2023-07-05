@@ -1,7 +1,7 @@
-const express = require("express");
-const productRouter = express.Router();
+import e from "express";
+import * as productController from "../controllers/productController";
 
-const productController = require("./../controllers/productController");
+const productRouter = e.Router();
 
 productRouter
   .route("/")
@@ -14,6 +14,4 @@ productRouter
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-module.exports = productRouter;
-
-export { productRouter }
+export { productRouter };

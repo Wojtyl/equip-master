@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema({
   deliveryId: {
@@ -38,4 +38,4 @@ const invoiceSchema = new mongoose.Schema({
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
 
-module.exports = Invoice;
+export { Invoice };
