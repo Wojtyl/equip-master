@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const supplierSchema = new mongoose.Schema({
   name: {
@@ -58,6 +58,4 @@ const supplierSchema = new mongoose.Schema({
 
 supplierSchema.index({ taxIdNum: 1 }, { unique: true });
 
-const Supplier = mongoose.model("Supplier", supplierSchema);
-
-module.exports = Supplier;
+export const Supplier = mongoose.model("Supplier", supplierSchema);

@@ -1,31 +1,27 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const app = require("./App");
+import { ServerApp, app } from "./App";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-// Models
-const deliveryModel = require("./models/deliveryModel");
-const boxModel = require("./models/boxModel");
-
-//Setting path of config file for NODE_ENV variables
+// Setting path of config file for NODE_ENV variables
 // dotenv.config({ path: "./config.env" });
 // dotenv.config({ path: "./.env" });
 
 // Database connection
-const DB =
+const DB: string =
   process.env.DB_CONNECTION === "server"
-    ? process.env.DB_SERVER.replace("<password>", process.env.DB_PASSWORD)
-    : process.env.DB_LOCAL;
+    ? process.env.DB_SERVER!.replace("<password>", process.env.DB_PASSWORD!)
+    : process.env.DB_LOCAL!;
 
 mongoose
   .set("strictQuery", false)
-  .connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(DB)
   .then(() => {
     console.log("DB connection established");
   })
   .catch((err) => console.log(err.message));
+
+const serverApp = new ServerApp();
+serverApp.run();
 
 const port = process.env.PORT || 5500;
 const server = app.listen(port, () => {

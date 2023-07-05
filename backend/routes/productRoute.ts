@@ -1,17 +1,17 @@
-const express = require("express");
-const router = express.Router();
+import e from "express";
+import * as productController from "../controllers/productController";
 
-const productController = require("./../controllers/productController");
+const productRouter = e.Router();
 
-router
+productRouter
   .route("/")
   .get(productController.getAllProducts)
   .post(productController.createProduct);
 
-router
+productRouter
   .route("/:id")
   .get(productController.getProduct)
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-module.exports = router;
+export { productRouter };

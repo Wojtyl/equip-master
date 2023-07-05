@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const deliverySchema = new mongoose.Schema({
   dateOfDelivery: {
@@ -45,6 +45,4 @@ deliverySchema.pre(/^find/, function (next) {
   next();
 });
 
-const Delivery = mongoose.model("Delivery", deliverySchema);
-
-module.exports = Delivery;
+export const Delivery = mongoose.model("Delivery", deliverySchema);

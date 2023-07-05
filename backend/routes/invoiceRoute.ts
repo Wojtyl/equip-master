@@ -1,20 +1,20 @@
-const express = require("express");
-const router = express.Router();
+import e from "express";
 
-const Invoice = require("../models/invoiceModel");
+const invoiceRouter = e.Router();
 
 const invoiceController = require("../controllers/invoiceController");
 const authController = require("../controllers/authController");
 
-router
+invoiceRouter
   .route("/")
   .get(authController.auth, invoiceController.getAllInvoices)
   .post(authController.auth, invoiceController.createInvoice)
   .delete(invoiceController.deleteAllInvoices);
 
-router
+invoiceRouter
   .route("/:id")
   .get(invoiceController.getInvoice)
   .patch(invoiceController.updateInvoice)
   .delete(invoiceController.deleteInvoice);
-module.exports = router;
+
+export { invoiceRouter };

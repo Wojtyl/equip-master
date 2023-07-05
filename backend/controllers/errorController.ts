@@ -1,4 +1,4 @@
-const AppError = require("./../utils/appError");
+import { AppError } from "../utils/appError";
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
@@ -9,8 +9,8 @@ const handleDuplicateFieldsDB = (err) => {
   const message = `Duplicate field value: ${value[0]}`;
   return new AppError(message, 404);
 };
-const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map((el) => el.message);
+const handleValidationErrorDB = (err: any) => {
+  const errors = Object.values(err.errors).map((el: any) => el.message);
   const message = `Invalid input data. ${errors.join(". ")}`;
   return new AppError(message, 404);
 };
@@ -74,7 +74,7 @@ const sendErrorProd = (err, req, res) => {
   });
 };
 
-module.exports = (err, req, res, next) => {
+export const errorController = (err, req, res, next) => {
   // console.log(err.stack);
   //Standardowe ustawienia dla większości aplikacji
   err.statusCode = err.statusCode || 500;

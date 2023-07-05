@@ -1,8 +1,10 @@
-const catchAsync = require("../utils/catchAsync");
+// const catchAsync = require("../utils/catchAsync");
+
+import { catchAsync } from "../utils/catchAsync";
 
 const getModelName = (Model) => Model.modelName.toLowerCase();
 
-exports.createOne = (Model) =>
+const createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const user = req.user;
     const modelName = getModelName(Model);
@@ -13,7 +15,7 @@ exports.createOne = (Model) =>
     });
   });
 
-exports.getAll = (Model) =>
+const getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     const modelName = getModelName(Model);
     const data = await Model.find();
@@ -23,7 +25,7 @@ exports.getAll = (Model) =>
     });
   });
 
-exports.getOne = (Model) =>
+const getOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const modelName = getModelName(Model);
     const data = await Model.findById(req.params.id);
@@ -34,7 +36,7 @@ exports.getOne = (Model) =>
     });
   });
 
-exports.updateOne = (Model) =>
+const updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
     console.log("Parameters: ", req.params);
     const modelName = getModelName(Model);
@@ -49,7 +51,7 @@ exports.updateOne = (Model) =>
     });
   });
 
-exports.deleteOne = (Model) =>
+const deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const modelName = getModelName(Model);
     const data = await Model.findByIdAndDelete(req.params.id);
@@ -61,7 +63,7 @@ exports.deleteOne = (Model) =>
     });
   });
 
-exports.deleteAll = (Model) =>
+const deleteAll = (Model) =>
   catchAsync(async (req, res, next) => {
     const modelName = getModelName(Model);
     const data = await Model.deleteMany();
@@ -71,3 +73,5 @@ exports.deleteAll = (Model) =>
       message: `All ${modelName} collection deleted successfully`,
     });
   });
+
+export { deleteAll, deleteOne, updateOne, getOne, getAll, createOne };
