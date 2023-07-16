@@ -15,10 +15,15 @@ export class InvoiceFormComponent implements OnInit {
 
   products: FormGroup;
 
+  invoices: any[];
+
   constructor(private formBuilder: FormBuilder, private invoiceService: InvoiceService) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.invoiceService.getAllInvoices().subscribe((resData) => {
+      this.invoices = resData.invoice;
+    });
   }
   initForm() {
     this.invoiceForm = this.formBuilder.group({

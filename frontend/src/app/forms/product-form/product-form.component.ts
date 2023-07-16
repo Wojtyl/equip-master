@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { BehaviorSubject, filter } from 'rxjs';
+import { SupplierFormService } from '../supplier-form/supplier-form.service';
 
 @Component({
   selector: 'app-product-form',
@@ -12,19 +13,27 @@ export class ProductFormComponent implements OnInit {
 
   suppliers: any[];
 
-  selectedSuppliers: any[];
+  selectedSupplier: any[];
 
   filteredSuppliers: any[];
 
+  constructor(private formBuilder: FormBuilder, private supplierService: SupplierFormService) {}
+
   ngOnInit() {
-    this.suppliers = [{ name: 'puma' }, { name: 'dupa' }];
-    this.productForm = new FormGroup({
-      name: new FormControl<string | null>(null),
-      supplier: new FormControl<string | null>(null),
-      selectedSuppliers: new FormControl<string | null>(null),
-      index: new FormControl<string | null>(null),
-      category: new FormControl<string | null>(null),
-      selectedCountry: new FormControl<string | null>(null),
+    this.suppliers = [];
+    this.supplierService.getAllSuppliers().subscribe((resData) => {
+      this.suppliers = resData.supplier;
+    });
+    this.initForm();
+  }
+
+  initForm() {
+    this.productForm = this.formBuilder.group({
+      name: '',
+      supplier: '6471f804717a2af5865e3c8e',
+      selectedSuppliers: '',
+      index: '',
+      category: '',
     });
   }
 
@@ -34,10 +43,16 @@ export class ProductFormComponent implements OnInit {
     for (let i = 0; i < this.suppliers.length; i++) {
       let supplier = this.suppliers[i];
       if (supplier.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        console.log(supplier);
+        console.log(this.filteredSuppliers);
         filtered.push(supplier);
       }
     }
+
+    this.filteredSuppliers = filtered;
+  }
+
+  onSelect(event: any) {
+    this.selectedSupplier = event;
   }
 
   onSubmit() {

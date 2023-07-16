@@ -1,17 +1,18 @@
 import e from "express";
 import * as productController from "../controllers/productController";
+import * as authController from "../controllers/authController";
 
 const productRouter = e.Router();
 
 productRouter
   .route("/")
-  .get(productController.getAllProducts)
-  .post(productController.createProduct);
+  .get(authController.auth, productController.getAllProducts)
+  .post(authController.auth, productController.createProduct);
 
 productRouter
   .route("/:id")
-  .get(productController.getProduct)
-  .patch(productController.updateProduct)
-  .delete(productController.deleteProduct);
+  .get(authController.auth, productController.getProduct)
+  .patch(authController.auth, productController.updateProduct)
+  .delete(authController.auth, productController.deleteProduct);
 
 export { productRouter };

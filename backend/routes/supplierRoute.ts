@@ -1,12 +1,9 @@
 import e from "express";
 
+import * as supplierController from "../controllers/supplierController";
+import * as authController from "../controllers/authController";
+
 const supplierRouter = e.Router();
-
-// const supplierController = require("../controllers/supplierController");
-import * as supplierController from "../controllers/supplierController"
-const authController = require("../controllers/authController");
-
-
 
 supplierRouter
   .route("/")
@@ -20,4 +17,4 @@ supplierRouter
   .patch(supplierController.updateSupplier)
   .delete(supplierController.deleteSupplier);
 
-export { supplierRouter }
+export { supplierRouter };

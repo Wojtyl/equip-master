@@ -1,4 +1,12 @@
 <div>
+  <div *ngFor="let invoice of invoices">
+    <span>Price: {{ invoice.nettoPrice }} | </span>
+    <span>{{ invoice.invoiceNumber }}</span>
+    <span>Date: {{ invoice.date }}</span>
+  </div>
+</div>
+
+<div>
   <form
     [formGroup]="invoiceForm"
     class="flex flex-col bg-slate-100 w-3/6 p-4"

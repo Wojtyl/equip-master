@@ -50,7 +50,7 @@ const supplierSchema = new mongoose.Schema({
   },
   productsIds: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
     },
   ],

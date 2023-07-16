@@ -1,0 +1,29 @@
+<div>
+  <form
+    [formGroup]="deliveryForm"
+    class="flex flex-col bg-slate-100 p-4"
+    (ngSubmit)="onSubmit()"
+  >
+    <label for="supplier">Dostawca</label>
+    <p-dropdown
+      formControlName="supplier"
+      [options]="suppliers"
+      optionLabel="name"
+    ></p-dropdown>
+    <label for="deliveryDescription">Opis dostawy</label>
+    <input
+      type="text"
+      id="deliveryDescription"
+      formControlName="deliveryDescription"
+    />
+    <label for="invoiceNumber">Numer Faktury</label>
+    <input type="text" id="invoiceNumber" formControlName="invoiceNumber" />
+
+    <div class="flex justify-between">
+      <p>Artykuły</p>
+      <button type="button">+</button>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>

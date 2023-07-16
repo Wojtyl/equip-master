@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-const AppError = require("../utils/appError");
+import mongoose, { Model, Types, Schema } from "mongoose";
+import { Supplier } from "./supplierModel";
+import { AppError } from "../utils/appError";
 
 interface attributes {
   size: string[];
@@ -11,8 +12,7 @@ interface IProduct {
   productIndex: string;
   attributes: attributes;
   category: string;
-  supplierTax: number;
-  supplierId: mongoose.Types.ObjectId;
+  supplierId: Types.ObjectId;
   createdAt: Date;
 }
 
@@ -23,7 +23,13 @@ interface IProductMethods {
   ): Promise<any>;
 }
 
-const productSchema = new mongoose.Schema({
+type ProductModel = Model<IProduct, {}, IProductMethods>;
+
+const productSchema = new mongoose.Schema<
+  IProduct,
+  ProductModel,
+  IProductMethods
+>({
   name: {
     type: String,
     required: [true, "Product must have a name"],
@@ -49,12 +55,8 @@ const productSchema = new mongoose.Schema({
       required: [true, "Product must belong to at least one category"],
     },
   ],
-  supplierTax: {
-    type: Number,
-    required: [true, "Product must have a supplier"],
-  },
   supplierId: {
-    type: mongoose.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Supplier",
   },
   createdAt: {
@@ -69,9 +71,9 @@ productSchema.index({ productIndex: 1 }, { unique: true });
 // For further implementation - referencing to supplier
 // ########
 productSchema.pre("save", async function (next) {
-  const Supplier = require("./../models/supplierModel");
+  // const Supplier = require("./../models/supplierModel");
 
-  const supp = await Supplier.findOne({ taxIdNum: this.supplierTax });
+  const supp = await Supplier.findById(this.supplierId);
 
   if (supp) {
     this.supplierId = supp._id;
@@ -96,5 +98,16 @@ productSchema.pre("save", function (next) {
   }
   next();
 });
+
+// !!!! TODO
+// Remove product from supplier
+/*
+productSchema.pre("deleteOne", function (next) {
+  if (this.attributes!.size.length > 0) {
+    this.productIndex = [this.productIndex, this.attributes!.size].join(" ");
+  }
+  next();
+});
+*/
 
 export const Product = mongoose.model("Product", productSchema);

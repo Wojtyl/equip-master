@@ -1,9 +1,7 @@
 import e from "express";
-
+import * as invoiceController from "../controllers/invoiceController";
+import * as authController from "../controllers/authController";
 const invoiceRouter = e.Router();
-
-const invoiceController = require("../controllers/invoiceController");
-const authController = require("../controllers/authController");
 
 invoiceRouter
   .route("/")

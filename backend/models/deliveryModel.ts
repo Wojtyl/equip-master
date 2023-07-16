@@ -15,17 +15,13 @@ const deliverySchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     required: [true, "Delivery must have an invoice"],
   },
-  // issuanceNumber: {
-  //   type: Number,
-  //   required: [true, "Delivery must have an issuance"],
-  // },
+  issuanceNumber: {
+    type: Number,
+    required: [true, "Delivery must have an issuance"],
+  },
   deliveryClosed: {
     type: Boolean,
     default: false,
-  },
-  supplierTaxId: {
-    type: Number,
-    required: [true, "Provide supplier tax UID"],
   },
   supplier: {
     type: mongoose.Types.ObjectId,

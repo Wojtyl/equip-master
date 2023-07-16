@@ -4,9 +4,8 @@
   "description": "Program managign supply coming to shop",
   "main": "App.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
-    "start:dev-local": "DB_CONNECTION=local nodemon server.js",
-    "startts": "nodemon server.ts",
+    "start:dev": "nodemon server.ts",
+    "start:dev-local": "DB_CONNECTION=local nodemon server.ts",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
     "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js",

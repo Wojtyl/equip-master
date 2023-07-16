@@ -30,11 +30,13 @@
       display="chip"
     ></p-multiSelect>
     <p-autoComplete
-      formControlName="selectedCountry"
-      [suggestions]="suppliers"
+      formControlName="selectedSuppliers"
+      [suggestions]="filteredSuppliers"
+      (completeMethod)="findSuppliers($event)"
       field="name"
+      (onSelect)="onSelect($event)"
     ></p-autoComplete>
 
-    <button (click)="onSubmit()"></button>
+    <button (click)="onSubmit()">Add product</button>
   </form>
 </div>

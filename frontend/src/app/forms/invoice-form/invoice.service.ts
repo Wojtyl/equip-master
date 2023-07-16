@@ -4,6 +4,25 @@ import { apiUrl } from 'src/assets/apiurl';
 
 import { invoiceProducts } from 'src/app/models/invoiceProductsModel';
 
+interface ProductOnInvoice {
+  productName: string;
+  quantity: number;
+  price: number;
+}
+
+interface Invoice {
+  _id: string;
+  invoiceNumber: string;
+  date: Date;
+  nettoPrice: number;
+  products: ProductOnInvoice[];
+}
+
+interface AllInvoicesResponse {
+  status: string;
+  invoice: Invoice[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -19,5 +38,9 @@ export class InvoiceService {
 
   addInvoice(items: any) {
     return this.http.post(`${apiUrl}invoices`, items);
+  }
+
+  getAllInvoices() {
+    return this.http.get<AllInvoicesResponse>(`${apiUrl}invoices`);
   }
 }

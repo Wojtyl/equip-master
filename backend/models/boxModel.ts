@@ -1,4 +1,4 @@
-import mongoose, { Model } from "mongoose";
+import mongoose from "mongoose";
 
 const boxSchema = new mongoose.Schema(
   {
