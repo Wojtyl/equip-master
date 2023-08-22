@@ -1,3 +1,5 @@
+import { Product } from "./productModel";
+
 interface Address {
   postalCode: string;
   state: string;
@@ -14,4 +16,5 @@ export interface Supplier {
   active: boolean;
   addedAt: Date;
   createdBy: string;
+  products: Product[];
 }

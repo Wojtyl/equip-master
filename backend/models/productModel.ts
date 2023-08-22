@@ -1,6 +1,4 @@
 import mongoose, { Model, Types, Schema } from "mongoose";
-import { Supplier } from "./supplierModel";
-import { AppError } from "../utils/appError";
 
 interface attributes {
   size: string[];
@@ -70,34 +68,6 @@ productSchema.index({ productIndex: 1 }, { unique: true });
 // ########
 // For further implementation - referencing to supplier
 // ########
-productSchema.pre("save", async function (next) {
-  // const Supplier = require("./../models/supplierModel");
-
-  const supp = await Supplier.findById(this.supplierId);
-
-  if (supp) {
-    this.supplierId = supp._id;
-    supp.productsIds.push(this._id);
-    supp.save();
-    next();
-  }
-  next(new AppError("No supplier with that ID!", 404));
-});
-
-/*
-productSchema.pre(/^find/, function (next) {
-  this.populate("supplier");
-  next();
-});
-*/
-
-//Adding size to index
-productSchema.pre("save", function (next) {
-  if (this.attributes!.size.length > 0) {
-    this.productIndex = [this.productIndex, this.attributes!.size].join(" ");
-  }
-  next();
-});
 
 // !!!! TODO
 // Remove product from supplier

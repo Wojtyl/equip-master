@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SupplierFormService } from '../supplier-form/supplier-form.service';
+import { SupplierService } from '../supplier-form/supplier.service';
 import { Supplier } from 'src/app/models/supplierModel';
-import { DropdownModule } from 'primeng/dropdown';
+import { DeliveryService } from './delivery-service.service';
 
 @Component({
   selector: 'app-delivery',
@@ -10,28 +10,42 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrls: ['./delivery.component.scss'],
 })
 export class DeliveryComponent implements OnInit {
-  constructor(private supplierService: SupplierFormService, private formBuilder: FormBuilder) {}
+  constructor(private supplierService: SupplierService, private deliveryService: DeliveryService, private formBuilder: FormBuilder) {}
 
   deliveryForm: FormGroup;
 
   suppliers: Supplier[];
+  deliveries: any = [];
 
   ngOnInit(): void {
+    this.deliveryService.getAllDieliveries().subscribe(resData => {this.deliveries = resData; console.log(resData)})
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe((resData) => {
       this.suppliers = resData.supplier;
-      console.log(this.suppliers);
     });
   }
 
   initForm() {
     this.deliveryForm = this.formBuilder.group({
       supplier: '',
-      deliveryDescription: '',
-      name: '',
+      date: '',
+      description: '',
       invoiceNumber: '',
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    const data = this.deliveryForm.value;
+    data.supplier = data.supplier._id;
+    this.deliveryService.addDelivery(data).subscribe(() => {
+      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData)
+    });
+  }
+
+
+  onDelete(id: string):void {
+    this.deliveryService.deleteDelivery(id).subscribe(() => {
+      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData)
+    })
+  }
 }

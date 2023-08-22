@@ -7,7 +7,8 @@ const supplierRouter = e.Router();
 
 supplierRouter
   .route("/")
-  .get(authController.auth, supplierController.getAllSuppliers)
+  // .get(authController.auth, supplierController.getAllSuppliers)
+  .get(authController.auth, supplierController.findSupplierWithproducts)
   .post(authController.auth, supplierController.createSupplier)
   .delete(supplierController.deleteAllSuppliers);
 

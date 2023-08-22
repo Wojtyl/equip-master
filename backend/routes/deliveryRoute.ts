@@ -10,6 +10,7 @@ deliveryRouter
 
 deliveryRouter
   .route("/:id")
-  .get(authController.auth, deliveryController.getDelivery);
+  .get(authController.auth, deliveryController.getDelivery)
+  .delete(authController.auth, deliveryController.deleteDelivery)
 
 export { deliveryRouter };

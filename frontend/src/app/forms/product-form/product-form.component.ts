@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject, filter } from 'rxjs';
-import { SupplierFormService } from '../supplier-form/supplier-form.service';
+import { SupplierService } from '../supplier-form/supplier.service';
+import { ProductService } from './product.service';
+import { Product } from 'src/app/models/productModel';
+import { CategoryService } from 'src/app/core/category.service';
+import { ICategory } from 'src/app/models/categoryModel';
 
 @Component({
   selector: 'app-product-form',
@@ -11,30 +15,58 @@ import { SupplierFormService } from '../supplier-form/supplier-form.service';
 export class ProductFormComponent implements OnInit {
   productForm: FormGroup;
 
-  suppliers: any[];
+  categoriesForm: FormGroup;
+
+  suppliers: any[] = [];
+
+  products: Product[] = [];
 
   selectedSupplier: any[];
 
   filteredSuppliers: any[];
 
-  constructor(private formBuilder: FormBuilder, private supplierService: SupplierFormService) {}
+  categories: ICategory[] = []
+
+  selectedCities: any;
+
+  constructor(private formBuilder: FormBuilder, private supplierService: SupplierService, private productService: ProductService, private categoryService: CategoryService) {}
 
   ngOnInit() {
-    this.suppliers = [];
+    this.initForm();
     this.supplierService.getAllSuppliers().subscribe((resData) => {
       this.suppliers = resData.supplier;
     });
-    this.initForm();
+
+    this.productService.getAllProducts().subscribe(products => {
+      this.products = products.product;
+    })
+
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories.category;
+    })
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
       name: '',
-      supplier: '6471f804717a2af5865e3c8e',
-      selectedSuppliers: '',
+      supplierId: '',
       index: '',
       category: '',
     });
+  }
+
+  get categoriesArray(): FormArray {
+    return this.productForm.get('category') as FormArray;
+  }
+
+  newCategory(): FormGroup {
+    return this.formBuilder.group({
+      categories: ''
+    })
+  }
+
+  addCategory() {
+    this.categoriesArray.push(this.newCategory());
   }
 
   findSuppliers(event: any) {
@@ -56,6 +88,13 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.productForm);
+    const data = {
+      name: this.productForm.get('name')?.value,
+      productIndex: this.productForm.get('index')?.value,
+      category: this.productForm.get('category')?.value,
+      supplierId: this.productForm.get('supplierId')?.value._id
+    }
+
+    this.productService.addProduct(data).subscribe();
   }
 }

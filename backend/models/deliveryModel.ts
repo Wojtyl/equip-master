@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const deliverySchema = new mongoose.Schema({
-  dateOfDelivery: {
+  date: {
     type: Date,
     default: Date.now(),
   },
@@ -12,14 +12,14 @@ const deliverySchema = new mongoose.Schema({
     },
   ],
   invoiceNumber: {
-    type: mongoose.Types.ObjectId,
+    type: String,
     required: [true, "Delivery must have an invoice"],
   },
   issuanceNumber: {
     type: Number,
-    required: [true, "Delivery must have an issuance"],
+    // required: [true, "Delivery must have an issuance"],
   },
-  deliveryClosed: {
+  isClosed: {
     type: Boolean,
     default: false,
   },

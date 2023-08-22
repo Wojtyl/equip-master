@@ -21,6 +21,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DeliveryComponent } from './forms/delivery/delivery.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { Button, ButtonModule } from 'primeng/button';
+import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/multiselect-dropdown.component';
+
+
 
 @NgModule({
   declarations: [
@@ -32,6 +37,7 @@ import { DropdownModule } from 'primeng/dropdown';
     SupplierFormComponent,
     ProductFormComponent,
     DeliveryComponent,
+    MultiselectDropdownComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +52,8 @@ import { DropdownModule } from 'primeng/dropdown';
     BrowserAnimationsModule,
     AutoCompleteModule,
     DropdownModule,
+    CalendarModule,
+    ButtonModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],

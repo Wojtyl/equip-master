@@ -27,11 +27,9 @@ export class HomeComponent implements OnInit {
 
   getSuppliers() {
     this.http
-      .get<any>(`${apiUrl}suppliers`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
+      .get<any>(`${apiUrl}suppliers`)
       .subscribe((sup) => {
-        this.suppliers = sup.supplier;
+        this.suppliers = sup.suppliers;
       });
   }
 }

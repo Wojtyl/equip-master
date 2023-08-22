@@ -15,4 +15,8 @@ productRouter
   .patch(authController.auth, productController.updateProduct)
   .delete(authController.auth, productController.deleteProduct);
 
+productRouter
+.route("/bySupplier/:id")
+.get(authController.auth, productController.getSupplierProducts)
+
 export { productRouter };

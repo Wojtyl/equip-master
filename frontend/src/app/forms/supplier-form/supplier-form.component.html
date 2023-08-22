@@ -1,37 +1,78 @@
 <div>
-  <form action="" [formGroup]="supplierForm">
-    <div>
-      <label for="">Nazwa</label>
-      <input type="text" formControlName="name" />
+  <form action="" [formGroup]="supplierForm" class="p-6 flex flex-col gap-2">
+    <div class="flex flex-col gap-[3px]">
+      <label htmlFor="username">Nazwa</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="name"
+        class="p-inputtext-sm"
+      />
     </div>
-    <div>
-      <label for="">Numer NIP</label>
-      <input type="text" formControlName="taxIdNum" />
+    <div class="flex flex-col gap-[3px]">
+      <label htmlFor="username">Numer NIP</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="taxIdNum"
+        class="p-inputtext-sm"
+      />
     </div>
-    <div>
-      <label for="">Opis</label>
-      <input type="text" formControlName="description" />
+    <div class="flex flex-col gap-[3px]">
+      <label htmlFor="username">Opis</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="description"
+        class="p-inputtext-sm"
+      />
     </div>
+
     <div formGroupName="address">
-      <div>
-        <label for="">Adres</label>
-        <input type="text" formControlName="street" />
+      <div class="flex flex-col gap-[3px]">
+        <label htmlFor="username">Adres</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="street"
+          class="p-inputtext-sm"
+        />
       </div>
-      <div>
-        <label for="">Kod pocztowy</label>
-        <input type="text" formControlName="postalCode" />
+      <div class="flex flex-col gap-[3px]">
+        <label htmlFor="username">Kod pocztowy</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="postalCode"
+          class="p-inputtext-sm"
+        />
       </div>
-      <div>
-        <label for="">Miasto</label>
-        <input type="text" formControlName="city" />
+      <div class="flex flex-col gap-[3px]">
+        <label htmlFor="username">Miasto</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="city"
+          class="p-inputtext-sm"
+        />
       </div>
-      <div>
-        <label for="">Województwo</label>
-        <input type="text" formControlName="state" />
+      <div class="flex flex-col gap-[3px]">
+        <label htmlFor="username">Województwo</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="state"
+          class="p-inputtext-sm"
+        />
       </div>
-      <div>
-        <label for="">Kraj</label>
-        <input type="text" formControlName="country" />
+      <div class="flex flex-col gap-[3px]">
+        <label htmlFor="username">Kraj</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="country"
+          class="p-inputtext-sm"
+        />
       </div>
     </div>
     <button (click)="onSubmit()">Submit</button>

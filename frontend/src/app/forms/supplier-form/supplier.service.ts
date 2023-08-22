@@ -11,7 +11,7 @@ interface AllSuppliersResponse {
 @Injectable({
   providedIn: 'root',
 })
-export class SupplierFormService {
+export class SupplierService {
   constructor(private http: HttpClient) {}
 
   addSupplier(data: any) {

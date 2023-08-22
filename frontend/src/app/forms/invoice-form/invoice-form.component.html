@@ -6,47 +6,69 @@
   </div>
 </div>
 
-<div>
+<div class="flex flex-col justify-center items-center h-full">
+  <div class="w-3/6 mb-8">
+    <h1 class="font-bold text-5xl leading-snug">Dodaj fakturę</h1>
+    <p class="text-gray-500">Na jej podstawie stworzona będzie dostawa, która po jej zakończeniu porówna dostarczony towar z zamówionym</p>
+  </div>
   <form
     [formGroup]="invoiceForm"
-    class="flex flex-col bg-slate-100 w-3/6 p-4"
+    class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit"
     (ngSubmit)="onSubmit()"
   >
-    <label for="supplier">Dostawca</label>
-    <input type="text" formControlName="supplier" />
-    <label for="invoiceDate">Data faktury</label>
-    <input type="date" id="invoiceDate" formControlName="invoiceDate" />
-    <label for="invoiceNumber">Numer Faktury</label>
-    <input type="text" id="invoiceNumber" formControlName="invoiceNumber" />
-    <label for="nettoPrice">Wartość netto</label>
-    <input type="number" id="nettoPrice" formControlName="nettoPrice" />
-    <div class="flex justify-between">
-      <p>Artykuły</p>
+    <div class="flex flex-col col-span-2">
+      <label for="supplier">Dostawca</label>
+      <app-multiselect-dropdown [items]="suppliers" controlName="supplier"></app-multiselect-dropdown>
+    </div>
+    <div class="flex flex-col">
+      <label for="invoiceNumber">Numer Faktury</label>
+      <input pInputText type="text" id="invoiceNumber" formControlName="invoiceNumber" />
+    </div>
+    <div class="flex flex-col col-span-2">
+      <label  for="nettoPrice">Wartość netto</label>
+      <input pInputText type="number" id="nettoPrice" formControlName="nettoPrice" />
+    </div>
+    <div class="flex flex-col w-auto mb-2">
+      <label for="invoiceDate">Data faktury</label>
+      <p-calendar id="invoiceDate" class="w-1/2" formControlName="invoiceDate" [showIcon]="true"></p-calendar>
+    </div>
+    <div *ngIf="selectedSupplier && selectedSupplier.products.length > 0" class="flex justify-between col-span-2">
+      <h2 class="font-semibold">Artykuły</h2>
       <button type="button" (click)="addProductsFormInit()">+</button>
     </div>
-    <div *ngIf="isAdding" class="new-item flex" [formGroup]="products">
-      <div>
+    <div *ngIf="!selectedSupplier">
+      <h2>Wybierz dostawcę aby dodać produkty do faktury</h2>
+    </div>
+    <div *ngIf="selectedSupplier && selectedSupplier.products.length === 0">
+      <h2 class="mt-2">Wybrany dostawca nie posiada zadnych produktow. Kliknij tutaj aby dodać produkt</h2>
+    </div>
+    <div *ngIf="isAdding && selectedSupplier.products.length > 0" class="new-item flex gap-2" [formGroup]="products">
+      <div class="flex flex-col">
         <label for="">Indeks</label>
-        <input type="text" formControlName="productName" />
+        <app-multiselect-dropdown [items]="selectedSupplier.products" controlName="product"></app-multiselect-dropdown>
       </div>
-      <div>
+      <div  class="flex flex-col">
         <label for="">Ilość</label>
-        <input type="number" formControlName="quantity" />
+        <input pInputText class="p-inputtext-sm"  type="number" formControlName="quantity" />
       </div>
-      <div>
+      <div  class="flex flex-col">
         <label for="">Cena</label>
-        <input type="number" formControlName="price" />
+        <input pInputText class="p-inputtext-sm" type="number" formControlName="price" />
       </div>
-      <button type="button" (click)="addProduct()">add</button>
+      <div class="flex flex-col">
+        <label for="">Rozmiar</label>
+        <input pInputText class="p-inputtext-sm" type="number" formControlName="price" />
+      </div>
+      <p-button label="Dodaj" styleClass="p-button-success" class="self-end" (onClick)="addProduct()"></p-button>
+
     </div>
     <div formArrayName="products">
       <div
         *ngFor="let product of getProductsControls(); let i = index"
-        class="flex gap-3"
-      >
+        class="flex gap-3">
         <p>{{ product.value.productName }}</p>
       </div>
     </div>
-    <button type="submit">Submit</button>
+    <p-button type="submit" label="Wyślij" styleClass="p-button-secondary"></p-button>
   </form>
 </div>

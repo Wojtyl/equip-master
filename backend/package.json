@@ -4,6 +4,7 @@
   "description": "Program managign supply coming to shop",
   "main": "App.js",
   "scripts": {
+    "start": "nodemon server.ts",
     "start:dev": "nodemon server.ts",
     "start:dev-local": "DB_CONNECTION=local nodemon server.ts",
     "start:prod": "NODE_ENV=production nodemon server.js",

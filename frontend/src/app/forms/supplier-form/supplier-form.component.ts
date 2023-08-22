@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SupplierFormService } from './supplier-form.service';
+import { SupplierService } from './supplier.service';
 
 @Component({
   selector: 'app-supplier-form',
@@ -8,7 +8,7 @@ import { SupplierFormService } from './supplier-form.service';
   styleUrls: ['./supplier-form.component.scss'],
 })
 export class SupplierFormComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private supplierService: SupplierFormService) {}
+  constructor(private formBuilder: FormBuilder, private supplierService: SupplierService) {}
 
   supplierForm: FormGroup;
 

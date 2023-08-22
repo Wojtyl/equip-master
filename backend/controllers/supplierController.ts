@@ -7,3 +7,5 @@ export const createSupplier = generalController.createOne(Supplier);
 export const updateSupplier = generalController.updateOne(Supplier);
 export const deleteSupplier = generalController.deleteOne(Supplier);
 export const deleteAllSuppliers = generalController.deleteAll(Supplier);
+
+export const findSupplierWithproducts = generalController.withProducts();
