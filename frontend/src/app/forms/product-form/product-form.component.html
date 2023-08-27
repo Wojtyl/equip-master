@@ -3,7 +3,8 @@
     <div class="w-3/6 mb-8">
       <h1 class="font-bold text-5xl leading-snug">Dodaj produkt</h1>
       <p class="text-gray-500">
-        Produkty są kluczowym elementem dostawy - w końcu to je zamawiamy. Dodaj produkty, są potrzebne m.in do stworzenia faktury czy dostawy.
+        Produkty są kluczowym elementem dostawy - w końcu to je zamawiamy. Dodaj
+        produkty, są potrzebne m.in do stworzenia faktury czy dostawy.
       </p>
     </div>
     <form
@@ -28,12 +29,29 @@
         <label for="index">Indeks</label>
         <input type="text" id="index" pInputText formControlName="index" />
       </div>
+      <div class="flex flex-col col-span-2">
+        <label for="index">Rozmiar</label>
+        <div class="card p-fluid">
+          <p-chips formControlName="size"></p-chips>
+        </div>
+      </div>
+      <div class="flex flex-col col-span-2">
+        <label for="color">Kolor</label>
+        <input type="text" id="color" pInputText formControlName="color" />
+      </div>
       <div class="flex flex-col w-auto mb-2">
         <label for="category">Kategoria</label>
-        <p-multiSelect formControlName="category" [options]="categories" defaultLabel="Wybierz kategorie" display="chip" optionLabel="name"></p-multiSelect>
+        <p-multiSelect
+          formControlName="category"
+          [options]="categories"
+          defaultLabel="Wybierz kategorie"
+          display="chip"
+          optionLabel="name"
+        ></p-multiSelect>
       </div>
       <p-button
         (click)="onSubmit()"
+        class="mt-3"
         label="Wyślij"
         styleClass="p-button-secondary"
       ></p-button>

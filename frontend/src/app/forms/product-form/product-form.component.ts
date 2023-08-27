@@ -48,10 +48,12 @@ export class ProductFormComponent implements OnInit {
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      name: '',
-      supplierId: '',
-      index: '',
-      category: '',
+      name: null,
+      supplierId: null,
+      index: null,
+      category: null,
+      size: null,
+      color: null
     });
   }
 
@@ -88,11 +90,16 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit() {
+
     const data = {
       name: this.productForm.get('name')?.value,
       productIndex: this.productForm.get('index')?.value,
       category: this.productForm.get('category')?.value,
-      supplierId: this.productForm.get('supplierId')?.value._id
+      supplierId: this.productForm.get('supplierId')?.value._id,
+      attributes: {
+        size: this.productForm.get('size')?.value,
+        colour: this.productForm.get('color')?.value
+      }
     }
 
     this.productService.addProduct(data).subscribe();

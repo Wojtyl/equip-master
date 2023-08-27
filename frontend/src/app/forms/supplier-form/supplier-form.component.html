@@ -1,80 +1,57 @@
 <div>
-  <form action="" [formGroup]="supplierForm" class="p-6 flex flex-col gap-2">
-    <div class="flex flex-col gap-[3px]">
-      <label htmlFor="username">Nazwa</label>
-      <input
-        type="text"
-        pInputText
-        formControlName="name"
-        class="p-inputtext-sm"
-      />
+  <div class="flex flex-col justify-center items-center h-full">
+    <div class="w-3/6 mb-8">
+      <h1 class="font-bold text-5xl leading-snug">Dodaj dostawcę</h1>
+      <p class="text-gray-500">
+        Dodaj dostawcę aby móc przyypisać do niego produkty, które później będą wykorzystywane podczas dodawania dostawy.
+      </p>
     </div>
-    <div class="flex flex-col gap-[3px]">
-      <label htmlFor="username">Numer NIP</label>
-      <input
-        type="text"
-        pInputText
-        formControlName="taxIdNum"
-        class="p-inputtext-sm"
-      />
-    </div>
-    <div class="flex flex-col gap-[3px]">
-      <label htmlFor="username">Opis</label>
-      <input
-        type="text"
-        pInputText
-        formControlName="description"
-        class="p-inputtext-sm"
-      />
-    </div>
-
-    <div formGroupName="address">
-      <div class="flex flex-col gap-[3px]">
-        <label htmlFor="username">Adres</label>
-        <input
-          type="text"
-          pInputText
-          formControlName="street"
-          class="p-inputtext-sm"
-        />
+    <form
+      [formGroup]="supplierForm"
+      class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="flex flex-col">
+        <label for="name">Nazwa</label>
+        <input type="text" id="name" pInputText formControlName="name" />
       </div>
-      <div class="flex flex-col gap-[3px]">
-        <label htmlFor="username">Kod pocztowy</label>
-        <input
-          type="text"
-          pInputText
-          formControlName="postalCode"
-          class="p-inputtext-sm"
-        />
+      <div class="flex flex-col col-span-2">
+        <label for="index">Numer NIP</label>
+        <input type="text" id="index" pInputText formControlName="taxIdNum" />
       </div>
-      <div class="flex flex-col gap-[3px]">
-        <label htmlFor="username">Miasto</label>
-        <input
-          type="text"
-          pInputText
-          formControlName="city"
-          class="p-inputtext-sm"
-        />
+      <div class="flex flex-col col-span-2">
+        <label for="description">Opis</label>
+        <input type="text" id="description" pInputText formControlName="description" />
       </div>
-      <div class="flex flex-col gap-[3px]">
-        <label htmlFor="username">Województwo</label>
-        <input
-          type="text"
-          pInputText
-          formControlName="state"
-          class="p-inputtext-sm"
-        />
+      <div formGroupName="address">
+        <div class="flex flex-col col-span-2">
+          <label for="street">Ulica</label>
+          <input type="text" id="street" pInputText formControlName="street" />
+        </div>
+        <div class="flex flex-col col-span-2">
+          <label for="postalCode">Kod pocztowy</label>
+          <input type="text" id="postalCode" pInputText formControlName="postalCode" />
+        </div>
+        <div class="flex flex-col col-span-2">
+          <label for="city">Miasto</label>
+          <input type="text" id="city" pInputText formControlName="city" />
+        </div>
+        <div class="flex flex-col col-span-2">
+          <label for="state">Województwo</label>
+          <input type="text" id="state" pInputText formControlName="state" />
+        </div>
+        <div class="flex flex-col col-span-2">
+          <label for="country">Kraj</label>
+          <input type="text" id="country" pInputText formControlName="country" />
+        </div>
       </div>
-      <div class="flex flex-col gap-[3px]">
-        <label htmlFor="username">Kraj</label>
-        <input
-          type="text"
-          pInputText
-          formControlName="country"
-          class="p-inputtext-sm"
-        />
-      </div>
-    </div>
-    <button (click)="onSubmit()">Submit</button>
-  </form>
+      <p-button
+        (click)="onSubmit()"
+        class="mt-3"
+        label="Wyślij"
+        styleClass="p-button-secondary"
+      ></p-button>
+    </form>
+  </div>
 </div>
+

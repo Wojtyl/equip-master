@@ -51,7 +51,9 @@ export class InvoiceFormComponent implements OnInit {
     const values = this.getAllInvoiceValues();
     this.invoiceService.addInvoice(values).subscribe((res) => console.log(res));
   }
-
+  cl(pr: any){
+    console.log(pr);
+  }
   addProductsFormInit() {
     if(this.isAdding === false){
       this.isAdding = true;
