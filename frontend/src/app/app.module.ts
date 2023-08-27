@@ -19,10 +19,42 @@ import { ChipsModule } from 'primeng/chips';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DeliveryComponent } from './forms/delivery/delivery.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { Button, ButtonModule } from 'primeng/button';
+import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/multiselect-dropdown.component';
+
+
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, NavComponent, InvoiceFormComponent, SupplierFormComponent, ProductFormComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FontAwesomeModule, NgbModule, ReactiveFormsModule, InputTextModule, ChipsModule, MultiSelectModule, BrowserAnimationsModule, AutoCompleteModule],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    NavComponent,
+    InvoiceFormComponent,
+    SupplierFormComponent,
+    ProductFormComponent,
+    DeliveryComponent,
+    MultiselectDropdownComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FontAwesomeModule,
+    NgbModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ChipsModule,
+    MultiSelectModule,
+    BrowserAnimationsModule,
+    AutoCompleteModule,
+    DropdownModule,
+    CalendarModule,
+    ButtonModule
+  ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],
 })

@@ -1,5 +1,5 @@
 export interface invoiceProducts {
-  productName: string;
+  product: string;
   quantity: number;
   price: number;
 }

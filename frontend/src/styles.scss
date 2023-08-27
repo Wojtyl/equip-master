@@ -229,14 +229,22 @@ $rose-700: #be123c;
 $rose-800: #9f1239;
 $rose-900: #881337;
 
-button {
-  @apply py-2 px-3 mx-2 my-1 border-black border-solid border-1 rounded-2xl text-xs;
+table, tr, td, th {
+  @apply border border-slate-500;
 
-  &:hover {
-    @apply bg-cyan-400;
+  thead {
+    @apply bg-zinc-700 text-alterbridge;
+  }
+
+  tr:nth-child(even) {
+    @apply bg-orange-100;
   }
 }
 
 input {
   @apply border-solid border-1;
+}
+
+.p-button-secondary {
+  background-color: $rose-700 !important;
 }

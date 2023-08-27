@@ -1,0 +1,20 @@
+<p-autoComplete
+*ngIf="controlName"
+      [formControlName]="controlName"
+      [suggestions]="filteredItems"
+      (completeMethod)="findSuppliers($event)"
+      [field]="selectByField"
+      (onSelect)="onSelect($event)"
+      [dropdown]="isDropdown"
+      [placeholder]="placeholder"
+></p-autoComplete>
+
+<p-autoComplete
+*ngIf="!controlName"
+      [suggestions]="filteredItems"
+      (completeMethod)="findSuppliers($event)"
+      [field]="selectByField"
+      (onSelect)="onSelect($event)"
+      [dropdown]="isDropdown"
+      [placeholder]="placeholder"
+></p-autoComplete>

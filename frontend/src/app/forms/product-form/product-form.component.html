@@ -1,40 +1,42 @@
 <div>
-  <form action="" [formGroup]="productForm">
-    <div class="flex flex-col">
-      <span class="p-float-label">
-        <input type="text" id="name" pInputText formControlName="name" />
-        <label for="name">Nazwa produktu</label>
-      </span>
-      <span class="p-float-label">
-        <input type="text" id="index" pInputText formControlName="index" />
-        <label for="index">Indeks</label>
-      </span>
-      <span class="p-float-label">
-        <p-chips id="category" formControlName="category" />
-        <label for="category">Kategoria</label>
-      </span>
-      <span class="p-float-label">
-        <input
-          type="text"
-          id="supplier"
-          pInputText
-          formControlName="supplier"
-        />
-        <label for="supplier">Dostawca</label>
-      </span>
+  <div class="flex flex-col justify-center items-center h-full">
+    <div class="w-3/6 mb-8">
+      <h1 class="font-bold text-5xl leading-snug">Dodaj produkt</h1>
+      <p class="text-gray-500">
+        Produkty są kluczowym elementem dostawy - w końcu to je zamawiamy. Dodaj produkty, są potrzebne m.in do stworzenia faktury czy dostawy.
+      </p>
     </div>
-    <p-multiSelect
-      [options]="suppliers"
-      defaultLabel="Select a City"
-      optionLabel="name"
-      display="chip"
-    ></p-multiSelect>
-    <p-autoComplete
-      formControlName="selectedCountry"
-      [suggestions]="suppliers"
-      field="name"
-    ></p-autoComplete>
-
-    <button (click)="onSubmit()"></button>
-  </form>
+    <form
+      [formGroup]="productForm"
+      class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="flex flex-col col-span-2">
+        <label for="supplier">Dostawca</label>
+        <app-multiselect-dropdown
+          controlName="supplierId"
+          [items]="suppliers"
+          placeholder="Wybierz dostawcę"
+          (selectedItem)="onSelect($event)"
+        ></app-multiselect-dropdown>
+      </div>
+      <div class="flex flex-col">
+        <label for="name">Nazwa produktu</label>
+        <input type="text" id="name" pInputText formControlName="name" />
+      </div>
+      <div class="flex flex-col col-span-2">
+        <label for="index">Indeks</label>
+        <input type="text" id="index" pInputText formControlName="index" />
+      </div>
+      <div class="flex flex-col w-auto mb-2">
+        <label for="category">Kategoria</label>
+        <p-multiSelect formControlName="category" [options]="categories" defaultLabel="Wybierz kategorie" display="chip" optionLabel="name"></p-multiSelect>
+      </div>
+      <p-button
+        (click)="onSubmit()"
+        label="Wyślij"
+        styleClass="p-button-secondary"
+      ></p-button>
+    </form>
+  </div>
 </div>

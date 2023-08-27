@@ -1,12 +1,8 @@
-// const generalController = require("./generalController");
-import * as generalController from "./generalController"
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
-// const catchAsync = require("../utils/catchAsync");
 import { catchAsync } from "../utils/catchAsync";
-// const User = require("../models/userModel");
+import { AppError } from "../utils/appError";
 import { User } from "../models/userModel";
-const AppError = require("../utils/appError");
 
 const signToken = (id) =>
   jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -53,7 +49,7 @@ const login = catchAsync(async (req, res, next) => {
 
 const signup = catchAsync(async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
-    return next(new AppError("Please provide email and password"));
+    return next(new AppError("Please provide email and password", 403));
   }
   const user = await User.create(req.body);
   createSignToken(user, 200, res);
@@ -93,8 +89,11 @@ const auth = async (req, res, next) => {
 };
 
 const isLoggedIn = async (req, res, next) => {
-  if (!req.cookies.jwt && (!req.headers.authorization ||
-    req.headers.authorization.includes(null || undefined))) {
+  if (
+    !req.cookies.jwt &&
+    (!req.headers.authorization ||
+      req.headers.authorization.includes(null || undefined))
+  ) {
     return next(new AppError("You need to login first.", 403));
   }
 
@@ -120,16 +119,16 @@ const isLoggedIn = async (req, res, next) => {
           name: user!.name,
           email: user!.email,
           role: user!.role,
-          token
+          token,
         },
       },
     });
   } catch (err) {
     res.status(401).json({
       status: "expired",
-      message: "Your session has expired. Log in again."
+      message: "Your session has expired. Log in again.",
     });
   }
 };
 
-export { isLoggedIn, auth, signup, login }
+export { isLoggedIn, auth, signup, login };

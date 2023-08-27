@@ -6,6 +6,7 @@ import { UserGuard } from './auth/user.guard';
 import { InvoiceFormComponent } from './forms/invoice-form/invoice-form.component';
 import { SupplierFormComponent } from './forms/supplier-form/supplier-form.component';
 import { ProductFormComponent } from './forms/product-form/product-form.component';
+import { DeliveryComponent } from './forms/delivery/delivery.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,11 @@ const routes: Routes = [
   {
     path: 'products',
     component: ProductFormComponent,
+    canActivate: [UserGuard],
+  },
+  {
+    path: 'delivery',
+    component: DeliveryComponent,
     canActivate: [UserGuard],
   },
 ];

@@ -1,16 +1,14 @@
 import e from "express";
 
+import * as supplierController from "../controllers/supplierController";
+import * as authController from "../controllers/authController";
+
 const supplierRouter = e.Router();
-
-// const supplierController = require("../controllers/supplierController");
-import * as supplierController from "../controllers/supplierController"
-const authController = require("../controllers/authController");
-
-
 
 supplierRouter
   .route("/")
-  .get(authController.auth, supplierController.getAllSuppliers)
+  // .get(authController.auth, supplierController.getAllSuppliers)
+  .get(authController.auth, supplierController.findSupplierWithproducts)
   .post(authController.auth, supplierController.createSupplier)
   .delete(supplierController.deleteAllSuppliers);
 
@@ -20,4 +18,4 @@ supplierRouter
   .patch(supplierController.updateSupplier)
   .delete(supplierController.deleteSupplier);
 
-export { supplierRouter }
+export { supplierRouter };

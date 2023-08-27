@@ -10,6 +10,7 @@ import { deliveryRouter } from "./routes/deliveryRoute";
 import { invoiceRouter } from "./routes/invoiceRoute";
 import { authRouter } from "./routes/authRoute";
 import { productRouter } from "./routes/productRoute";
+import { categoryRouter } from "./routes/categoryRoute";
 import { errorController } from "./controllers/errorController";
 
 dotenv.config({ path: "./.env" });
@@ -38,6 +39,7 @@ class ServerApp {
     app.use("/api/v1/deliveries", deliveryRouter);
     app.use("/api/v1/products", productRouter);
     app.use("/api/v1/invoices", invoiceRouter);
+    app.use("/api/v1/categories", categoryRouter);
 
     app.use(errorController);
   }
