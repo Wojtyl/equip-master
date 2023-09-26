@@ -24,6 +24,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { Button, ButtonModule } from 'primeng/button';
 import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/multiselect-dropdown.component';
+import { AddProductComponent } from './components/invoices/components/add-product/add-product.component';
+import { ListboxModule } from 'primeng/listbox';
 
 
 
@@ -38,6 +40,7 @@ import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/mult
     ProductFormComponent,
     DeliveryComponent,
     MultiselectDropdownComponent,
+    AddProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/mult
     AutoCompleteModule,
     DropdownModule,
     CalendarModule,
-    ButtonModule
+    ButtonModule,
+    ListboxModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],

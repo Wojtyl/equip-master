@@ -32,7 +32,7 @@
       <div class="flex flex-col col-span-2">
         <label for="index">Rozmiar</label>
         <div class="card p-fluid">
-          <p-chips formControlName="size"></p-chips>
+          <p-chips [addOnBlur]="true" [addOnTab]="true" formControlName="size"></p-chips>
         </div>
       </div>
       <div class="flex flex-col col-span-2">
@@ -41,13 +41,14 @@
       </div>
       <div class="flex flex-col w-auto mb-2">
         <label for="category">Kategoria</label>
-        <p-multiSelect
+        <!-- <p-multiSelect
           formControlName="category"
           [options]="categories"
           defaultLabel="Wybierz kategorie"
           display="chip"
           optionLabel="name"
-        ></p-multiSelect>
+        ></p-multiSelect> -->
+        <p-dropdown formControlName="category" [options]="categories" optionLabel="Wybierz kategorie" [editable]="true" optionLabel="name"></p-dropdown>
       </div>
       <p-button
         (click)="onSubmit()"

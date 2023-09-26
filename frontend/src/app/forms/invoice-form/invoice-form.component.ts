@@ -5,6 +5,7 @@ import { invoiceProducts } from 'src/app/models/invoiceProductsModel';
 import { SupplierService } from '../supplier-form/supplier.service';
 import { ProductService } from '../product-form/product.service';
 import { Supplier } from 'src/app/models/supplierModel';
+import { Product } from 'src/app/models/productModel';
 
 @Component({
   selector: 'app-invoice-form',
@@ -49,23 +50,28 @@ export class InvoiceFormComponent implements OnInit {
 
   onSubmit() {
     const values = this.getAllInvoiceValues();
+    values.products.forEach((_, i) => values.products[i].product = values.products[i].product._id);
     this.invoiceService.addInvoice(values).subscribe((res) => console.log(res));
   }
-  cl(pr: any){
-    console.log(pr);
-  }
+
   addProductsFormInit() {
     if(this.isAdding === false){
-      this.isAdding = true;
-      this.products = this.formBuilder.group<invoiceProducts>({
-        product: this.selectedSupplier.products[0].name,
-        quantity: 1,
-        price: 2,
-      });
+      this.initAddProductForm();
     } else {
       this.isAdding = false;
     }
   }
+
+  initAddProductForm() {
+    this.isAdding = true;
+      this.products = this.formBuilder.group({
+        product: null,
+        quantity: null,
+        price: null,
+        size: null
+      });
+  }
+
 
   getProductsControls() {
     return (<FormArray>this.invoiceForm.get('products')).controls;

@@ -18,7 +18,7 @@
   >
     <div class="flex flex-col col-span-2">
       <label for="supplier">Dostawca</label>
-      <app-multiselect-dropdown [items]="suppliers" controlName="supplier"></app-multiselect-dropdown>
+      <p-dropdown [options]="suppliers" optionLabel="name" formControlName="supplier" [filter]="true"></p-dropdown>
     </div>
     <div class="flex flex-col">
       <label for="invoiceNumber">Numer Faktury</label>
@@ -29,7 +29,7 @@
       <input pInputText type="number" id="nettoPrice" formControlName="nettoPrice" />
     </div>
     <div class="flex flex-col w-auto mb-2">
-      <label for="invoiceDate">Data faktury</label>
+      <label for="invoiceDate">Data wystawienia aktury</label>
       <p-calendar id="invoiceDate" class="w-1/2" formControlName="invoiceDate" [showIcon]="true"></p-calendar>
     </div>
     <div *ngIf="selectedSupplier && selectedSupplier.products.length > 0" class="flex justify-between col-span-2">
@@ -42,31 +42,12 @@
     <div *ngIf="selectedSupplier && selectedSupplier.products.length === 0">
       <h2 class="mt-2">Wybrany dostawca nie posiada zadnych produktow. Kliknij tutaj aby dodać produkt</h2>
     </div>
-    <div *ngIf="isAdding && selectedSupplier.products.length > 0" class="new-item flex gap-2" [formGroup]="products">
-      <div class="flex flex-col">
-        <label for="">Indeks</label>
-        <app-multiselect-dropdown [items]="selectedSupplier.products" controlName="product"></app-multiselect-dropdown>
-      </div>
-      <div  class="flex flex-col">
-        <label for="">Ilość</label>
-        <input pInputText class="p-inputtext-sm"  type="number" formControlName="quantity" />
-      </div>
-      <div  class="flex flex-col">
-        <label for="">Cena</label>
-        <input pInputText class="p-inputtext-sm" type="number" formControlName="price" />
-      </div>
-      <div class="flex flex-col">
-        <label for="">Rozmiar</label>
-        <input pInputText class="p-inputtext-sm" type="number" formControlName="price" />
-      </div>
-      <p-button label="Dodaj" styleClass="p-button-success" class="self-end" (onClick)="addProduct()"></p-button>
-
-    </div>
+    <app-add-product  *ngIf="isAdding && selectedSupplier.products.length" [formGroup]="products" [products]="selectedSupplier.products" (onAddProduct)="addProduct()"> 0"></app-add-product>
     <div formArrayName="products">
       <div
         *ngFor="let product of getProductsControls(); let i = index"
         class="flex gap-3">
-        <p>{{ product.value.product.name }}</p>
+        <p>{{ product.value.product.name }} {{ product.value.size}} cena {{product.value.price}}</p>
       </div>
     </div>
     <p-button class="mt-3" type="submit" label="Wyślij" styleClass="p-button-secondary"></p-button>

@@ -19,11 +19,10 @@ export class MultiselectDropdownComponent {
   findSuppliers(event: any) {
     let filtered: any[] = [];
     let query = event.query;
-    console.log(this.items)
     for (let i = 0; i < this.items.length; i++) {
-      let supplier = this.items[i];
-      if (supplier.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(supplier);
+      let item = this.items[i];
+      if (item.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(item);
       }
     }
     this.filteredItems = filtered;
