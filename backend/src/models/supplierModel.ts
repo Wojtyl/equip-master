@@ -47,13 +47,7 @@ const supplierSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Types.ObjectId,
-  },
-  productsIds: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
-    },
-  ],
+  }
 });
 
 supplierSchema.index({ taxIdNum: 1 }, { unique: true });

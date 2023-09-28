@@ -4,6 +4,7 @@ import { SupplierService } from '../../../../forms/supplier-form/supplier.servic
 import { Supplier } from 'src/app/models/supplierModel';
 import { DeliveryService } from '../../delivery-service.service';
 import { Router } from '@angular/router';
+import { IDeliveryList } from '../../models/delivery-list-model';
 
 @Component({
   selector: 'app-delivery',
@@ -20,10 +21,10 @@ export class DeliveryComponent implements OnInit {
   deliveryForm: FormGroup;
 
   suppliers: Supplier[];
-  deliveries: any = [];
+  deliveries: IDeliveryList[] = [];
 
   ngOnInit(): void {
-    this.deliveryService.getAllDieliveries().subscribe(resData => {this.deliveries = resData; console.log(resData)})
+    this.deliveryService.getAllDieliveries().subscribe(resData => {this.deliveries = resData.items; console.log(resData)})
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe((resData) => {
       this.suppliers = resData.supplier;
@@ -43,7 +44,7 @@ export class DeliveryComponent implements OnInit {
     const data = this.deliveryForm.value;
     data.supplier = data.supplier._id;
     this.deliveryService.addDelivery(data).subscribe(() => {
-      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData)
+      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData.items)
     });
   }
 
@@ -53,7 +54,7 @@ export class DeliveryComponent implements OnInit {
 
   onDelete(id: string):void {
     this.deliveryService.deleteDelivery(id).subscribe(() => {
-      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData)
+      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData.items)
     })
   }
 }

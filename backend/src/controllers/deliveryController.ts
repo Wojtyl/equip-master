@@ -9,8 +9,12 @@ export const getDelivery = generalController.getOne(Delivery);
 
 const getAll = () =>
 catchAsync(async (req, res, next) => {
-  const data = await Delivery.find().populate('supplier');
-  res.status(200).json(data);
+const query = { 'supplier.address': { $exists: false } };
+  const data = await Delivery.find(query).populate('supplier', '_id name').select('-boxOnDelivery -statuses -__v');
+  res.status(200).json({
+    status: 'success',
+    items: data
+  });
 });
 
 const createDeliveryService = () => 
@@ -26,7 +30,7 @@ const createDeliveryService = () =>
     const delivery = await Delivery.create(deliveryData);
     res.status(200).json({
       status: "success",
-      delivery,
+      items: delivery,
     });
   })
 
