@@ -19,14 +19,16 @@ import { ChipsModule } from 'primeng/chips';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DeliveryComponent } from './forms/delivery/delivery.component';
+import { DeliveryComponent } from './components/delivery/pages/delivery/delivery.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { Button, ButtonModule } from 'primeng/button';
 import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/multiselect-dropdown.component';
 import { AddProductComponent } from './components/invoices/components/add-product/add-product.component';
 import { ListboxModule } from 'primeng/listbox';
-import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
+import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
+import { DeliveryAddBoxComponent } from './components/delivery/components/delivery-add-box/delivery-add-box.component';
+import { DeliveryBoxTableComponent } from './components/delivery/components/delivery-box-table/delivery-box-table.component';
 
 
 
@@ -43,6 +45,8 @@ import { DeliveryDetailsComponent } from './components/delivery-details/delivery
     MultiselectDropdownComponent,
     AddProductComponent,
     DeliveryDetailsComponent,
+    DeliveryAddBoxComponent,
+    DeliveryBoxTableComponent,
   ],
   imports: [
     BrowserModule,

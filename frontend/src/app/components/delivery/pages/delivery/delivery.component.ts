@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SupplierService } from '../supplier-form/supplier.service';
+import { SupplierService } from '../../../../forms/supplier-form/supplier.service';
 import { Supplier } from 'src/app/models/supplierModel';
-import { DeliveryService } from './delivery-service.service';
+import { DeliveryService } from '../../delivery-service.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -6,8 +6,8 @@ import { UserGuard } from './auth/user.guard';
 import { InvoiceFormComponent } from './forms/invoice-form/invoice-form.component';
 import { SupplierFormComponent } from './forms/supplier-form/supplier-form.component';
 import { ProductFormComponent } from './forms/product-form/product-form.component';
-import { DeliveryComponent } from './forms/delivery/delivery.component';
-import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
+import { DeliveryComponent } from './components/delivery/pages/delivery/delivery.component';
+import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
 
 const routes: Routes = [
   {
