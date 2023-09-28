@@ -14,8 +14,8 @@ const invoiceSchema = new mongoose.Schema({
   products: [
     {
       _id: false,
-      productName: {
-        type: String,
+      product: {
+        type: mongoose.Types.ObjectId,
       },
       quantity: {
         type: Number,
@@ -23,7 +23,10 @@ const invoiceSchema = new mongoose.Schema({
       price: {
         type: Number,
       },
-      // type: mongoose.Types.ObjectId
+      size: {
+        type: String,
+        required: false
+      }
     },
   ],
   date: {

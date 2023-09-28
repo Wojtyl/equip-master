@@ -26,6 +26,7 @@ import { Button, ButtonModule } from 'primeng/button';
 import { MultiselectDropdownComponent } from './shared/multiselect-dropdown/multiselect-dropdown.component';
 import { AddProductComponent } from './components/invoices/components/add-product/add-product.component';
 import { ListboxModule } from 'primeng/listbox';
+import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
 
 
 
@@ -41,6 +42,7 @@ import { ListboxModule } from 'primeng/listbox';
     DeliveryComponent,
     MultiselectDropdownComponent,
     AddProductComponent,
+    DeliveryDetailsComponent,
   ],
   imports: [
     BrowserModule,

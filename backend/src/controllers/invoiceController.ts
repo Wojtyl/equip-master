@@ -1,4 +1,4 @@
-import * as generalController from "../controllers/generalController";
+import * as generalController from "./generalController";
 import { Invoice } from "../models/invoiceModel";
 
 export const getAllInvoices = generalController.getAll(Invoice);

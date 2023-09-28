@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { SupplierService } from '../supplier-form/supplier.service';
 import { Supplier } from 'src/app/models/supplierModel';
 import { DeliveryService } from './delivery-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delivery',
@@ -10,7 +11,11 @@ import { DeliveryService } from './delivery-service.service';
   styleUrls: ['./delivery.component.scss'],
 })
 export class DeliveryComponent implements OnInit {
-  constructor(private supplierService: SupplierService, private deliveryService: DeliveryService, private formBuilder: FormBuilder) {}
+  constructor(
+    private supplierService: SupplierService,
+    private deliveryService: DeliveryService,
+    private formBuilder: FormBuilder,
+    private router: Router) {}
 
   deliveryForm: FormGroup;
 
@@ -42,6 +47,9 @@ export class DeliveryComponent implements OnInit {
     });
   }
 
+  onContinue(id: string) {
+    this.router.navigate([`/delivery/${id}`]);
+  }
 
   onDelete(id: string):void {
     this.deliveryService.deleteDelivery(id).subscribe(() => {

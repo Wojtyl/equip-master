@@ -44,7 +44,7 @@
         <td>{{delivery.date}}</td>
         <td>{{delivery.description}}</td>
         <td>{{delivery.invoiceNumber}}</td>
-        <td><p-button label="Secondary" styleClass="p-button-secondary"></p-button>
+        <td><p-button label="Kontynuuj" styleClass="p-button-secondary" (onClick)="onContinue(delivery._id)"></p-button>
         </td>
       </tr>
     </tbody>

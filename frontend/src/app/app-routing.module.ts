@@ -7,6 +7,7 @@ import { InvoiceFormComponent } from './forms/invoice-form/invoice-form.componen
 import { SupplierFormComponent } from './forms/supplier-form/supplier-form.component';
 import { ProductFormComponent } from './forms/product-form/product-form.component';
 import { DeliveryComponent } from './forms/delivery/delivery.component';
+import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
 
 const routes: Routes = [
   {
@@ -36,8 +37,19 @@ const routes: Routes = [
   {
     path: 'delivery',
     component: DeliveryComponent,
+    children: [
+    ],
     canActivate: [UserGuard],
   },
+  {
+    path: 'delivery/:id',
+    component: DeliveryDetailsComponent,
+    canActivate: [UserGuard]
+  },
+  {
+    path: '**',
+    component: HomeComponent,
+  }
 ];
 
 @NgModule({

@@ -5,13 +5,13 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 // Routes
-import { supplierRouter } from "./routes/supplierRoute";
-import { deliveryRouter } from "./routes/deliveryRoute";
-import { invoiceRouter } from "./routes/invoiceRoute";
-import { authRouter } from "./routes/authRoute";
-import { productRouter } from "./routes/productRoute";
-import { categoryRouter } from "./routes/categoryRoute";
-import { errorController } from "./controllers/errorController";
+import { supplierRouter } from "./src/routes/supplierRoute";
+import { deliveryRouter } from "./src/routes/deliveryRoute";
+import { invoiceRouter } from "./src/routes/invoiceRoute";
+import { authRouter } from "./src/routes/authRoute";
+import { productRouter } from "./src/routes/productRoute";
+import { categoryRouter } from "./src/routes/categoryRoute";
+import { errorController } from "./src/controllers/errorController";
 
 dotenv.config({ path: "./.env" });
 
