@@ -1,6 +1,8 @@
 import * as generalController from "./generalController";
 import { Delivery } from "../models/deliveryModel";
 import { catchAsync } from "../utils/catchAsync";
+import { URequest } from "../interfaces/user-request";
+import { Response } from "express";
 
 export const deleteDelivery = generalController.deleteOne(Delivery);
 export const getDelivery = generalController.getOne(Delivery);
@@ -8,7 +10,7 @@ export const getDelivery = generalController.getOne(Delivery);
 
 
 const getAll = () =>
-catchAsync(async (req, res, next) => {
+catchAsync(async (req: URequest, res: Response, next) => {
 const query = { 'supplier.address': { $exists: false } };
   const data = await Delivery.find(query).populate('supplier', '_id name').select('-boxOnDelivery -statuses -__v');
   res.status(200).json({
@@ -18,7 +20,7 @@ const query = { 'supplier.address': { $exists: false } };
 });
 
 const createDeliveryService = () => 
-  catchAsync(async (req, res, next) => {
+  catchAsync(async (req: URequest , res: Response, next) => {
     const user = req.user;
     const status = {
       changedBy: user.id,
@@ -34,6 +36,14 @@ const createDeliveryService = () =>
     });
   })
 
+export const getDeliveryDetails = () => catchAsync(async (req: URequest, res: Response, next) => {
+  const data = await Delivery.findById(req.params.id);
+
+  res.status(200).json({
+    status: "success",
+    items: data,
+  });
+})
 
 export const createDelivery = createDeliveryService();
 

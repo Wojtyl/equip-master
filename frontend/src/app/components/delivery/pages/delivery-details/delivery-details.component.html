@@ -1,1 +1,4 @@
-<p>delivery-details works!</p>
+<table *ngIf="delivery.boxOnDelivery">
+  <tr ngIf *ngFor="let box of delivery.boxOnDelivery"></tr>
+</table>
+<h3 *ngIf="!delivery.boxOnDelivery.length">Nie ma pudeł!</h3>

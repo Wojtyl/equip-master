@@ -1,3 +1,4 @@
+import { RequestHandler, Request, Response } from "express";
 import { Supplier } from "../models/supplierModel";
 import { catchAsync } from "../utils/catchAsync";
 const getModelName = (Model) => Model.modelName.toLowerCase();
@@ -25,10 +26,9 @@ const getAll = (Model) =>
   });
 
 const getOne = (Model) =>
-  catchAsync(async (req, res, next) => {
+  catchAsync(async (req: Request, res: Response, next) => {
     const modelName = getModelName(Model);
     const data = await Model.findById(req.params.id);
-
     res.status(200).json({
       status: "success",
       [modelName]: data,
