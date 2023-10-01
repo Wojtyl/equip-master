@@ -5,12 +5,12 @@ import * as authController from "../controllers/authController";
 
 boxRouter
   .route("/")
-  // .get(authController.auth, boxController.getAllBoxes)
+  .get(authController.auth, boxController.getAllBoxes())
   .post(authController.auth, boxController.createBox);
 
 boxRouter
   .route("/:id")
   .get(authController.auth, boxController.getBox())
-  // .delete(authController.auth, deliveryController.deleteDelivery)
+  .delete(authController.auth, boxController.deleteBox())
 
 export { boxRouter };

@@ -1,35 +1,47 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
+import { IProductInvoice } from "../interfaces/product-invoice";
 
-const invoiceSchema = new mongoose.Schema({
+interface IInvoice {
+  deliveryId: Types.ObjectId,
+  invoiceNumber: string,
+  createdAt: Date,
+  supplierId: Types.ObjectId,
+  products: IProductInvoice[],
+  nettoPrice: Number,
+}
+
+const invoiceSchema = new mongoose.Schema<IInvoice>({
   deliveryId: {
-    type: mongoose.Types.ObjectId,
+    type: Schema.Types.ObjectId,
   },
   invoiceNumber: {
     type: String,
     required: [true, "Invoice must have a number"],
   },
   supplierId: {
-    type: mongoose.Types.ObjectId,
+    type: Schema.Types.ObjectId,
   },
   products: [
     {
       _id: false,
-      product: {
-        type: mongoose.Types.ObjectId,
+      name: {
+        type: String,
+      },
+      productId: {
+        type: String
       },
       quantity: {
-        type: Number,
-      },
-      price: {
-        type: Number,
+        type: Number
       },
       size: {
-        type: String,
-        required: false
+        type: String
+      },
+      color: {
+        type: String
       }
     },
   ],
-  date: {
+  createdAt: {
     type: Date,
     required: [true, "Invoice must have a date"],
   },

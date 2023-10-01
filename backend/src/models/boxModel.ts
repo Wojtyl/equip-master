@@ -1,12 +1,22 @@
-import mongoose from "mongoose";
-const boxSchema = new mongoose.Schema(
+import mongoose, { Schema, Types } from "mongoose";
+import { IProductBox } from "../interfaces/product-box";
+
+interface IBox {
+  createdAt: Date,
+  createdBy: Types.ObjectId,
+  boxNumber: number,
+  deliveryId: Types.ObjectId,
+  products: IProductBox[],
+}
+
+const boxSchema = new mongoose.Schema<IBox>(
   {
     createdAt: {
       type: Date,
       default: Date.now()
     },
     createdBy: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: [true, 'Box must have creator']
     },
     boxNumber: {
@@ -14,18 +24,19 @@ const boxSchema = new mongoose.Schema(
       unique: true
     },
     deliveryId: {
-      type: mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: [true, 'Box must have a Delivery ID!']
     },
-    productsInBox: [{
+    products: [{
+      _id: false,
       name: {
         type: String,
       },
-      productIndex: {
-        type: String
-      },
       productId: {
         type: String
+      },
+      quantity: {
+        type: Number
       },
       size: {
         type: String

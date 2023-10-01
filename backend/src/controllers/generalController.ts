@@ -9,7 +9,7 @@ const createOne = (Model) =>
     console.log(user);
     const modelName = getModelName(Model);
     const newModel = await Model.create({ ...req.body, createdBy: user.id });
-    res.status(200).json({
+    res.status(201).json({
       status: "success",
       [modelName]: newModel,
     });
