@@ -3,6 +3,8 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import multer from "multer";
+import { uploadFile } from "./src/utils/multerConfig"
 
 // Routes
 import { supplierRouter } from "./src/routes/supplierRoute";

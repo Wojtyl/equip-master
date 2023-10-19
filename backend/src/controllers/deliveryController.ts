@@ -37,7 +37,7 @@ const createDeliveryService = () =>
   })
 
 export const getDeliveryDetails = () => catchAsync(async (req: URequest, res: Response, next) => {
-  const data = await Delivery.findById(req.params.id);
+  const data = await Delivery.findById(req.params.id)
 
   res.status(200).json({
     status: "success",

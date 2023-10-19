@@ -21,6 +21,9 @@ const handleJWTExpiredError = () =>
   new AppError("Your token has expired. Please log in again", 401);
 
 const sendErrorDev = (err, req, res) => {
+
+  if (err.statusCode === 11000) err.statusCode = 409;
+
   if (req.originalUrl.startsWith("/api")) {
     if (err.message.includes("duplicate key")) {
       err.message = "Key duplication! Please use different value";

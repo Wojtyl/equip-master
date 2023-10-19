@@ -4,7 +4,7 @@ import { IProductInvoice } from "../interfaces/product-invoice";
 interface IInvoice {
   deliveryId: Types.ObjectId,
   invoiceNumber: string,
-  createdAt: Date,
+  date: Date,
   supplierId: Types.ObjectId,
   products: IProductInvoice[],
   nettoPrice: Number,
@@ -41,7 +41,7 @@ const invoiceSchema = new mongoose.Schema<IInvoice>({
       }
     },
   ],
-  createdAt: {
+  date: {
     type: Date,
     required: [true, "Invoice must have a date"],
   },
