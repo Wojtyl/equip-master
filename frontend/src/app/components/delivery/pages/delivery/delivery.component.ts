@@ -24,7 +24,7 @@ export class DeliveryComponent implements OnInit {
   deliveries: IDeliveryList[] = [];
 
   ngOnInit(): void {
-    this.deliveryService.getAllDieliveries().subscribe(resData => {this.deliveries = resData.items; console.log(resData)})
+    this.deliveryService.getAllDieliveries().subscribe(resData => {this.deliveries = resData.items; console.log(resData.items)})
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe((resData) => {
       this.suppliers = resData.supplier;

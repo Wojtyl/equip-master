@@ -37,12 +37,12 @@
       <button type="button" (click)="addProductsFormInit()">+</button>
     </div>
     <div *ngIf="!selectedSupplier">
-      <h2>Wybierz dostawcę aby dodać produkty do faktury</h2>
+      <h2>Wybierz dostawcę aby dodać produkty do faktury</h2>
     </div>
     <div *ngIf="selectedSupplier && selectedSupplier.products.length === 0">
       <h2 class="mt-2">Wybrany dostawca nie posiada zadnych produktow. Kliknij tutaj aby dodać produkt</h2>
     </div>
-    <app-add-product  *ngIf="isAdding && selectedSupplier.products.length" [formGroup]="products" [products]="selectedSupplier.products" (onAddProduct)="addProduct()"> 0"></app-add-product>
+    <app-add-product *ngIf="isAdding && selectedSupplier.products.length" [formGroup]="productsGroup" [products]="selectedSupplier.products" (onAddProduct)="addProduct()"> 0"></app-add-product>
     <div formArrayName="products">
       <div
         *ngFor="let product of getProductsControls(); let i = index"

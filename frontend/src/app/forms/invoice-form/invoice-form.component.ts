@@ -19,7 +19,7 @@ export class InvoiceFormComponent implements OnInit {
 
   isAdding = false;
 
-  products: FormGroup;
+  productsGroup: FormGroup;
 
   selectedSupplier: Supplier;
 
@@ -49,22 +49,16 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   onSubmit() {
-    const values = this.getAllInvoiceValues();
-    values.products.forEach((_, i) => values.products[i].product = values.products[i].product._id);
-    this.invoiceService.addInvoice(values).subscribe((res) => console.log(res));
+    this.invoiceService.addInvoice(this.getAllInvoiceValues()).subscribe();
   }
 
   addProductsFormInit() {
-    if(this.isAdding === false){
-      this.initAddProductForm();
-    } else {
-      this.isAdding = false;
-    }
+    this.isAdding ? this.isAdding = false : this.initAddProductForm();
   }
 
   initAddProductForm() {
     this.isAdding = true;
-      this.products = this.formBuilder.group({
+      this.productsGroup = this.formBuilder.group({
         product: null,
         quantity: null,
         price: null,
@@ -72,13 +66,12 @@ export class InvoiceFormComponent implements OnInit {
       });
   }
 
-
   getProductsControls() {
     return (<FormArray>this.invoiceForm.get('products')).controls;
   }
 
   addProduct() {
-    const control = new FormControl(this.products.value);
+    const control = new FormControl(this.productsGroup.value);
     (<FormArray>this.invoiceForm.get('products')).push(control);
   }
 
@@ -88,7 +81,18 @@ export class InvoiceFormComponent implements OnInit {
       supplierId: this.invoiceForm.get('supplier')?.value._id,
       date: this.invoiceForm.get('invoiceDate')!.value,
       nettoPrice: this.invoiceForm.get('nettoPrice')?.value,
-      products: this.invoiceForm.get('products')!.value,
+      products: this.mapProducts(),
     };
+  }
+
+  mapProducts() {
+    return this.invoiceForm.get('products')?.value.map((prod, i) => {
+      return {
+        productId: prod.product._id,
+        quantity: prod.quantity,
+        price: prod.price,
+        size: prod.size
+      };
+    })
   }
 }
