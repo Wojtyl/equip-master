@@ -1,11 +1,9 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators} from '@angular/forms';
 import { InvoiceService } from './invoice.service';
-import { invoiceProducts } from 'src/app/models/invoiceProductsModel';
 import { SupplierService } from '../supplier-form/supplier.service';
 import { ProductService } from '../product-form/product.service';
 import { Supplier } from 'src/app/models/supplierModel';
-import { Product } from 'src/app/models/productModel';
 
 @Component({
   selector: 'app-invoice-form',
@@ -22,6 +20,14 @@ export class InvoiceFormComponent implements OnInit {
   productsGroup: FormGroup;
 
   selectedSupplier: Supplier;
+
+  invoiceTotalPrice = 0;
+
+  isEditingControl = -1;
+
+  editingFormGroup: UntypedFormGroup;
+
+  productAdded = false;
 
   invoices: any[];
 
@@ -67,11 +73,14 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   getProductsControls() {
-    return (<FormArray>this.invoiceForm.get('products')).controls;
+    return (<FormArray>this.invoiceForm.get('products')).controls as FormControl[];
   }
 
   addProduct() {
+    const { price, quantity } = this.productsGroup.value;
     const control = new FormControl(this.productsGroup.value);
+    this.invoiceTotalPrice += price * quantity;
+    this.productAdded = true;
     (<FormArray>this.invoiceForm.get('products')).push(control);
   }
 
@@ -85,8 +94,33 @@ export class InvoiceFormComponent implements OnInit {
     };
   }
 
+  editControl(control, i) {
+    const { quantity, price } = control.getRawValue();
+    this.editingFormGroup = this.formBuilder.group({
+      quantity,
+      price
+    })
+    this.isEditingControl = i;
+  }
+
+  updateControl(control: FormControl) {
+    const oldValues = control.getRawValue();
+    const { quantity: newQ, price: newP } = this.editingFormGroup.getRawValue();
+    this.invoiceTotalPrice += (newQ * newP) - (oldValues.quantity * oldValues.price);
+    control.patchValue({
+      ...oldValues,
+      price: newP,
+      quantity: newQ
+    })
+    this.isEditingControl = -1;
+  }
+
+  cancelEdit() {
+    this.isEditingControl = -1;
+  }
+
   mapProducts() {
-    return this.invoiceForm.get('products')?.value.map((prod, i) => {
+    return this.invoiceForm.get('products')?.value.map((prod) => {
       return {
         productId: prod.product._id,
         quantity: prod.quantity,
