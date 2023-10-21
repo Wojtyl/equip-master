@@ -29,6 +29,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
 import { DeliveryAddBoxComponent } from './components/delivery/components/delivery-add-box/delivery-add-box.component';
 import { DeliveryBoxTableComponent } from './components/delivery/components/delivery-box-table/delivery-box-table.component';
+import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
 
 
 
@@ -47,6 +48,7 @@ import { DeliveryBoxTableComponent } from './components/delivery/components/deli
     DeliveryDetailsComponent,
     DeliveryAddBoxComponent,
     DeliveryBoxTableComponent,
+    SvgIconComponent,
   ],
   imports: [
     BrowserModule,
