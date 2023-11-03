@@ -45,6 +45,10 @@
           <input type="text" id="country" pInputText formControlName="country" />
         </div>
       </div>
+      <div>
+        <label for="colors">Kolory produktów</label>
+        <p-chips [addOnBlur]="true" [addOnTab]="true" formControlName="productColors"></p-chips>
+      </div>
       <p-button
         (click)="onSubmit()"
         class="mt-3"

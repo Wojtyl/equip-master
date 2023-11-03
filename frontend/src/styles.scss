@@ -242,7 +242,7 @@
 //}
 
 input {
-  @apply border-solid border-1;
+  @apply border-solid border-1 w-full py-2 px-3 rounded-xl;
 }
 //
 //.p-button-secondary {

@@ -2,10 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Supplier } from 'src/app/models/supplierModel';
 import { apiUrl } from 'src/assets/apiurl';
+import { Observable } from "rxjs";
+import { Invoice } from "../../components/invoices/models/invoice-model";
 
 interface AllSuppliersResponse {
   status: string;
   supplier: Supplier[];
+}
+
+interface SupplierInvoicesResponse {
+  status: string;
+  invoices: Invoice[];
 }
 
 @Injectable({
@@ -18,9 +25,11 @@ export class SupplierService {
     return this.http.post(`${apiUrl}suppliers`, data);
   }
 
-  getSupplierById(id: string) {}
-
   getAllSuppliers() {
     return this.http.get<AllSuppliersResponse>(`${apiUrl}suppliers`);
+  }
+
+  getSupplierInvoices(supplierId: string): Observable<SupplierInvoicesResponse> {
+    return this.http.get<SupplierInvoicesResponse>(`${apiUrl}suppliers/${supplierId}/invoices`)
   }
 }

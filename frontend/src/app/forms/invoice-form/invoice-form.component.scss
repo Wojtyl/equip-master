@@ -6,6 +6,22 @@ label {
   @apply mt-4 mb-1;
 }
 
+table {
+  @apply mt-10;
+}
+
+th {
+  @apply px-4 py-2;
+}
+
 td {
-  text-align: center;
+  @apply px-4 py-2;
+}
+
+td, th {
+  @apply text-start;
+}
+
+.collapse {
+  //transform: rotate(90deg);
 }

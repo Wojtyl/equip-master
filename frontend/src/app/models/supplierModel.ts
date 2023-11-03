@@ -15,6 +15,7 @@ export interface Supplier {
   descrption: string;
   active: boolean;
   addedAt: Date;
+  productColors: string[];
   createdBy: string;
   products: Product[];
 }

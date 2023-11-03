@@ -5,6 +5,7 @@ import { Supplier } from 'src/app/models/supplierModel';
 import { DeliveryService } from '../../delivery-service.service';
 import { Router } from '@angular/router';
 import { IDeliveryList } from '../../models/delivery-list-model';
+import { Invoice } from "../../../invoices/models/invoice-model";
 
 @Component({
   selector: 'app-delivery',
@@ -22,13 +23,26 @@ export class DeliveryComponent implements OnInit {
 
   suppliers: Supplier[];
   deliveries: IDeliveryList[] = [];
+  supplierInvoices: Invoice[];
 
   ngOnInit(): void {
-    this.deliveryService.getAllDieliveries().subscribe(resData => {this.deliveries = resData.items; console.log(resData.items)})
+    this.deliveryService.getAllDieliveries().subscribe(resData => {
+      this.deliveries = resData.items;
+    })
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe((resData) => {
       this.suppliers = resData.supplier;
+
+      this.supplierService.getSupplierInvoices(this.suppliers[0]._id).subscribe(data => {
+        this.supplierInvoices = data.invoices;
+      })
     });
+
+    this.deliveryForm.get('supplier')?.valueChanges.subscribe((supplier: Supplier) => {
+      this.supplierService.getSupplierInvoices(supplier._id).subscribe(data => {
+        this.supplierInvoices = data.invoices;
+      })
+    })
   }
 
   initForm() {

@@ -28,6 +28,7 @@ export class SupplierFormComponent implements OnInit {
         state: '',
         country: '',
       }),
+      productColors: ''
     });
   }
 

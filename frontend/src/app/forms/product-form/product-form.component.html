@@ -37,18 +37,17 @@
       </div>
       <div class="flex flex-col col-span-2">
         <label for="color">Kolor</label>
-        <input type="text" id="color" pInputText formControlName="color" />
+        <p-listbox [options]="productColors" [metaKeySelection]="false" [multiple]="true"
+                   formControlName="color" optionValue="name" optionLabel="name" [style]="{ width: '15rem' }"
+                   [listStyle]="{'max-height': '220px'}">
+        </p-listbox>
       </div>
       <div class="flex flex-col w-auto mb-2">
         <label for="category">Kategoria</label>
-        <!-- <p-multiSelect
-          formControlName="category"
-          [options]="categories"
-          defaultLabel="Wybierz kategorie"
-          display="chip"
-          optionLabel="name"
-        ></p-multiSelect> -->
-        <p-dropdown formControlName="category" [options]="categories" optionLabel="Wybierz kategorie" [editable]="true" optionLabel="name"></p-dropdown>
+        <p-listbox [options]="categories" [metaKeySelection]="false" [multiple]="true"
+                   formControlName="category" optionLabel="name" [style]="{ width: '20rem' }"
+                   [listStyle]="{'max-height': '220px'}">
+        </p-listbox>
       </div>
       <p-button
         (click)="onSubmit()"

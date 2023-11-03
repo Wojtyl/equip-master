@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject, filter } from 'rxjs';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { SupplierService } from '../supplier-form/supplier.service';
 import { ProductService } from './product.service';
 import { Product } from 'src/app/models/productModel';
 import { CategoryService } from 'src/app/core/category.service';
 import { ICategory } from 'src/app/models/categoryModel';
+import { Supplier } from "../../models/supplierModel";
 
 @Component({
   selector: 'app-product-form',
@@ -15,19 +15,17 @@ import { ICategory } from 'src/app/models/categoryModel';
 export class ProductFormComponent implements OnInit {
   productForm: FormGroup;
 
-  categoriesForm: FormGroup;
-
-  suppliers: any[] = [];
+  suppliers: Supplier[] = [];
 
   products: Product[] = [];
 
-  selectedSupplier: any[];
+  selectedSupplier: Supplier;
 
   filteredSuppliers: any[];
 
-  categories: ICategory[] = []
+  productColors: any;
 
-  selectedCities: any;
+  categories: ICategory[] = []
 
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService, private productService: ProductService, private categoryService: CategoryService) {}
 
@@ -72,25 +70,23 @@ export class ProductFormComponent implements OnInit {
   }
 
   findSuppliers(event: any) {
-    let filtered: any[] = [];
-    let query = event.query;
+    const filtered: any[] = [];
+    const query = event.query;
     for (let i = 0; i < this.suppliers.length; i++) {
-      let supplier = this.suppliers[i];
+      const supplier = this.suppliers[i];
       if (supplier.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        console.log(this.filteredSuppliers);
         filtered.push(supplier);
       }
     }
-
     this.filteredSuppliers = filtered;
   }
 
   onSelect(event: any) {
     this.selectedSupplier = event;
+    this.productColors = this.selectedSupplier.productColors.map(el => {return {name: el}});
   }
 
   onSubmit() {
-
     const data = {
       name: this.productForm.get('name')?.value,
       productIndex: this.productForm.get('index')?.value,
@@ -101,7 +97,6 @@ export class ProductFormComponent implements OnInit {
         colour: this.productForm.get('color')?.value
       }
     }
-
     this.productService.addProduct(data).subscribe();
   }
 }

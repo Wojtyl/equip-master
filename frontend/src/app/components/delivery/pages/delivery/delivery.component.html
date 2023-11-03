@@ -2,13 +2,13 @@
   <form
     [formGroup]="deliveryForm"
     class="flex flex-col bg-slate-100 p-4"
-    (ngSubmit)="onSubmit()"
   >
     <label for="supplier">Dostawca</label>
     <p-dropdown
       formControlName="supplier"
       [options]="suppliers"
       optionLabel="name"
+      [filter]="true"
     ></p-dropdown>
     <label for="date">Data</label>
     <input type="date" id="date" formControlName="date">
@@ -20,9 +20,15 @@
       formControlName="description"
     />
     <label for="invoiceNumber">Numer Faktury</label>
-    <input type="text" id="invoiceNumber" formControlName="invoiceNumber" />
+    <p-dropdown
+      formControlName="invoiceNumber"
+      [options]="supplierInvoices"
+      optionLabel="invoiceNumber"
+      optionValue="invoiceNumber"
+      [filter]="true"
+    ></p-dropdown>
 
-    <button type="submit">Submit</button>
+    <button type="button" (click)="onSubmit()">Submit</button>
   </form>
 
   <h1>Deliveries</h1>
