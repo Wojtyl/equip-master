@@ -1,11 +1,28 @@
-import { Supplier } from "../models/supplierModel";
-import * as generalController from "./generalController";
+import {Supplier} from "../models/supplierModel";
+import {Invoice} from "../models/invoiceModel";
+import {catchAsync} from "../utils/catchAsync";
+import {NextFunction, Request, Response} from "express";
 
-export const getAllSuppliers = generalController.getAll(Supplier);
-export const getSupplier = generalController.getOne(Supplier);
-export const createSupplier = generalController.createOne(Supplier);
-export const updateSupplier = generalController.updateOne(Supplier);
-export const deleteSupplier = generalController.deleteOne(Supplier);
-export const deleteAllSuppliers = generalController.deleteAll(Supplier);
+export const findSupplierWithProducts = () => catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const supplier = await Supplier.aggregate([
+        {
+            $lookup: {
+                from: 'products',
+                localField: '_id',
+                foreignField: 'supplierId',
+                as: 'products'
+            }
+        }
+    ]);
 
-export const findSupplierWithproducts = generalController.withProducts();
+    res.status(200).json({
+        status: 'success',
+        supplier: supplier});
+})
+export const findSupplierInvoices = () => catchAsync(async (req: Request, res: Response) => {
+    const invoices = await Invoice.find({supplierId: {$eq: req.params.id}})
+    res.status(200).json({
+        status: 'success',
+        invoices
+    })
+})

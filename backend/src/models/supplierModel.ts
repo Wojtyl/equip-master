@@ -34,6 +34,9 @@ const supplierSchema = new mongoose.Schema({
       required: [true, "Please provide supplier address"],
     },
   },
+  productColors: [{
+    type: String
+  }],
   active: {
     type: Boolean,
     default: true,

@@ -1,8 +1,7 @@
 import * as generalController from "./generalController";
-import { Product } from "../models/productModel";
+import { IProduct, Product } from "../models/productModel";
 import { catchAsync } from "../utils/catchAsync";
 
-export const createProduct = generalController.createOne(Product);
 export const getProduct = generalController.getOne(Product);
 export const getAllProducts = generalController.getAll(Product);
 export const updateProduct = generalController.updateOne(Product);
@@ -18,5 +17,34 @@ const x = () => catchAsync(async (req, res, next) => {
     products,
   });
 })
+
+const createCustomProduct = () => catchAsync(async (req, res, next) => {
+  let products = [];
+  const data = {...req.body as IProduct};
+
+  if (req.body.attributes?.colour?.length > 1) {
+    for (const colour of req.body.attributes.colour) {
+      data.name += ' ' + colour;
+      data.productIndex += ' ' + colour
+      data.attributes.colour = colour;
+      const newProduct = new Product({...data, createdBy: req.user.id})
+      // @ts-ignore
+      products.push(newProduct);
+    }
+  } else {
+    if (data.attributes.colour) {
+      data.attributes.colour = data.attributes?.colour[0];
+    }
+    // @ts-ignore
+    products.push(new Product({...req.body, createdBy: req.user.id}))
+  }
+  await Product.create(...products)
+  res.status(201).json({
+    status: "success",
+    products,
+  });
+})
+
+export const createProduct = createCustomProduct();
 
 export const getSupplierProducts = x();

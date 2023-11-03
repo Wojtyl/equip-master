@@ -19,6 +19,7 @@ const query = { 'supplier.address': { $exists: false } };
   });
 });
 
+//TODO: Delivery should have invoice ID so that supplier invoices will be sent only those one that don't have any delivery yet
 const createDeliveryService = () => 
   catchAsync(async (req: URequest , res: Response, next) => {
     const user = req.user;

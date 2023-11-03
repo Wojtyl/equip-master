@@ -15,6 +15,7 @@ import { productRouter } from "./src/routes/productRoute";
 import { categoryRouter } from "./src/routes/categoryRoute";
 import { errorController } from "./src/controllers/errorController";
 import { boxRouter } from './src/routes/boxRoute'
+import { colorRouter } from "./src/routes/colorRoute";
 
 dotenv.config({ path: "./.env" });
 
@@ -43,6 +44,7 @@ class ServerApp {
     app.use("/api/v1/products", productRouter);
     app.use("/api/v1/invoices", invoiceRouter);
     app.use("/api/v1/categories", categoryRouter);
+    app.use("/api/v1/colors", colorRouter);
     app.use("/api/v1/boxes", boxRouter);
 
 

@@ -2,16 +2,17 @@ import mongoose, { Model, Types, Schema } from "mongoose";
 
 interface attributes {
   size: string[];
-  color: string[];
+  colour: string;
 }
 
-interface IProduct {
+export interface IProduct {
   name: string;
   productIndex: string;
   attributes: attributes;
   category: string;
   supplierId: Types.ObjectId;
   createdAt: Date;
+  createdBy: Types.ObjectId;
 }
 
 interface IProductMethods {
@@ -61,6 +62,12 @@ const productSchema = new mongoose.Schema<
     type: Date,
     default: Date.now(),
   },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }
+}, {
+  versionKey: false,
 });
 
 productSchema.index({ productIndex: 1 }, { unique: true });

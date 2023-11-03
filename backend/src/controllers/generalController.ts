@@ -1,12 +1,10 @@
-import { RequestHandler, Request, Response } from "express";
-import { Supplier } from "../models/supplierModel";
+import { Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync";
 const getModelName = (Model) => Model.modelName.toLowerCase();
 
 const createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const user = req.user;
-    console.log(user);
     const modelName = getModelName(Model);
     const newModel = await Model.create({ ...req.body, createdBy: user.id });
     res.status(201).json({
@@ -73,21 +71,4 @@ const deleteAll = (Model) =>
     });
   });
 
-const withProducts = () => catchAsync(async (req, res, next) => {
-    const supplier = await Supplier.aggregate([
-      {
-        $lookup: {
-          from: 'products',
-          localField: '_id',
-          foreignField: 'supplierId',
-          as: 'products'
-        }
-      }
-    ]);
-  
-    res.status(200).json({
-      status: 'success',
-      supplier: supplier});
-})
-
-export { deleteAll, deleteOne, updateOne, getOne, getAll, createOne, withProducts };
+export { deleteAll, deleteOne, updateOne, getOne, getAll, createOne };
