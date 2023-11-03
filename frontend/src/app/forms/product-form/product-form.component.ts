@@ -98,6 +98,5 @@ export class ProductFormComponent implements OnInit {
       }
     }
     this.productService.addProduct(data).subscribe();
-    console.log('test');
   }
 }
