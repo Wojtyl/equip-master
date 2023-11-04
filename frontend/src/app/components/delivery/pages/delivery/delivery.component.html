@@ -19,12 +19,11 @@
       id="description"
       formControlName="description"
     />
-    <label for="invoiceNumber">Numer Faktury</label>
+    <label for="invoiceId">Numer Faktury</label>
     <p-dropdown
-      formControlName="invoiceNumber"
+      formControlName="invoiceId"
       [options]="supplierInvoices"
       optionLabel="invoiceNumber"
-      optionValue="invoiceNumber"
       [filter]="true"
     ></p-dropdown>
 
