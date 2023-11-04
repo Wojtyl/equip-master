@@ -1,26 +1,27 @@
 import e from "express";
-
 import * as supplierController from "../controllers/supplierController";
 import * as authController from "../controllers/authController";
 import * as generalController from "../controllers/generalController";
-import {Supplier} from "../models/supplierModel";
+import { Supplier } from "../models/supplierModel";
 
 const supplierRouter = e.Router();
 
 supplierRouter
   .route("/")
-  .get(authController.auth, supplierController.findSupplierWithProducts())
-  .post(authController.auth, generalController.getOne(Supplier))
-  .delete(authController.auth, generalController.deleteAll(Supplier));
+    .all(authController.auth)
+    .get(supplierController.findSupplierWithProducts())
+    .post(generalController.getOne(Supplier))
+    .delete(generalController.deleteAll(Supplier));
 
 supplierRouter
   .route("/:id")
-  .get(generalController.getOne(Supplier))
-  .patch(generalController.updateOne(Supplier))
-  .delete(generalController.deleteOne(Supplier));
+    .all(authController.auth)
+    .get(generalController.getOne(Supplier))
+    .patch(generalController.updateOne(Supplier))
+    .delete(generalController.deleteOne(Supplier));
 
 supplierRouter
     .route("/:id/invoices")
-    .get(supplierController.findSupplierInvoices())
+      .get(supplierController.findSupplierInvoices())
 
 export { supplierRouter };

@@ -1,7 +1,7 @@
 import e from "express";
-const deliveryRouter = e.Router();
 import * as deliveryController from "../controllers/deliveryController";
 import * as authController from "../controllers/authController";
+const deliveryRouter = e.Router();
 
 deliveryRouter
   .route("/")
