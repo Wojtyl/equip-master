@@ -8,6 +8,7 @@ import { SupplierFormComponent } from './forms/supplier-form/supplier-form.compo
 import { ProductFormComponent } from './forms/product-form/product-form.component';
 import { DeliveryComponent } from './components/delivery/pages/delivery/delivery.component';
 import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
+import { BoxDetailsComponent } from "./components/delivery/pages/box-details/box-details.component";
 
 const routes: Routes = [
   {
@@ -44,7 +45,14 @@ const routes: Routes = [
   {
     path: 'delivery/:id',
     component: DeliveryDetailsComponent,
+    children: [
+
+    ],
     canActivate: [UserGuard]
+  },
+  {
+    path: 'box/:id',
+    component: BoxDetailsComponent
   },
   {
     path: '**',

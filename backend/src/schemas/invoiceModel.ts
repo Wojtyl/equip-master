@@ -28,7 +28,7 @@ const invoiceSchema = new mongoose.Schema<IInvoice>({
         type: String,
       },
       productId: {
-        type: String
+        type: Schema.Types.ObjectId
       },
       quantity: {
         type: Number

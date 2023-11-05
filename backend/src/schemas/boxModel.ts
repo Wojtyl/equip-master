@@ -5,6 +5,7 @@ interface IBox {
   createdAt: Date,
   createdBy: Types.ObjectId,
   boxNumber: number,
+  boxCounted: boolean,
   deliveryId: Types.ObjectId,
   products: IProductBox[],
 }
@@ -23,6 +24,10 @@ const boxSchema = new mongoose.Schema<IBox>(
       type: Number,
       unique: true
     },
+    boxCounted: {
+      type: Boolean,
+      default: false
+    },
     deliveryId: {
       type: Schema.Types.ObjectId,
       required: [true, 'Box must have a Delivery ID!']
@@ -39,9 +44,6 @@ const boxSchema = new mongoose.Schema<IBox>(
         type: Number
       },
       size: {
-        type: String
-      },
-      color: {
         type: String
       }
     }]

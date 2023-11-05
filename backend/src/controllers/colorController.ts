@@ -1,5 +1,5 @@
 import * as generalController from "./generalController";
-import { Color } from "../models/colorModel";
+import { Color } from "../schemas/colorModel";
 
 export const createDelivery = generalController.createOne(Color);
 export const deleteDelivery = generalController.deleteOne(Color);

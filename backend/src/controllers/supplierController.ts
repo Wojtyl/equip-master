@@ -1,5 +1,5 @@
-import { Supplier } from "../models/supplierModel";
-import { Invoice } from "../models/invoiceModel";
+import { Supplier } from "../schemas/supplierModel";
+import { Invoice } from "../schemas/invoiceModel";
 import { catchAsync } from "../utils/catchAsync";
 import { Request, Response } from "express";
 import { Types } from "mongoose";

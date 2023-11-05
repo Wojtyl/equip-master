@@ -1,16 +1,19 @@
 import * as generalController from "./generalController";
-import { Delivery } from "../models/deliveryModel";
+import { Delivery } from "../schemas/deliveryModel";
 import { catchAsync } from "../utils/catchAsync";
 import { URequest } from "../interfaces/user-request";
 import { Response } from "express";
+import { DeliveryService } from "../services/deliveryService";
 
 export const deleteDelivery = generalController.deleteOne(Delivery);
 export const getDelivery = generalController.getOne(Delivery);
 // export const getAllDeliveries = generalController.getAll(Delivery);
 
+const deliveryService = new DeliveryService();
+
 
 const getAll = () =>
-catchAsync(async (req: URequest, res: Response, next) => {
+catchAsync(async (req: URequest, res: Response) => {
 const query = { 'supplier.address': { $exists: false } };
   const data = await Delivery.find(query).populate('supplier', '_id name').select('-boxOnDelivery -statuses -__v');
   res.status(200).json({
@@ -21,7 +24,7 @@ const query = { 'supplier.address': { $exists: false } };
 
 //TODO: Delivery should have invoice ID so that supplier invoices will be sent only those one that don't have any delivery yet
 const createDeliveryService = () => 
-  catchAsync(async (req: URequest , res: Response, next) => {
+  catchAsync(async (req: URequest , res: Response) => {
     const user = req.user;
     const status = {
       changedBy: user.id,
@@ -37,9 +40,8 @@ const createDeliveryService = () =>
     });
   })
 
-export const getDeliveryDetails = () => catchAsync(async (req: URequest, res: Response, next) => {
-  const data = await Delivery.findById(req.params.id)
-
+export const getDeliveryDetails = () => catchAsync(async (req: URequest, res: Response) => {
+  const data = await deliveryService.getDeliveryBoxes(req.params.id);
   res.status(200).json({
     status: "success",
     items: data,

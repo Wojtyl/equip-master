@@ -1,4 +1,4 @@
-import { ISupplier } from "../../suppliers/models/supplier-model"
+import { ISupplier } from "./supplier-model"
 import { IBoxPreview } from "./box-model";
 
 export interface IDeliveryDetails {
@@ -8,7 +8,11 @@ export interface IDeliveryDetails {
   invoiceNumber: string,
   isClosed: boolean,
   supplier: ISupplier,
-  createdBy: string,
+  createdBy: {
+    _id: string,
+    email: string,
+    name: string
+  },
   status: string,
   description: string,
   statuses: {

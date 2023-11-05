@@ -1,5 +1,5 @@
 import * as generalController from "./generalController";
-import { IProduct, Product } from "../models/productModel";
+import { IProduct, Product } from "../schemas/productModel";
 import { catchAsync } from "../utils/catchAsync";
 
 export const getProduct = generalController.getOne(Product);

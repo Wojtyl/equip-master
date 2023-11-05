@@ -30,6 +30,7 @@ import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-d
 import { DeliveryAddBoxComponent } from './components/delivery/components/delivery-add-box/delivery-add-box.component';
 import { DeliveryBoxTableComponent } from './components/delivery/components/delivery-box-table/delivery-box-table.component';
 import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
+import { BoxDetailsComponent } from './components/delivery/pages/box-details/box-details.component';
 
 
 
@@ -49,6 +50,7 @@ import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
     DeliveryAddBoxComponent,
     DeliveryBoxTableComponent,
     SvgIconComponent,
+    BoxDetailsComponent,
   ],
   imports: [
     BrowserModule,

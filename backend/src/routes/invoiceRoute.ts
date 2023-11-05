@@ -15,4 +15,8 @@ invoiceRouter
   .patch(invoiceController.updateInvoice)
   .delete(invoiceController.deleteInvoice);
 
+invoiceRouter
+    .route("/:id/products")
+    .get(invoiceController.getInvoiceProducts())
+
 export { invoiceRouter };

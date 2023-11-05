@@ -1,5 +1,5 @@
 import * as generalController from "./generalController";
-import { Category } from "../models/categoryModel";
+import { Category } from "../schemas/categoryModel";
 
 export const createDelivery = generalController.createOne(Category);
 export const deleteDelivery = generalController.deleteOne(Category);

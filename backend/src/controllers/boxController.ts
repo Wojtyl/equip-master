@@ -1,5 +1,5 @@
 import * as generalController from "./generalController";
-import { Box } from "../models/boxModel";
+import { Box } from "../schemas/boxModel";
 import { catchAsync } from "../utils/catchAsync";
 import mongoose from "mongoose";
 import { URequest } from "../interfaces/user-request";
