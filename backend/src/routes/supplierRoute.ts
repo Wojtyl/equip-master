@@ -24,4 +24,8 @@ supplierRouter
     .route("/:id/invoices")
       .get(supplierController.findSupplierInvoices())
 
+supplierRouter
+    .route("/:id/products")
+    .get(supplierController.findSupplierProducts())
+
 export { supplierRouter };
