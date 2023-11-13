@@ -1,5 +1,3 @@
-import { Product } from "../../../models/productModel";
-
 interface IBox {
   _id: string,
   createdAt: string,
@@ -17,5 +15,12 @@ export interface IBoxPreview extends IBox {
 }
 
 export interface IBoxDetails extends IBox {
-  products: Product[]
+  products: {
+    productId: string,
+    productIndex: string,
+    name: string,
+    quantity: number,
+    size: string,
+    _id: string
+  }[]
 }

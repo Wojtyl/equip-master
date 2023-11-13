@@ -36,12 +36,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   addBox() {
     this.boxService.addBoxToDelivery(this.deliveryId).subscribe(data => {
-      console.log(data);
+      this.delivery = data.items;
     })
   }
 
   deleteBox(boxId: string) {
-    this.boxService.deleteBox(boxId).subscribe();
+    this.boxService.deleteBox(boxId)
+      .subscribe(delivery => this.delivery = delivery.items);
   }
 
   openBox(id: string) {

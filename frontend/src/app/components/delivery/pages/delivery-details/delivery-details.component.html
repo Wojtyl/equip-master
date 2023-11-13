@@ -9,11 +9,11 @@
   </thead>
   <tbody>
   <tr *ngFor="let box of delivery.deliveryBoxes">
-    <td (click)="deleteBox(box._id)">{{box.boxNumber}}</td>
+    <td>{{box.boxNumber}}</td>
     <td>{{box.productsQuantity}}</td>
     <td>{{box.createdBy.name}}</td>
     <td>{{box.boxCounted ? 'TAK' : 'NIE'}}</td>
-    <td><app-svg-icon icon="delete_icon"></app-svg-icon></td>
+    <td><app-svg-icon icon="delete_icon" (click)="deleteBox(box._id)"></app-svg-icon></td>
     <td><app-svg-icon icon="expand_icon" (click)="openBox(box._id)"></app-svg-icon></td>
   </tr>
   </tbody>

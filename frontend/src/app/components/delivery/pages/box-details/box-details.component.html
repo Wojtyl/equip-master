@@ -1,7 +1,33 @@
-<h1>Pudło numer: {{box.boxNumber}}</h1>
-
-<h3>Dodaj produkty</h3>
-<form>
-
-</form>
-
+<div *ngIf="boxDetails">
+  <h1>Pudło numer: {{boxDetails.boxNumber}}</h1>
+  <table>
+    <thead></thead>
+    <tbody>
+    <tr *ngFor="let product of boxDetails.products">
+      <td>{{product.productIndex}}</td>
+      <td>{{product.name}}</td>
+      <td>{{product.size}}</td>
+      <td>{{product.quantity}}</td>
+      <td><app-svg-icon icon="delete_icon" (click)="removeProduct(product._id)"></app-svg-icon></td>
+    </tr>
+    </tbody>
+  </table>
+  <h3 class="font-bold">Dodaj produkty</h3>
+  <form
+    [formGroup]="addProductForm"
+    class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit">
+    <div class="flex flex-col col-span-2">
+      <label for="product">Produkt</label>
+      <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="_id" formControlName="productId" [filter]="true"></p-dropdown>
+    </div>
+    <div class="flex flex-col col-span-2">
+      <label  for="quantity">Ilość</label>
+      <input pInputText type="number" id="quantity" formControlName="quantity"/>
+    </div>
+    <div class="flex flex-col" *ngIf="selectedProduct?.attributes?.size">
+      <label for="size">Rozmiar</label>
+      <p-listbox id="size" [options]="selectedProduct.attributes.size" formControlName="size"></p-listbox>
+    </div>
+    <p-button class="mt-3" (onClick)="onSubmit()" label="Wyślij" styleClass="p-button-secondary"></p-button>
+  </form>
+</div>

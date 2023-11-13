@@ -19,4 +19,8 @@ productRouter
 .route("/bySupplier/:id")
 .get(authController.auth, productController.getSupplierProducts)
 
+productRouter
+    .route("/byBox/:id")
+    .get(authController.auth, productController.getProductsByBox())
+
 export { productRouter };
