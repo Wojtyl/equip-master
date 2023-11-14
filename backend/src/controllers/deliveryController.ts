@@ -2,15 +2,21 @@ import * as generalController from "./generalController";
 import { Delivery } from "../schemas/deliveryModel";
 import { catchAsync } from "../utils/catchAsync";
 import { URequest } from "../interfaces/user-request";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { DeliveryService } from "../services/deliveryService";
 
-export const deleteDelivery = generalController.deleteOne(Delivery);
 export const getDelivery = generalController.getOne(Delivery);
-// export const getAllDeliveries = generalController.getAll(Delivery);
 
 const deliveryService = new DeliveryService();
 
+export const deleteDelivery = () => catchAsync(async (req: Request, res: Response) => {
+    const deletedDelivery = await Delivery.findByIdAndDelete(req.params.id);
+    await deliveryService.deleteAllBoxesFromDelivery(deletedDelivery!._id.toString());
+
+    res.status(200).json({
+        status: 'success',
+    })
+})
 
 const getAll = () =>
 catchAsync(async (req: URequest, res: Response) => {

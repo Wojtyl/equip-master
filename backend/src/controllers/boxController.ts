@@ -58,11 +58,13 @@ export class BoxController {
     })
 
     deleteBox = () => catchAsync(async (req: URequest, res: Response, next: NextFunction) => {
-        const x = await Box.findByIdAndDelete({ _id: req.params.id });
-        if (x) {
+        const deletedBox = await Box.findByIdAndDelete({ _id: req.params.id });
+
+        if (deletedBox) {
+        await boxService.deleteBoxFromDelivery(deletedBox.deliveryId.toString(), deletedBox._id.toString());
             res.status(200).json({
                 status: 'success',
-                items: await deliveryService.getDeliveryBoxes(x.deliveryId.toString())
+                items: await deliveryService.getDeliveryBoxes(deletedBox.deliveryId.toString())
             })
         } else {
             next(new AppError('Box not found', 404))

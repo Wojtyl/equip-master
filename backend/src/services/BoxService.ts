@@ -1,5 +1,6 @@
 import { Box } from "../schemas/boxModel";
 import { Types } from "mongoose";
+import { Delivery } from "../schemas/deliveryModel";
 
 export class BoxService {
     constructor() {
@@ -61,6 +62,10 @@ export class BoxService {
 
     public findBoxWithProductQuantity() {
 
+    }
+
+    public async deleteBoxFromDelivery(deliveryId: string, boxId: string) {
+        return Delivery.updateOne({_id: deliveryId}, {$pull: {boxOnDelivery: new Types.ObjectId(boxId)}})
     }
 
     private getProductField(field) {

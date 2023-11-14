@@ -1,6 +1,7 @@
 import { Delivery } from '../schemas/deliveryModel'
 import { Types } from "mongoose";
 import { IDeliveryDetails } from "../models/delivery-details-model";
+import { Box } from "../schemas/boxModel";
 
 export class DeliveryService {
 
@@ -59,5 +60,8 @@ export class DeliveryService {
         ])).then(data => data[0]);
     }
 
+    public async deleteAllBoxesFromDelivery(deliveryId: string) {
+        return Box.deleteMany({deliveryId: deliveryId});
+    }
 }
 
