@@ -5,6 +5,7 @@ const deliverySchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  //TODO: Probably to get rid of this field - make more atomic approach and refer to boxes from box deliveryId
   boxOnDelivery: [
     {
       type: mongoose.Types.ObjectId,

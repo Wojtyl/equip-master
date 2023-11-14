@@ -1,4 +1,25 @@
-<table *ngIf="delivery.boxOnDelivery">
-  <tr ngIf *ngFor="let box of delivery.boxOnDelivery"></tr>
+<table *ngIf="delivery && delivery.deliveryBoxes.length > 0">
+  <thead>
+    <tr>
+      <th>Numer</th>
+      <th>Liczba produktów</th>
+      <th>Stworzone przez</th>
+      <th>Policzone</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let box of delivery.deliveryBoxes">
+    <td>{{box.boxNumber}}</td>
+    <td>{{box.productsQuantity}}</td>
+    <td>{{box.createdBy.name}}</td>
+    <td>{{box.boxCounted ? 'TAK' : 'NIE'}}</td>
+    <td><app-svg-icon icon="delete_icon" (click)="deleteBox(box._id)"></app-svg-icon></td>
+    <td><app-svg-icon icon="expand_icon" (click)="openBox(box._id)"></app-svg-icon></td>
+  </tr>
+  </tbody>
+
 </table>
-<h3 *ngIf="!delivery.boxOnDelivery.length">Nie ma pudeł!</h3>
+<h3 *ngIf="delivery && delivery.deliveryBoxes.length === 0">Nie ma pudeł!</h3>
+
+<button (click)="addBox()">Nowe pudło</button>
+

@@ -4,6 +4,7 @@ import { Supplier } from 'src/app/models/supplierModel';
 import { apiUrl } from 'src/assets/apiurl';
 import { Observable } from "rxjs";
 import { Invoice } from "../../components/invoices/models/invoice-model";
+import { Product } from "../../models/productModel";
 
 interface AllSuppliersResponse {
   status: string;
@@ -31,5 +32,9 @@ export class SupplierService {
 
   getSupplierInvoices(supplierId: string): Observable<SupplierInvoicesResponse> {
     return this.http.get<SupplierInvoicesResponse>(`${apiUrl}suppliers/${supplierId}/invoices`)
+  }
+
+  getSupplierProducts(supplierId: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${apiUrl}suppliers/${supplierId}/products`);
   }
 }

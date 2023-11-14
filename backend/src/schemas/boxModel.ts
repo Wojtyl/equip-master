@@ -5,6 +5,7 @@ interface IBox {
   createdAt: Date,
   createdBy: Types.ObjectId,
   boxNumber: number,
+  boxCounted: boolean,
   deliveryId: Types.ObjectId,
   products: IProductBox[],
 }
@@ -23,25 +24,25 @@ const boxSchema = new mongoose.Schema<IBox>(
       type: Number,
       unique: true
     },
+    boxCounted: {
+      type: Boolean,
+      default: false
+    },
     deliveryId: {
-      type: Schema.Types.ObjectId,
-      required: [true, 'Box must have a Delivery ID!']
+        type: Schema.Types.ObjectId,
+        ref: 'Delivery',
+        required: [true, 'Box must have a Delivery ID!']
     },
     products: [{
-      _id: false,
-      name: {
-        type: String,
-      },
+      // _id: false,
       productId: {
-        type: String
+        type: mongoose.Types.ObjectId,
+          ref: 'Product'
       },
       quantity: {
         type: Number
       },
       size: {
-        type: String
-      },
-      color: {
         type: String
       }
     }]
@@ -62,7 +63,7 @@ boxSchema.pre('save', async function (next) {
     const delivery = await mongoose.model('Delivery').findById(this.deliveryId);
 
     if (delivery) {
-      delivery.boxOnDelivery.push(this._id);
+      delivery.boxOnDelivery.push(this._id.toString());
       await delivery.save();
     }
 

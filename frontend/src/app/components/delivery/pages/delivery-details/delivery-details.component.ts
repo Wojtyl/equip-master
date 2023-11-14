@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IDeliveryDetails } from '../../models/delivery-details-model';
 import { DeliveryService } from '../../delivery-service.service';
 import { Subscription, take, tap } from 'rxjs';
+import { BoxService } from "../../box.service";
 
 @Component({
   selector: 'app-delivery-details',
@@ -14,7 +15,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   delivery: IDeliveryDetails;
   subscriptions = new Subscription()
 
-  constructor(private activeRoute: ActivatedRoute, private deliveryService: DeliveryService) {}
+  constructor(private activeRoute: ActivatedRoute,
+              private deliveryService: DeliveryService,
+              private boxService: BoxService,
+              private router: Router
+  ) {}
 
 
   ngOnInit(): void {
@@ -27,5 +32,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  addBox() {
+    this.boxService.addBoxToDelivery(this.deliveryId).subscribe(data => {
+      this.delivery = data.items;
+    })
+  }
+
+  deleteBox(boxId: string) {
+    this.boxService.deleteBox(boxId)
+      .subscribe(delivery => this.delivery = delivery.items);
+  }
+
+  openBox(id: string) {
+    this.router.navigate(['box',id])
   }
 }

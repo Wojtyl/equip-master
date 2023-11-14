@@ -1,6 +1,22 @@
 import * as generalController from "./generalController";
-import { IProduct, Product } from "../models/productModel";
+import { IProduct, Product } from "../schemas/productModel";
 import { catchAsync } from "../utils/catchAsync";
+import { Delivery } from "../schemas/deliveryModel";
+import { Request, Response } from "express";
+import { SupplierService } from "../services/SupplierService";
+
+const supplierService = new SupplierService();
+export const getProductsByBox = () => catchAsync(async (req: Request, res: Response) => {
+    const delivery = await Delivery
+        .findOne({boxOnDelivery: { $in: req.params.id }})
+        .select('supplier');
+    const supplierId = delivery!.supplier!.toString();
+    const supplierProducts = await supplierService.getSupplierProducts(supplierId);
+  res.status(200).json({
+    status: 'success',
+    items: supplierProducts
+  });
+})
 
 export const getProduct = generalController.getOne(Product);
 export const getAllProducts = generalController.getAll(Product);

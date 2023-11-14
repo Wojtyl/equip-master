@@ -2,7 +2,7 @@ import e from "express";
 import * as supplierController from "../controllers/supplierController";
 import * as authController from "../controllers/authController";
 import * as generalController from "../controllers/generalController";
-import { Supplier } from "../models/supplierModel";
+import { Supplier } from "../schemas/supplierModel";
 
 const supplierRouter = e.Router();
 
@@ -23,5 +23,9 @@ supplierRouter
 supplierRouter
     .route("/:id/invoices")
       .get(supplierController.findSupplierInvoices())
+
+supplierRouter
+    .route("/:id/products")
+    .get(supplierController.findSupplierProducts())
 
 export { supplierRouter };

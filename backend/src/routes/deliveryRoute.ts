@@ -11,6 +11,6 @@ deliveryRouter
 deliveryRouter
   .route("/:id")
   .get(authController.auth, deliveryController.getDeliveryDetails())
-  .delete(authController.auth, deliveryController.deleteDelivery)
+  .delete(authController.auth, deliveryController.deleteDelivery())
 
 export { deliveryRouter };
