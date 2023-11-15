@@ -20,8 +20,11 @@ export const deleteDelivery = () => catchAsync(async (req: Request, res: Respons
 
 const getAll = () =>
 catchAsync(async (req: URequest, res: Response) => {
-const query = { 'supplier.address': { $exists: false } };
-  const data = await Delivery.find(query).populate('supplier', '_id name').select('-boxOnDelivery -statuses -__v');
+  const data = await Delivery.find()
+      .populate('supplier', '_id name')
+      .populate('invoice', '_id invoiceNumber')
+      .select('-statuses -__v');
+
   res.status(200).json({
     status: 'success',
     items: data

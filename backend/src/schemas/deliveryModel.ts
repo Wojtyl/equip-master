@@ -12,8 +12,9 @@ const deliverySchema = new mongoose.Schema({
       ref: "Box",
     },
   ],
-  invoiceId: {
+  invoice: {
     type: mongoose.Types.ObjectId,
+    ref: 'Invoice',
     required: [true, "Delivery must have an invoice"],
   },
   isClosed: {

@@ -45,7 +45,7 @@ export const findSupplierInvoices = () => catchAsync(async (req: Request, res: R
             $lookup: {
                 from: 'deliveries',
                 localField: '_id',
-                foreignField: 'invoiceId',
+                foreignField: 'invoice',
                 as: "deliveries"
             }
         },

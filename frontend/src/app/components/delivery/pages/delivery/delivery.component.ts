@@ -50,7 +50,7 @@ export class DeliveryComponent implements OnInit {
       supplier: '',
       date: '',
       description: '',
-      invoiceId: '',
+      invoice: '',
     });
   }
 
