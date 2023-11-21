@@ -244,6 +244,15 @@
 input {
   @apply border-solid border-1 w-full py-2 px-3 rounded-xl;
 }
+
+h1 {
+  @apply text-2xl
+}
+
+//Tables
+th {
+  text-align: start;
+}
 //
 //.p-button-secondary {
 //  background-color: $rose-700 !important;
