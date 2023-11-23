@@ -1,5 +1,6 @@
 import mongoose, { Model } from "mongoose";
 import bcrypt from "bcryptjs/dist/bcrypt";
+import { Roles } from "../enums/roles-enum";
 
 interface IUser {
   name: string;
@@ -52,8 +53,8 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
   },
   role: {
     type: String,
-    enum: ["ADMIN", "USER"],
-    default: "USER",
+    enum: Roles,
+    default: Roles.User,
   },
   signupDate: {
     type: Date,

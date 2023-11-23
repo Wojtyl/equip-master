@@ -9,6 +9,7 @@ import { ProductFormComponent } from './forms/product-form/product-form.componen
 import { DeliveryComponent } from './components/delivery/pages/delivery/delivery.component';
 import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
 import { BoxDetailsComponent } from "./components/delivery/pages/box-details/box-details.component";
+import { roleGuard } from "./core/guards/role.guard";
 
 const routes: Routes = [
   {
@@ -28,7 +29,10 @@ const routes: Routes = [
   {
     path: 'suppliers',
     component: SupplierFormComponent,
-    canActivate: [UserGuard],
+    canActivate: [UserGuard, roleGuard],
+    data: {
+      allowedRole: 'ADMIN'
+    }
   },
   {
     path: 'products',
