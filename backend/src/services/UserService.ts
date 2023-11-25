@@ -4,11 +4,18 @@ import { AppError } from "../utils/appError";
 export class UserService {
 
     public async findUserByIdOrThrow(userId: string) {
-        const user = await User.findById(userId);
-        if (user) {
-            return user;
-        } else {
-            throw new AppError("User not found", 404);
-        }
+        return User.findOne({_id: userId})
+            .orFail(this.throwUserNotFound());
+    }
+
+    public async findUserByIdAndUpdate(userId: string, toUpdate: any) {
+        return User.findByIdAndUpdate(userId, toUpdate, {
+            new: true,
+            runValidators: true
+        }).orFail(this.throwUserNotFound());
+    }
+
+    private throwUserNotFound() {
+        return new AppError("User not found", 404);
     }
 }

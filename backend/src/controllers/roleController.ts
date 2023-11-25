@@ -18,25 +18,14 @@ export const getCurrentUserRole = () => catchAsync(async (req: URequest, res: Re
 })
 
 export const getUserRoleById = () => catchAsync(async (req: URequest, res: Response, next: NextFunction) => {
-    try {
-        const user = await userService.findUserByIdOrThrow(req.params.id);
-        res.status(200).json({
-            username: user.name,
-            role: user.role
-        })
-    } catch (err) {
-        next(err)
-    }
+    const user = await userService.findUserByIdOrThrow(req.params.id);
+    res.status(200).json({
+        username: user.name,
+        role: user.role
+    })
 })
 
 export const updateUserRole = () => catchAsync(async (req: URequest, res: Response, next: NextFunction) => {
-    try {
-        const user = await User.findByIdAndUpdate(req.user.id, { role: req.body.role }, {
-            new: true,
-            runValidators: true
-        });
+        const user = await userService.findUserByIdAndUpdate(req.params.id, { role: req.body.role})
         res.status(200).json(user);
-    } catch (err) {
-        next(err)
-    }
 })
