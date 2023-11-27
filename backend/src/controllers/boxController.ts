@@ -17,7 +17,7 @@ const deliveryService = new DeliveryService();
 export class BoxController {
     createBox = () => catchAsync(async (req: URequest, res: Response) => {
         const box = await Box.create({ ...req.body, createdBy: req.user.id });
-        await boxService.addBoxStatus(BoxStatus.New, req.user.id, 'Created box', box);
+        await boxService.changeBoxStatus(BoxStatus.New, req.user.id, 'Created box', box);
         const deliveryDetails = await deliveryService.getDeliveryBoxes(req.body.deliveryId)
         res.status(200).json({
             status: 200,
@@ -32,13 +32,7 @@ export class BoxController {
         const product = await Product.findById(req.body.productId)
             .orFail(new AppError('Product with that ID does not exists', 404));
         const updateMessage = `Added ${req.body.quantity}x ${product.name} ${req.body.size ? `in size ${req.body.size}` : ''}`
-        if (box.reopened || box.closed) {
-            if (!box.reopened) await box.updateOne({reopened: true});
-            if (box.closed) await box.updateOne({closed: false});
-            await boxService.addBoxStatus(BoxStatus.Reopened, req.user.id, updateMessage, box)
-        } else {
-            await boxService.addBoxStatus(BoxStatus.InProgress, req.user.id, updateMessage, box)
-        }
+        await boxService.changeBoxStatus(BoxStatus.InProgress, req.user.id, updateMessage, box)
         const updatedBox: IBox = await boxService.findBoxWithProductDetails(req.params.id)
         res.status(200).json({
             items: updatedBox,
@@ -51,13 +45,7 @@ export class BoxController {
             .findByIdAndUpdate(req.params.id, { $pull: { products: { _id: req.body.productElementId } } }, {new: true, runValidators: true})
             .orFail(new AppError('Box not found', 404));
         const statusMessage = 'Deleted from box'
-        if (box.reopened || box.closed) {
-            if (!box.reopened) await box.updateOne({reopened: true});
-            if (box.closed) await box.updateOne({closed: false});
-            await boxService.addBoxStatus(BoxStatus.Reopened, req.user.id, statusMessage, box);
-        } else {
-            await boxService.addBoxStatus(BoxStatus.InProgress, req.user.id, statusMessage, box);
-        }
+        await boxService.changeBoxStatus(BoxStatus.InProgress, req.user.id, statusMessage, box);
         const updatedBox = await boxService.findBoxWithProductDetails(req.params.id);
         res.status(200).json({
             status: 'success',
@@ -93,7 +81,7 @@ export class BoxController {
     closeBox = () => catchAsync(async (req: URequest, res: Response) => {
         const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id);
         await box.updateOne({closed: true});
-        await boxService.addBoxStatus(BoxStatus.Closed, req.user.id, 'Box closed', box);
+        await boxService.changeBoxStatus(BoxStatus.Closed, req.user.id, 'Box closed', box);
         res.status(200).json(
             {
                 status: 'success',

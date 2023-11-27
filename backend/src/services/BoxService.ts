@@ -2,6 +2,7 @@ import { Box, IBox } from "../schemas/boxModel";
 import { HydratedDocument, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
 import { AppError } from "../utils/appError";
+import { BoxStatus } from "../enums/box-status-enum";
 
 export class BoxService {
     constructor() {
@@ -116,7 +117,13 @@ export class BoxService {
         };
     }
 
-    public async addBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<IBox>) {
+    public async changeBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<IBox>) {
+        //TODO: To check if reopened and closed status should be updated in this service
+        if (status === BoxStatus.InProgress && (box.reopened || box.closed)) {
+            if (!box.reopened) await box.updateOne({reopened: true});
+            if (box.closed) await box.updateOne({closed: false});
+            status = BoxStatus.Reopened
+        }
         return box.updateOne({$push: {statuses: {status, changedBy, message, date: Date.now()}}}, {new: true, runValidators: true})
     }
 }
