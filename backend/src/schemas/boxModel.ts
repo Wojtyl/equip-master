@@ -6,9 +6,10 @@ export interface IBox {
     createdAt: Date,
     createdBy: Types.ObjectId,
     boxNumber: number,
-    boxCounted: boolean,
+    closed: boolean,
     deliveryId: Types.ObjectId,
     products: IProductBox[],
+    reopened: boolean,
     statuses: {
         changedBy: mongoose.Types.ObjectId,
         status: string,
@@ -31,7 +32,7 @@ const boxSchema = new mongoose.Schema<IBox>(
             type: Number,
             unique: true
         },
-        boxCounted: {
+        closed: {
             type: Boolean,
             default: false
         },
@@ -53,6 +54,10 @@ const boxSchema = new mongoose.Schema<IBox>(
                 type: String
             }
         }],
+        reopened: {
+            type: Boolean,
+            default: false
+        },
         statuses: [{
             changedBy: {
                 type: mongoose.Types.ObjectId

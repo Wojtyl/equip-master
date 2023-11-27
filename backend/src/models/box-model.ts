@@ -22,13 +22,18 @@ interface IBox {
       type: String
     }
   }],
-  boxCounted: {
+  closed: {
     type: Boolean
+    default: false
   },
   deliveryId: {
     type: mongoose.Types.ObjectId,
     ref: 'Delivery'
   },
+  reopened: {
+    type: Boolean,
+    default: false
+  }
   boxNumber: {
     type: Number
   },

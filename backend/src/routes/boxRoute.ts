@@ -17,6 +17,10 @@ boxRouter
     .delete(authController.auth, boxController.deleteBox());
 
 boxRouter
+    .route('/:id/close')
+    .post(authController.auth, boxController.closeBox())
+
+boxRouter
     .route("/:id/removeProduct")
     .patch(authController.auth, boxController.removeProductFromBox())
 

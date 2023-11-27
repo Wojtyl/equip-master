@@ -8,10 +8,11 @@ interface IBox {
     email: string,
     name: string
   },
-  boxCounted: boolean,
+  closed: boolean,
   deliveryId: string,
   boxNumber: number,
-  statuses: IBoxStatus
+  statuses: IBoxStatus[],
+  reopened: boolean
 }
 export interface IBoxPreview extends IBox {
   productsQuantity: number

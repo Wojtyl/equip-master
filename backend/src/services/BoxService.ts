@@ -1,6 +1,7 @@
 import { Box, IBox } from "../schemas/boxModel";
 import { HydratedDocument, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
+import { AppError } from "../utils/appError";
 
 export class BoxService {
     constructor() {
@@ -70,7 +71,15 @@ export class BoxService {
                 }
             }
         ]);
-        return box[0];
+        if (box.length > 0) {
+            return box[0];
+        } else {
+            throw new AppError('Box not found', 404)
+        }
+    }
+
+    public async findBoxByIdOrThrow (boxId: string) {
+        return Box.findById(boxId).orFail(new AppError('Box with that ID not found', 404))
     }
 
     public findBoxWithProductQuantity() {
@@ -108,6 +117,6 @@ export class BoxService {
     }
 
     public async addBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<IBox>) {
-        return box.updateOne({$push: {statuses: {status, changedBy, message}}}, {new: true, runValidators: true})
+        return box.updateOne({$push: {statuses: {status, changedBy, message, date: Date.now()}}}, {new: true, runValidators: true})
     }
 }
