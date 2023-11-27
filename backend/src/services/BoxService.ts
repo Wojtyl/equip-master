@@ -1,5 +1,5 @@
-import { Box } from "../schemas/boxModel";
-import { Types } from "mongoose";
+import { Box, IBox } from "../schemas/boxModel";
+import { HydratedDocument, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
 
 export class BoxService {
@@ -51,7 +51,20 @@ export class BoxService {
                         }
                     }
                 }
-            }, {
+            },
+            {
+              $set: {
+                  statuses: {
+                      $sortArray: {
+                          input: '$statuses',
+                          sortBy: {
+                              date: -1
+                          }
+                      }
+                  }
+              }
+            },
+            {
                 $project: {
                     productsDetails: 0
                 }
@@ -92,5 +105,9 @@ export class BoxService {
                 0
             ]
         };
+    }
+
+    public async addBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<IBox>) {
+        return box.updateOne({$push: {statuses: {status, changedBy, message}}}, {new: true, runValidators: true})
     }
 }
