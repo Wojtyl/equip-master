@@ -9,7 +9,8 @@ export interface IDeliveryDetails {
     _id: string,
     invoiceNumber: string
   },
-  isClosed: boolean,
+  closed: boolean,
+  reopened: boolean,
   supplier: ISupplier,
   createdBy: string,
   status: string,
@@ -18,5 +19,6 @@ export interface IDeliveryDetails {
     changedBy: string,
     status: string,
     date: Date
+    message: string
   }[]
 }

@@ -21,5 +21,9 @@
 </table>
 <h3 *ngIf="delivery && delivery.deliveryBoxes.length === 0">Nie ma pudeł!</h3>
 
-<button (click)="addBox()">Nowe pudło</button>
+<div>
+  <button *ngIf="!delivery.closed" (click)="addBox()">Nowe pudło</button>
+  <button *ngIf="!delivery.closed && deliveryFinishable" (click)="finishDelivery()">Zakończ dostawę</button>
+  <button *ngIf="delivery.closed" (click)="reopenDelivery()">Otwórz ponownie</button>
+</div>
 

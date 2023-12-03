@@ -9,6 +9,7 @@ import { DeliveryService } from "../services/deliveryService";
 import { AppError } from "../utils/appError";
 import { Product } from "../schemas/productModel";
 import { BoxStatus } from "../enums/box-status-enum";
+import { Delivery } from "../schemas/deliveryModel";
 
 const boxService = new BoxService();
 const deliveryService = new DeliveryService();
@@ -69,17 +70,20 @@ export class BoxController {
     })
 
     deleteBox = () => catchAsync(async (req: URequest, res: Response, next: NextFunction) => {
-        const deletedBox = await Box.findByIdAndDelete({ _id: req.params.id })
-            .orFail(new AppError('Box not found', 404));
-        await boxService.deleteBoxFromDelivery(deletedBox.deliveryId.toString(), deletedBox._id.toString());
+        const box = await Box.findById(req.params.id).orFail(new AppError('Box not found', 404));
+        const delivery = await Delivery.findById(box.deliveryId).orFail(new AppError('Delivery with that ID not found!', 404));
+        if (delivery.closed) throw new AppError('You can\'t delete box if delivery is already closed!', 403);
+        box.deleteOne();
+        await boxService.deleteBoxFromDelivery(box.deliveryId.toString(), box._id.toString());
         res.status(200).json({
             status: 'success',
-            items: await deliveryService.getDeliveryBoxes(deletedBox.deliveryId.toString())
+            items: await deliveryService.getDeliveryBoxes(box.deliveryId.toString())
         })
     })
 
     closeBox = () => catchAsync(async (req: URequest, res: Response) => {
         const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id);
+        if (box.products.length === 0) throw new AppError('You can\'t close empty box!', 403);
         await box.updateOne({closed: true});
         await boxService.changeBoxStatus(BoxStatus.Closed, req.user.id, 'Box closed', box);
         res.status(200).json(

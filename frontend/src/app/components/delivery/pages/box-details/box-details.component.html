@@ -7,7 +7,7 @@
   <p class="text-center">{{boxDetails.statuses[0].status}}</p>
   <div class="flex justify-center items-center gap-4 p-5 w-1/2 mx-auto mb-5">
     <button class="rounded-[0.5rem] h-1/2" (click)="getSelectedProduct()">Dodaj produkt</button>
-    <button class="rounded-[0.5rem] h-1/2" (click)="closeBox()">Zamknij pudło</button>
+    <button *ngIf="!boxDetails.closed" class="rounded-[0.5rem] h-1/2" (click)="closeBox()">Zamknij pudło</button>
   </div>
   <div  class="flex" [formGroup]="addProductForm">
     <p-dropdown id="product" class="w-20" [options]="products" optionLabel="name" optionValue="_id" formControlName="productId"

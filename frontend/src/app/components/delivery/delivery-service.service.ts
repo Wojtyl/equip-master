@@ -29,4 +29,11 @@ export class DeliveryService {
     return this.http.get<ListResponse<IDeliveryDetails>>(`${apiUrl}deliveries/${id}`);
   }
 
+  finishDelivery(deliveryId: string) {
+    return this.http.post(`${apiUrl}deliveries/${deliveryId}/close`, {});
+  }
+
+  reopenDelivery(deliveryId: string) {
+    return this.http.post(`${apiUrl}deliveries/${deliveryId}/reopen`, {})
+  }
 }

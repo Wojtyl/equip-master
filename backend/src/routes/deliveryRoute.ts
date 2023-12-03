@@ -13,4 +13,12 @@ deliveryRouter
   .get(authController.auth, deliveryController.getDeliveryDetails())
   .delete(authController.auth, deliveryController.deleteDelivery())
 
+deliveryRouter
+    .route("/:id/close")
+    .post(authController.auth, deliveryController.closeDelivery());
+
+deliveryRouter
+    .route("/:id/reopen")
+    .post(authController.auth, deliveryController.reopenDelivery());
+
 export { deliveryRouter };

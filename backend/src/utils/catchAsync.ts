@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 function catchAsync(fn) {
   return (req: Request, res: Response, next: NextFunction) => {
-    fn(req, res, next).catch((err) => next(new AppError(err.message, err.code)));
+    fn(req, res, next).catch((err) => next(new AppError(err.message, err.statusCode)));
   };
 }
 

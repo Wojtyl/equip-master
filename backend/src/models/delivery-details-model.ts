@@ -1,23 +1,22 @@
 import { ISupplier } from "./supplier-model"
 import { IBoxPreview } from "./box-model";
+import { DeliveryStatus } from "../enums/delivery-status-enum";
 
 export interface IDeliveryDetails {
   _id: string,
   date: Date,
   deliveryBoxes: IBoxPreview[];
   invoiceNumber: string,
-  isClosed: boolean,
+  closed: boolean,
+  reopened: boolean,
   supplier: ISupplier,
-  createdBy: {
-    _id: string,
-    email: string,
-    name: string
-  },
-  status: string,
+  createdBy: string,
+  status: DeliveryStatus,
   description: string,
   statuses: {
     changedBy: string,
-    status: string,
-    date: Date
+    status: DeliveryStatus,
+    date: Date,
+    message: string
   }[]
 }

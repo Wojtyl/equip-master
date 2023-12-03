@@ -68,7 +68,7 @@ const boxSchema = new mongoose.Schema<IBox>(
             },
             date: {
                 type: Date,
-                default: new Date()
+                default: Date.now()
             },
             message: {
                 type: String,
