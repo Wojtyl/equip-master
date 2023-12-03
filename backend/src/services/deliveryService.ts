@@ -10,7 +10,7 @@ import { DeliveryStatus } from "../enums/delivery-status-enum";
 export class DeliveryService {
     private roleService: RoleService = new RoleService();
 
-    async findDeliveryByIdOrThrow(id: string) {
+    async findDeliveryByIdOrThrow(id: string | Types.ObjectId) {
         return Delivery.findById(id).orFail(new AppError('Delivery with that ID not found!', 404));
     }
 

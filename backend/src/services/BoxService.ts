@@ -79,12 +79,8 @@ export class BoxService {
         }
     }
 
-    public async findBoxByIdOrThrow (boxId: string) {
-        return Box.findById(boxId).orFail(new AppError('Box with that ID not found', 404))
-    }
-
-    public findBoxWithProductQuantity() {
-
+    public async findBoxByIdOrThrow (boxId: string | Types.ObjectId) {
+        return Box.findById(boxId).orFail(new AppError('Box with that ID not found', 404));
     }
 
     public async deleteBoxFromDelivery(deliveryId: string, boxId: string) {

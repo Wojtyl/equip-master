@@ -27,9 +27,10 @@ export class BoxController {
     })
 
     addProductToBox = () => catchAsync(async (req: URequest, res: Response) => {
-        const box: HydratedDocument<IBox> = await Box
-            .findOneAndUpdate({ _id: { $eq: new Types.ObjectId(req.params.id) } }, { $push: { products: req.body } }, { new: true })
-            .orFail(new AppError('Box not found', 404));
+        const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id);
+        const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);
+        if (delivery.closed) throw new AppError('You can\'t add products to box when delivery is already closed', 405);
+        await box.updateOne({ $push: { products: req.body } }, { new: true })
         const product = await Product.findById(req.body.productId)
             .orFail(new AppError('Product with that ID does not exists', 404));
         const updateMessage = `Added ${req.body.quantity}x ${product.name} ${req.body.size ? `in size ${req.body.size}` : ''}`
@@ -42,9 +43,10 @@ export class BoxController {
     })
 
     removeProductFromBox = () => catchAsync(async (req: URequest, res: Response) => {
-        const box: HydratedDocument<IBox> = await Box
-            .findByIdAndUpdate(req.params.id, { $pull: { products: { _id: req.body.productElementId } } }, {new: true, runValidators: true})
-            .orFail(new AppError('Box not found', 404));
+        const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id)
+        const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);
+        if (delivery.closed) throw new AppError('You cannot remove items from box when delivery is already closed', 405);
+        await box.updateOne({ $pull: { products: { _id: req.body.productElementId } } }, {new: true, runValidators: true});
         const statusMessage = 'Deleted from box'
         await boxService.changeBoxStatus(BoxStatus.InProgress, req.user.id, statusMessage, box);
         const updatedBox = await boxService.findBoxWithProductDetails(req.params.id);
@@ -54,7 +56,7 @@ export class BoxController {
         })
     })
 
-    getBox = () => catchAsync(async (req: URequest, res: Response, next: NextFunction) => {
+    getBoxWithProductDetails = () => catchAsync(async (req: URequest, res: Response, next: NextFunction) => {
         const box = await boxService.findBoxWithProductDetails(req.params.id);
         res.status(200).json({
             status: 'success',
