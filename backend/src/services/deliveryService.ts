@@ -6,11 +6,13 @@ import { RoleService } from "./RoleService";
 import { URequest } from "../interfaces/user-request";
 import { AppError } from "../utils/appError";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
+import { IDeliveryWithProducts } from "../models/delivery-with-products-model";
+import { ProductsQuantityMap } from "../controllers/deliveryController";
 
 export class DeliveryService {
     private roleService: RoleService = new RoleService();
 
-    async findDeliveryByIdOrThrow(id: string | Types.ObjectId) {
+    async findDeliveryByIdOrThrow(id: string | Types.ObjectId, options?) {
         return Delivery.findById(id).orFail(new AppError('Delivery with that ID not found!', 404));
     }
 
@@ -72,6 +74,154 @@ export class DeliveryService {
         });
     }
 
+    public async getDeliveryAllBoxesWithProductDetails(deliveryId: string): Promise<IDeliveryWithProducts> {
+        return Delivery.aggregate([
+            {
+                $match: {
+                    _id: {
+                        $eq: new Types.ObjectId(deliveryId)
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'boxes',
+                    localField: 'boxOnDelivery',
+                    foreignField: '_id',
+                    as: 'boxDetails',
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'products',
+                                localField: 'products.productId',
+                                foreignField: '_id',
+                                as: 'productsDetails',
+                                pipeline: [{
+                                    $addFields: {
+                                        productId: '$_id'
+                                    }
+                                }, {
+                                    $project: {
+                                        _id: 0,
+                                        productId: 1,
+                                        name: 1,
+                                        productIndex: 1
+                                    }
+                                }]
+                            }
+                        },
+                        {
+                            $addFields: {
+                                products: {
+                                    $map: {
+                                        input: '$products',
+                                        as: 'prod',
+                                        in: {
+                                            quantity: '$$prod.quantity',
+                                            size: '$$prod.size',
+                                            productId: this.getProductField('productId'),
+                                            name: this.getProductField('name'),
+                                            productIndex: this.getProductField('productIndex')
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            $project: {
+                                "products": 1
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                $project: {
+                    "statuses": 0,
+                    "boxOnDelivery": 0
+                }
+            }
+        ]).then(data => {
+            return this.returnDeliveryOrThrow(data);
+        })
+    }
+
+    private getProductField(field) {
+        return {
+            $getField: {
+                field,
+                input: this.getProductArrayElem(field)
+            }
+        };
+    }
+
+    private getProductArrayElem(field) {
+        return {
+            $arrayElemAt: [
+                {
+                    $filter: {
+                        input: '$productsDetails',
+                        as: 'productsDetails',
+                        cond: {
+                            $eq: ['$$prod.productId', '$$productsDetails.productId']
+                        }
+                    }
+                },
+                0
+            ]
+        };
+    }
+
+    public compareDeliveryWithInvoice(deliveryProducts: ProductsQuantityMap, invoiceProducts: ProductsQuantityMap) {
+        const differencesMap = Object.keys(invoiceProducts).reduce((acc, invoiceProduct) => {
+            let differences;
+            if (deliveryProducts[invoiceProduct]) {
+                differences = Object.keys(invoiceProducts[invoiceProduct].quantities).reduce((differenceMap, size) => {
+                    const productSize = deliveryProducts[invoiceProduct]?.quantities[size]
+                    if (productSize) {
+                        return {
+                            ...differenceMap,
+                            [size]: deliveryProducts[invoiceProduct].quantities[size] - invoiceProducts[invoiceProduct].quantities[size]
+                        }
+                    } else {
+                        return {
+                            ...differenceMap,
+                            [size]: invoiceProducts[invoiceProduct].quantities[size] * -1
+                        }
+                    }
+
+                }, {} as {[key: number]: number})
+            } else {
+                differences = Object.keys(invoiceProducts[invoiceProduct].quantities).reduce((differenceMap, size) => {
+                    return {
+                        ...differenceMap,
+                        [size]: invoiceProducts[invoiceProduct].quantities[size] * -1
+                    }
+                }, {} as {[key: number]: number})
+            }
+
+            return {
+                ...acc,
+                [invoiceProduct]: {
+                    ...invoiceProducts[invoiceProduct],
+                    quantities: differences,
+                    isExtraProduct: false
+                }
+            }
+        }, {} as ProductsQuantityMap)
+
+        const extraProducts = Object.keys(deliveryProducts).filter(productId => !invoiceProducts[productId])
+
+        if (extraProducts.length > 0) {
+            extraProducts.forEach(id => {
+                differencesMap[id] = deliveryProducts[id];
+                differencesMap[id].isExtraProduct = true;
+            })
+        }
+
+        return differencesMap;
+    }
+
     public async changeDeliveryStatus(status: string, changedBy: string, message: string, deliveryId: string) {
         const delivery = await this.findDeliveryByIdOrThrow(deliveryId);
         return delivery.updateOne({
@@ -107,6 +257,11 @@ export class DeliveryService {
             closed: false,
             reopened: true
         }, { new: true });
+    }
+
+    private returnDeliveryOrThrow(data: any[]) {
+        if (data[0] === undefined || data[0] === null) throw new AppError("Delivery with that ID doesn't exist", 404);
+        return data[0];
     }
 }
 

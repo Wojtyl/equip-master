@@ -21,4 +21,8 @@ deliveryRouter
     .route("/:id/reopen")
     .post(authController.auth, deliveryController.reopenDelivery());
 
+deliveryRouter
+    .route("/:id/summary")
+    .get(authController.auth, deliveryController.getDeliverySummary())
+
 export { deliveryRouter };
