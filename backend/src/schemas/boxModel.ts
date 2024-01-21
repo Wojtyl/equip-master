@@ -1,24 +1,31 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { IProductBox } from "../interfaces/product-box";
 import { BoxStatus } from "../enums/box-status-enum";
 
-export interface IBox {
+export interface BoxSchema {
     createdAt: Date,
     createdBy: Types.ObjectId,
     boxNumber: number,
     closed: boolean,
     deliveryId: Types.ObjectId,
-    products: IProductBox[],
+    products: BoxProductSchema[],
     reopened: boolean,
-    statuses: {
-        changedBy: mongoose.Types.ObjectId,
-        status: string,
-        date: Date
-        message: string
-    }[]
+    statuses: BoxStatusSchema[]
 }
 
-const boxSchema = new mongoose.Schema<IBox>(
+interface BoxProductSchema {
+    productId: Types.ObjectId;
+    quantity: number
+    size: string;
+}
+
+interface BoxStatusSchema {
+    changedBy: Types.ObjectId;
+    status: string,
+    date: Date,
+    message: string,
+}
+
+const boxSchema = new Schema<BoxSchema>(
     {
         createdAt: {
             type: Date,
@@ -30,7 +37,7 @@ const boxSchema = new mongoose.Schema<IBox>(
         },
         boxNumber: {
             type: Number,
-            unique: true
+            // unique: true
         },
         closed: {
             type: Boolean,
@@ -41,39 +48,43 @@ const boxSchema = new mongoose.Schema<IBox>(
             ref: 'Delivery',
             required: [true, 'Box must have a Delivery ID!']
         },
-        products: [{
-            // _id: false,
-            productId: {
-                type: mongoose.Types.ObjectId,
-                ref: 'Product'
-            },
-            quantity: {
-                type: Number
-            },
-            size: {
-                type: String
-            }
-        }],
+        products: [
+            new Schema<BoxProductSchema>({
+                    productId: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'Product'
+                    },
+                    quantity: {
+                        type: Number
+                    },
+                    size: {
+                        type: String
+                    }
+                }
+            )
+        ],
         reopened: {
             type: Boolean,
             default: false
         },
-        statuses: [{
-            changedBy: {
-                type: mongoose.Types.ObjectId
-            },
-            status: {
-                type: String,
-                enum: BoxStatus
-            },
-            date: {
-                type: Date,
-                default: Date.now()
-            },
-            message: {
-                type: String,
-            }
-        }]
+        statuses: [
+            new Schema<BoxStatusSchema>({
+                changedBy: {
+                    type: Schema.Types.ObjectId
+                },
+                status: {
+                    type: String,
+                    enum: BoxStatus
+                },
+                date: {
+                    type: Date,
+                    default: Date.now()
+                },
+                message: {
+                    type: String,
+                }
+            })
+        ]
     }
 );
 

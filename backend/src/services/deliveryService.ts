@@ -1,7 +1,7 @@
 import { Delivery } from '../schemas/deliveryModel'
 import { HydratedDocument, Types } from "mongoose";
 import { IDeliveryDetails } from "../models/delivery-details-model";
-import { Box, IBox } from "../schemas/boxModel";
+import { Box } from "../schemas/boxModel";
 import { RoleService } from "./RoleService";
 import { URequest } from "../interfaces/user-request";
 import { AppError } from "../utils/appError";

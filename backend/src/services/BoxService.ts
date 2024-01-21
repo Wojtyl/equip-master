@@ -1,4 +1,4 @@
-import { Box, IBox } from "../schemas/boxModel";
+import { Box, BoxSchema } from "../schemas/boxModel";
 import { HydratedDocument, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
 import { AppError } from "../utils/appError";
@@ -113,7 +113,7 @@ export class BoxService {
         };
     }
 
-    public async changeBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<IBox>) {
+    public async changeBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<BoxSchema>) {
         //TODO: To check if reopened and closed status should be updated in this service
         if (status === BoxStatus.InProgress && (box.reopened || box.closed)) {
             if (!box.reopened) await box.updateOne({reopened: true});

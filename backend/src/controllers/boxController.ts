@@ -1,9 +1,9 @@
-import { Box, IBox } from "../schemas/boxModel";
+import { Box, BoxSchema } from "../schemas/boxModel";
 import { catchAsync } from "../utils/catchAsync";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument } from "mongoose";
 import { URequest } from "../interfaces/user-request";
 import { NextFunction } from "express-serve-static-core";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { BoxService } from "../services/BoxService";
 import { DeliveryService } from "../services/deliveryService";
 import { AppError } from "../utils/appError";
@@ -27,7 +27,7 @@ export class BoxController {
     })
 
     addProductToBox = () => catchAsync(async (req: URequest, res: Response) => {
-        const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id);
+        const box: HydratedDocument<BoxSchema> = await boxService.findBoxByIdOrThrow(req.params.id);
         const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);
         if (delivery.closed) throw new AppError('You can\'t add products to box when delivery is already closed', 405);
         await box.updateOne({ $push: { products: req.body } }, { new: true })
@@ -35,7 +35,7 @@ export class BoxController {
             .orFail(new AppError('Product with that ID does not exists', 404));
         const updateMessage = `Added ${req.body.quantity}x ${product.name} ${req.body.size ? `in size ${req.body.size}` : ''}`
         await boxService.changeBoxStatus(BoxStatus.InProgress, req.user.id, updateMessage, box)
-        const updatedBox: IBox = await boxService.findBoxWithProductDetails(req.params.id)
+        const updatedBox: BoxSchema = await boxService.findBoxWithProductDetails(req.params.id)
         res.status(200).json({
             items: updatedBox,
             status: 'success'
@@ -43,7 +43,7 @@ export class BoxController {
     })
 
     removeProductFromBox = () => catchAsync(async (req: URequest, res: Response) => {
-        const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id)
+        const box: HydratedDocument<BoxSchema> = await boxService.findBoxByIdOrThrow(req.params.id)
         const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);
         if (delivery.closed) throw new AppError('You cannot remove items from box when delivery is already closed', 405);
         await box.updateOne({ $pull: { products: { _id: req.body.productElementId } } }, {new: true, runValidators: true});
@@ -84,7 +84,7 @@ export class BoxController {
     })
 
     closeBox = () => catchAsync(async (req: URequest, res: Response) => {
-        const box: HydratedDocument<IBox> = await boxService.findBoxByIdOrThrow(req.params.id);
+        const box: HydratedDocument<BoxSchema> = await boxService.findBoxByIdOrThrow(req.params.id);
         if (box.products.length === 0) throw new AppError('You can\'t close empty box!', 403);
         await box.updateOne({closed: true});
         await boxService.changeBoxStatus(BoxStatus.Closed, req.user.id, 'Box closed', box);
