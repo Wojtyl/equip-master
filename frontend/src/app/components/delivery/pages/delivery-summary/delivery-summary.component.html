@@ -1,0 +1,22 @@
+<p *ngIf="!summary">Loading...</p>
+
+<div *ngIf="summary">
+  <table>
+    <thead>
+    <td>Indeks</td>
+    <td>Nazwa</td>
+    <td>Ilość</td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let productId of Object.keys(summary)" [class.highlight]="summary[productId].isExtraProduct">
+        <td>{{summary[productId].productIndex}}</td>
+        <td>{{summary[productId].productName}}</td>
+        <td>
+          <p *ngFor="let size of Object.keys(summary[productId].quantities)">
+            {{size}}: {{summary[productId].quantities[size]}}
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

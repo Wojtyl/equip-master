@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit{
   }
 
   login(): void {
-      this.userService.getUser('dev1@eqmaster.pl', '12345').subscribe((res) => {
+      this.userService.getUser('dev4@eqmaster.pl', '12345').subscribe((res) => {
         const user = res.data.user;
 
         this.userService.user.next({

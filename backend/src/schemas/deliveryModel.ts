@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { DeliveryStatus } from "../enums/delivery-status-enum";
 
 const deliverySchema = new mongoose.Schema({
   date: {
@@ -17,9 +18,13 @@ const deliverySchema = new mongoose.Schema({
     ref: 'Invoice',
     required: [true, "Delivery must have an invoice"],
   },
-  isClosed: {
+  closed: {
     type: Boolean,
     default: false,
+  },
+  reopened: {
+    type: Boolean,
+    default: false
   },
   supplier: {
     type: mongoose.Types.ObjectId,
@@ -33,7 +38,7 @@ const deliverySchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['NEW', 'IN_PROGRESS', 'COUNTING_COMPLETED', 'FINISHED', 'TO_REOPEN', 'MISMATCHED'],
+    enum: DeliveryStatus,
     default: 'NEW'
   },
   statuses: [{
@@ -48,6 +53,9 @@ const deliverySchema = new mongoose.Schema({
     date: {
       type: Date,
       default: Date.now()
+    },
+    message: {
+      type: String,
     }
   }],
   description: {

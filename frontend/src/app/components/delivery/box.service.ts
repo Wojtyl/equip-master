@@ -31,6 +31,10 @@ export class BoxService {
     return this.http.delete<ListResponse<IDeliveryDetails>>(`${apiUrl}boxes/${boxId}`)
   }
 
+  closeBox(boxId: string) {
+    return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/close`,{});
+  }
+
   removeProductFromBox(boxId: string, data: {productElementId: string}) {
     return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/removeProduct`, data);
   }

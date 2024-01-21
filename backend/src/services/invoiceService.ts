@@ -17,7 +17,7 @@ export class InvoiceService {
                     from: 'products',
                     localField: 'products.productId',
                     foreignField: '_id',
-                    as: 'productDetails'
+                    as: 'productDetails',
                 }
             },
             {
@@ -25,24 +25,13 @@ export class InvoiceService {
                     products: {
                         $map: {
                             input: '$products',
-                            as: 'productDetails',
+                            as: 'product',
                             in: {
                                 quantity: '$$product.quantity',
                                 size: '$$product.size',
-                                product: {
-                                    $arrayElemAt: [
-                                        {
-                                            $filter: {
-                                                input: '$productDetails',
-                                                as: 'detail',
-                                                cond: {
-                                                    $eq: ['$$product.productId', '$$detail._id']
-                                                }
-                                            }
-                                        },
-                                        0
-                                    ]
-                                }
+                                name: this.getProductField("name"),
+                                productId: this.getProductField("_id"),
+                                productIndex: this.getProductField("productIndex")
                             }
                         }
                     }
@@ -61,5 +50,31 @@ export class InvoiceService {
     //TODO: Method to get all distinct products that are on invoice
     async getProductsFromInvoiceByDelivery(deliveryId: string) {
 
+    }
+
+    private getProductField(field) {
+        return {
+            $getField: {
+                field,
+                input: this.getProductArrayElem(field)
+            }
+        };
+    }
+
+    private getProductArrayElem(field) {
+        return {
+            $arrayElemAt: [
+                {
+                    $filter: {
+                        input: '$productDetails',
+                        as: 'productDetails',
+                        cond: {
+                            $eq: ['$$product.productId', '$$productDetails._id']
+                        }
+                    }
+                },
+                0
+            ]
+        };
     }
 }

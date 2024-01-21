@@ -1,3 +1,5 @@
+import { BoxStatus } from "src/app/shared/enums/box-status-enum";
+
 interface IBox {
   _id: string,
   createdAt: string,
@@ -6,9 +8,11 @@ interface IBox {
     email: string,
     name: string
   },
-  boxCounted: boolean,
+  closed: boolean,
   deliveryId: string,
   boxNumber: number,
+  statuses: IBoxStatus[],
+  reopened: boolean
 }
 export interface IBoxPreview extends IBox {
   productsQuantity: number
@@ -23,4 +27,11 @@ export interface IBoxDetails extends IBox {
     size: string,
     _id: string
   }[]
+}
+
+export interface IBoxStatus {
+  changedBy: string,
+  status: BoxStatus,
+  date: Date,
+  message: string
 }

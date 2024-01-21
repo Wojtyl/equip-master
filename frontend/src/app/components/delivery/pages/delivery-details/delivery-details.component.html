@@ -12,7 +12,7 @@
     <td>{{box.boxNumber}}</td>
     <td>{{box.productsQuantity}}</td>
     <td>{{box.createdBy.name}}</td>
-    <td>{{box.boxCounted ? 'TAK' : 'NIE'}}</td>
+    <td>{{box.closed ? 'TAK' : 'NIE'}}</td>
     <td><app-svg-icon icon="delete_icon" (click)="deleteBox(box._id)"></app-svg-icon></td>
     <td><app-svg-icon icon="expand_icon" (click)="openBox(box._id)"></app-svg-icon></td>
   </tr>
@@ -21,5 +21,10 @@
 </table>
 <h3 *ngIf="delivery && delivery.deliveryBoxes.length === 0">Nie ma pudeł!</h3>
 
-<button (click)="addBox()">Nowe pudło</button>
+<div *ngIf="delivery">
+  <button *ngIf="!delivery.closed" (click)="addBox()">Nowe pudło</button>
+  <button *ngIf="!delivery.closed && deliveryFinishable" (click)="finishDelivery()">Zakończ dostawę</button>
+  <button *ngIf="delivery.closed" (click)="reopenDelivery()">Otwórz ponownie</button>
+  <button *ngIf="delivery.closed" [routerLink]="['summary']">Podsumowanie</button>
+</div>
 

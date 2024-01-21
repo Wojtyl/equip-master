@@ -55,4 +55,8 @@ export class BoxDetailsComponent implements  OnInit {
     this.boxService.removeProductFromBox(this.boxId, {productElementId})
       .subscribe(box => this.boxDetails=box.items);
   }
+
+  closeBox() {
+    this.boxService.closeBox(this.boxId).subscribe(box => this.boxDetails = box.items);
+  }
 }

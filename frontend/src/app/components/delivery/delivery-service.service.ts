@@ -5,6 +5,7 @@ import { apiUrl } from 'src/assets/apiurl';
 import { IDeliveryDetails } from './models/delivery-details-model'
 import { Observable } from 'rxjs';
 import { IDeliveryList } from './models/delivery-list-model';
+import { DeliverySummary } from "./models/delivery-summary";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class DeliveryService {
     return this.http.get<ListResponse<IDeliveryList[]>>(`${apiUrl}deliveries`);
   }
 
+  getDeliverySummary(deliveryId) {
+    return this.http.get<ListResponse<DeliverySummary>>(`${apiUrl}deliveries/${deliveryId}/summary`);
+  }
+
   deleteDelivery(id: string) {
     return this.http.delete(`${apiUrl}deliveries/${id}`);
   }
@@ -29,4 +34,11 @@ export class DeliveryService {
     return this.http.get<ListResponse<IDeliveryDetails>>(`${apiUrl}deliveries/${id}`);
   }
 
+  finishDelivery(deliveryId: string) {
+    return this.http.post(`${apiUrl}deliveries/${deliveryId}/close`, {});
+  }
+
+  reopenDelivery(deliveryId: string) {
+    return this.http.post(`${apiUrl}deliveries/${deliveryId}/reopen`, {})
+  }
 }

@@ -32,6 +32,7 @@ import { DeliveryBoxTableComponent } from './components/delivery/components/deli
 import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
 import { BoxDetailsComponent } from './components/delivery/pages/box-details/box-details.component';
 import { InputNumberModule } from "primeng/inputnumber";
+import { DeliverySummaryComponent } from './components/delivery/pages/delivery-summary/delivery-summary.component';
 
 
 
@@ -52,6 +53,7 @@ import { InputNumberModule } from "primeng/inputnumber";
     DeliveryBoxTableComponent,
     SvgIconComponent,
     BoxDetailsComponent,
+    DeliverySummaryComponent,
   ],
     imports: [
         BrowserModule,

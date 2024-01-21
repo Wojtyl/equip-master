@@ -14,20 +14,25 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   deliveryId: string;
   delivery: IDeliveryDetails;
   subscriptions = new Subscription()
+  protected deliveryFinishable: boolean;
 
   constructor(private activeRoute: ActivatedRoute,
               private deliveryService: DeliveryService,
               private boxService: BoxService,
               private router: Router
-  ) {}
+  ) {
+  }
 
 
   ngOnInit(): void {
     this.deliveryId = this.activeRoute.snapshot.params['id'];
     this.subscriptions.add(this.deliveryService.getDelivery(this.deliveryId).pipe(
       take(1),
-      tap(delivery => this.delivery = delivery.items)
-    ).subscribe())
+    ).subscribe(delivery => {
+      this.delivery = delivery.items;
+      this.checkIfFinishable();
+    }));
+
   }
 
   ngOnDestroy(): void {
@@ -46,6 +51,18 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   openBox(id: string) {
-    this.router.navigate(['box',id])
+    this.router.navigate(['box', id])
+  }
+
+  checkIfFinishable() {
+    this.deliveryFinishable = this.delivery.deliveryBoxes.length > 0 && this.delivery.deliveryBoxes.every(box => box.closed);
+  }
+
+  finishDelivery() {
+    this.deliveryService.finishDelivery(this.deliveryId).subscribe(() => this.delivery.closed = true)
+  }
+
+  reopenDelivery() {
+    this.deliveryService.reopenDelivery(this.deliveryId).subscribe(() => this.delivery.closed = false)
   }
 }
