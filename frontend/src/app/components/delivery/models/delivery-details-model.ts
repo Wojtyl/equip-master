@@ -5,8 +5,12 @@ export interface IDeliveryDetails {
   _id: string,
   date: Date,
   deliveryBoxes: IBoxPreview[];
-  invoiceNumber: string,
-  isClosed: boolean,
+  invoice: {
+    _id: string,
+    invoiceNumber: string
+  },
+  closed: boolean,
+  reopened: boolean,
   supplier: ISupplier,
   createdBy: string,
   status: string,
@@ -15,5 +19,6 @@ export interface IDeliveryDetails {
     changedBy: string,
     status: string,
     date: Date
+    message: string
   }[]
 }

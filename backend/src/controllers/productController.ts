@@ -4,12 +4,16 @@ import { catchAsync } from "../utils/catchAsync";
 import { Delivery } from "../schemas/deliveryModel";
 import { Request, Response } from "express";
 import { SupplierService } from "../services/SupplierService";
+import { AppError } from "../utils/appError";
+import { Box } from "../schemas/boxModel";
 
 const supplierService = new SupplierService();
 export const getProductsByBox = () => catchAsync(async (req: Request, res: Response) => {
+    await Box.findById(req.params.id).orFail(new AppError('Box with that id does not exists', 404))
     const delivery = await Delivery
         .findOne({boxOnDelivery: { $in: req.params.id }})
-        .select('supplier');
+        .select('supplier')
+        .orFail(new AppError('No delivery connected with that box. Contact with administrator!', 404));
     const supplierId = delivery!.supplier!.toString();
     const supplierProducts = await supplierService.getSupplierProducts(supplierId);
   res.status(200).json({

@@ -32,6 +32,14 @@ export class UserService {
     });
   }
 
+  getUserRole() {
+    return this.http.get<{role: string}>(`${apiUrl}roles`);
+  }
+
+  getUserRoleById(userId: string) {
+    return this.http.get<{role: string}>(`${apiUrl}roles/${userId}`);
+  }
+
   logout() {
     this.user.next(undefined);
     localStorage.removeItem('token');

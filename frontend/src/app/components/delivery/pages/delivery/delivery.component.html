@@ -19,9 +19,10 @@
       id="description"
       formControlName="description"
     />
-    <label for="invoiceId">Numer Faktury</label>
+    <label for="invoice">Numer Faktury</label>
     <p-dropdown
-      formControlName="invoiceId"
+      id="invoice"
+      formControlName="invoice"
       [options]="supplierInvoices"
       optionLabel="invoiceNumber"
       [filter]="true"
@@ -46,9 +47,9 @@
       <tr *ngFor="let delivery of deliveries; let i = index ">
         <td>{{i+1}}</td>
         <td>{{delivery.supplier.name}}</td>
-        <td>{{delivery.date}}</td>
+        <td>{{delivery.date | date:'dd.MM.yyy'}}</td>
         <td>{{delivery.description}}</td>
-        <td>{{delivery.invoiceNumber}}</td>
+        <td>{{delivery.invoice.invoiceNumber}}</td>
         <td>
           <p-button label="Kontynuuj" styleClass="p-button-secondary" (onClick)="onContinue(delivery._id)"></p-button>
           <p-button label="Usuń" styleClass="p-button-danger" (onClick)="onDelete(delivery._id)"></p-button>

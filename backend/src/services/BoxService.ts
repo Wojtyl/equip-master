@@ -1,6 +1,8 @@
-import { Box } from "../schemas/boxModel";
-import { Types } from "mongoose";
+import { Box, BoxSchema } from "../schemas/boxModel";
+import { HydratedDocument, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
+import { AppError } from "../utils/appError";
+import { BoxStatus } from "../enums/box-status-enum";
 
 export class BoxService {
     constructor() {
@@ -51,17 +53,34 @@ export class BoxService {
                         }
                     }
                 }
-            }, {
+            },
+            {
+              $set: {
+                  statuses: {
+                      $sortArray: {
+                          input: '$statuses',
+                          sortBy: {
+                              date: -1
+                          }
+                      }
+                  }
+              }
+            },
+            {
                 $project: {
                     productsDetails: 0
                 }
             }
         ]);
-        return box[0];
+        if (box.length > 0) {
+            return box[0];
+        } else {
+            throw new AppError('Box not found', 404)
+        }
     }
 
-    public findBoxWithProductQuantity() {
-
+    public async findBoxByIdOrThrow (boxId: string | Types.ObjectId) {
+        return Box.findById(boxId).orFail(new AppError('Box with that ID not found', 404));
     }
 
     public async deleteBoxFromDelivery(deliveryId: string, boxId: string) {
@@ -92,5 +111,15 @@ export class BoxService {
                 0
             ]
         };
+    }
+
+    public async changeBoxStatus(status: string, changedBy: string, message: string, box: HydratedDocument<BoxSchema>) {
+        //TODO: To check if reopened and closed status should be updated in this service
+        if (status === BoxStatus.InProgress && (box.reopened || box.closed)) {
+            if (!box.reopened) await box.updateOne({reopened: true});
+            if (box.closed) await box.updateOne({closed: false});
+            status = BoxStatus.Reopened
+        }
+        return box.updateOne({$push: {statuses: {status, changedBy, message, date: Date.now()}}}, {new: true, runValidators: true})
     }
 }

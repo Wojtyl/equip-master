@@ -31,6 +31,8 @@ import { DeliveryAddBoxComponent } from './components/delivery/components/delive
 import { DeliveryBoxTableComponent } from './components/delivery/components/delivery-box-table/delivery-box-table.component';
 import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
 import { BoxDetailsComponent } from './components/delivery/pages/box-details/box-details.component';
+import { InputNumberModule } from "primeng/inputnumber";
+import { DeliverySummaryComponent } from './components/delivery/pages/delivery-summary/delivery-summary.component';
 
 
 
@@ -51,24 +53,26 @@ import { BoxDetailsComponent } from './components/delivery/pages/box-details/box
     DeliveryBoxTableComponent,
     SvgIconComponent,
     BoxDetailsComponent,
+    DeliverySummaryComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FontAwesomeModule,
-    NgbModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ChipsModule,
-    MultiSelectModule,
-    BrowserAnimationsModule,
-    AutoCompleteModule,
-    DropdownModule,
-    CalendarModule,
-    ButtonModule,
-    ListboxModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FontAwesomeModule,
+        NgbModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        ChipsModule,
+        MultiSelectModule,
+        BrowserAnimationsModule,
+        AutoCompleteModule,
+        DropdownModule,
+        CalendarModule,
+        ButtonModule,
+        ListboxModule,
+        InputNumberModule
+    ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],
 })

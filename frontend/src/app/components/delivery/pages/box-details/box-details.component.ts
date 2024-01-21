@@ -5,6 +5,7 @@ import { IBoxDetails } from "../../models/box-model";
 import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { Product } from "../../../../models/productModel";
 import { ProductService } from "../../../../forms/product-form/product.service";
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-box-details',
@@ -16,12 +17,14 @@ export class BoxDetailsComponent implements  OnInit {
   constructor(private route: ActivatedRoute,
               private boxService: BoxService,
               private productService: ProductService,
+              private location: Location,
               private formBuilder: UntypedFormBuilder) {}
   boxId: string;
   boxDetails: IBoxDetails;
   addProductForm: UntypedFormGroup;
   products: Product[];
   selectedProduct: Product;
+  isAddingProduct = false;
   ngOnInit() {
     this.boxId = this.route.snapshot.params['id'];
     this.boxService.getBoxDetails(this.boxId).subscribe(box => this.boxDetails = box.items);
@@ -35,8 +38,13 @@ export class BoxDetailsComponent implements  OnInit {
     })
     this.addProductForm.get('productId')!.valueChanges.subscribe(val => {
       this.selectedProduct = this.products.find(prod => prod._id === val)!;
+      console.log(this.selectedProduct)
       this.addProductForm.patchValue({quantity: null, size: null});
     })
+  }
+
+  getSelectedProduct() {
+
   }
 
   onSubmit() {
@@ -46,5 +54,9 @@ export class BoxDetailsComponent implements  OnInit {
   removeProduct(productElementId: string) {
     this.boxService.removeProductFromBox(this.boxId, {productElementId})
       .subscribe(box => this.boxDetails=box.items);
+  }
+
+  closeBox() {
+    this.boxService.closeBox(this.boxId).subscribe(box => this.boxDetails = box.items);
   }
 }

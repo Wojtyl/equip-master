@@ -12,9 +12,13 @@ boxRouter
 
 boxRouter
     .route("/:id")
-    .get(authController.auth, boxController.getBox())
+    .get(authController.auth, boxController.getBoxWithProductDetails())
     .post(authController.auth, boxController.addProductToBox())
     .delete(authController.auth, boxController.deleteBox());
+
+boxRouter
+    .route('/:id/close')
+    .post(authController.auth, boxController.closeBox())
 
 boxRouter
     .route("/:id/removeProduct")

@@ -9,6 +9,8 @@ import { ProductFormComponent } from './forms/product-form/product-form.componen
 import { DeliveryComponent } from './components/delivery/pages/delivery/delivery.component';
 import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
 import { BoxDetailsComponent } from "./components/delivery/pages/box-details/box-details.component";
+import { roleGuard } from "./core/guards/role.guard";
+import { DeliverySummaryComponent } from "./components/delivery/pages/delivery-summary/delivery-summary.component";
 
 const routes: Routes = [
   {
@@ -28,7 +30,10 @@ const routes: Routes = [
   {
     path: 'suppliers',
     component: SupplierFormComponent,
-    canActivate: [UserGuard],
+    canActivate: [UserGuard, roleGuard],
+    data: {
+      allowedRole: 'ADMIN'
+    }
   },
   {
     path: 'products',
@@ -45,9 +50,13 @@ const routes: Routes = [
   {
     path: 'delivery/:id',
     component: DeliveryDetailsComponent,
-    children: [
-
-    ],
+    runGuardsAndResolvers: "always",
+    canActivate: [UserGuard]
+  },
+  {
+    path: 'delivery/:id/summary',
+    component: DeliverySummaryComponent,
+    runGuardsAndResolvers: "always",
     canActivate: [UserGuard]
   },
   {
