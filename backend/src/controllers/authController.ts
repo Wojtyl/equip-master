@@ -1,11 +1,10 @@
 const { promisify } = require("util");
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync";
 import { AppError } from "../utils/appError";
 import { User } from "../schemas/userModel";
-
 const signToken = (id) =>
-  jwt.sign({ id: id }, process.env.JWT_SECRET, {
+  jwt.sign({ id: id }, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
@@ -13,7 +12,7 @@ const createSignToken = (user, statusCode, res) => {
   user.password = undefined;
   const token = signToken(user.id);
   const cookieOptions: any = {
-    expires: new Date(Date.now() + 10 * 60 * 1000),
+    expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
     httpOnly: true,
   };
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
