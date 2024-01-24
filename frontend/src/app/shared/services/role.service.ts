@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { UserService } from "../../auth/user.service";
+import { UserService } from "../../core/auth/user.service";
 import { map } from "rxjs";
 
 @Injectable({
