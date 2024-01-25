@@ -6,7 +6,8 @@ import * as pages from './pages';
 const routes: Routes = [
   {
     path: '',
-    component: pages.SupplierAddPageComponent
+    runGuardsAndResolvers: "always",
+    component: pages.InvoiceAddPageComponent,
   }
 ];
 
@@ -14,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SuppliersRoutingModule { }
+export class InvoicesRoutingModule { }

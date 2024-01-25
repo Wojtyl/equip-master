@@ -1,0 +1,24 @@
+<div [formGroup]="formGroup">
+
+  <div class="new-item flex gap-2">
+    <div class="flex flex-col">
+      <label for="">Indeks</label>
+      <p-dropdown [options]="products" optionLabel="name" placeholder="Wybierz produkt" (onChange)="onSelect($event)" formControlName="product"></p-dropdown>
+    </div>
+  </div>
+  <div *ngIf="selectedProduct">
+    <div  class="flex flex-col">
+      <label for="">Ilość</label>
+      <input pInputText class="p-inputtext-sm"  type="number" formControlName="quantity" />
+    </div>
+    <div  class="flex flex-col">
+      <label for="">Cena</label>
+      <input pInputText class="p-inputtext-sm" type="number" formControlName="price" />
+    </div>
+    <div class="flex flex-col" *ngIf="selectedProduct.attributes?.size">
+      <label for="">Rozmiar</label>
+      <p-listbox [options]="selectedProduct.attributes.size" formControlName="size"></p-listbox>
+    </div>
+    <p-button label="Dodaj" styleClass="p-button-success" class="self-end" (onClick)="addProduct()"></p-button>
+  </div>
+</div>

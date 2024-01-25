@@ -20,8 +20,9 @@ import * as components from './components'
 
 @NgModule({
   declarations: [
+    components.AddProductComponent,
     components.MultiselectDropdownComponent,
-    components.SvgIconComponent
+    components.SvgIconComponent,
   ],
   imports: [
     AutoCompleteModule,
@@ -57,7 +58,8 @@ import * as components from './components'
     NgbModule,
     ReactiveFormsModule,
     components.MultiselectDropdownComponent,
-    components.SvgIconComponent
+    components.SvgIconComponent,
+    components.AddProductComponent
   ]
 })
 export class SharedModule { }

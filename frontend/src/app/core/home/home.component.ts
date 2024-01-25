@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  //TODO: Recent deliveries to quickly navigate to last one
+  //TODO: Recent delivery-page to quickly navigate to last one
   //TODO: Delivery graph
   suppliers: any[] = [];
 
