@@ -1,16 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { UserGuard } from './auth/user.guard';
-import { InvoiceFormComponent } from './forms/invoice-form/invoice-form.component';
-import { SupplierFormComponent } from './forms/supplier-form/supplier-form.component';
-import { ProductFormComponent } from './forms/product-form/product-form.component';
-import { DeliveryComponent } from './components/delivery/pages/delivery/delivery.component';
-import { DeliveryDetailsComponent } from './components/delivery/pages/delivery-details/delivery-details.component';
-import { BoxDetailsComponent } from "./components/delivery/pages/box-details/box-details.component";
-import { roleGuard } from "./core/guards/role.guard";
-import { DeliverySummaryComponent } from "./components/delivery/pages/delivery-summary/delivery-summary.component";
+import { HomeComponent } from './core/home/home.component';
+import { LoginComponent } from './core/login/login.component';
+import { UserGuard } from './core/auth/user.guard';
+import { RoleGuard } from "./core/guards/role-guard";
 
 const routes: Routes = [
   {
@@ -24,44 +17,26 @@ const routes: Routes = [
   },
   {
     path: 'invoices',
-    component: InvoiceFormComponent,
+    loadChildren: () => import('src/app/modules/invoices/invoices.module').then(m => m.InvoicesModule),
     canActivate: [UserGuard],
   },
   {
     path: 'suppliers',
-    component: SupplierFormComponent,
-    canActivate: [UserGuard, roleGuard],
+    loadChildren: () => import('src/app/modules/suppliers/suppliers.module').then(m => m.SuppliersModule),
+    canActivate: [UserGuard, RoleGuard],
     data: {
       allowedRole: 'ADMIN'
     }
   },
   {
     path: 'products',
-    component: ProductFormComponent,
+    loadChildren: () => import('src/app/modules/products/products.module').then(m => m.ProductsModule),
     canActivate: [UserGuard],
   },
   {
     path: 'delivery',
-    component: DeliveryComponent,
-    children: [
-    ],
+    loadChildren: () => import('src/app/modules/delivery/delivery.module').then(m => m.DeliveryModule),
     canActivate: [UserGuard],
-  },
-  {
-    path: 'delivery/:id',
-    component: DeliveryDetailsComponent,
-    runGuardsAndResolvers: "always",
-    canActivate: [UserGuard]
-  },
-  {
-    path: 'delivery/:id/summary',
-    component: DeliverySummaryComponent,
-    runGuardsAndResolvers: "always",
-    canActivate: [UserGuard]
-  },
-  {
-    path: 'box/:id',
-    component: BoxDetailsComponent
   },
   {
     path: '**',
