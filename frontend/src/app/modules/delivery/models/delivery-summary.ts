@@ -1,15 +1,12 @@
-interface ProductsMap {
-  [productId: string]: {
-    isExtraProduct: boolean;
-    productIndex: string;
-    productName: string;
-    quantities: {
-      [key: string]: number;
-    }
-  }
-}
-
 export interface DeliverySummary {
-  deliveryProductsMap: ProductsMap;
-  differenceMap: ProductsMap;
+  productIndex: string;
+  productName: string;
+  id: string;
+  isExtraProduct: boolean;
+  sizes: {
+    size: string;
+    deliveryCount: number;
+    differenceCount: number;
+    isExtraSize: boolean;
+  }[]
 }

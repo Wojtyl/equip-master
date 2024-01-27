@@ -18,12 +18,12 @@ export class DeliveryService {
     return this.http.post(`${apiUrl}deliveries`, data);
   }
 
-  getAllDieliveries(): Observable<ListResponse<IDeliveryList[]>> {
+  getAllDeliveries(): Observable<ListResponse<IDeliveryList[]>> {
     return this.http.get<ListResponse<IDeliveryList[]>>(`${apiUrl}deliveries`);
   }
 
-  getDeliverySummary(deliveryId) {
-    return this.http.get<ListResponse<DeliverySummary>>(`${apiUrl}deliveries/${deliveryId}/summary`);
+  getDeliverySummary(deliveryId: string) {
+    return this.http.get<ListResponse<DeliverySummary[]>>(`${apiUrl}deliveries/${deliveryId}/summary`);
   }
 
   deleteDelivery(id: string) {

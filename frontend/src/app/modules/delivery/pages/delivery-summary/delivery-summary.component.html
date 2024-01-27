@@ -9,28 +9,32 @@
     <td>Różnica</td>
     </thead>
     <tbody>
-    <tr *ngFor="let productId of Object.keys(deliverySummary.differenceMap)"
-        [class.highlight]="deliverySummary.deliveryProductsMap[productId].isExtraProduct">
-      <td>{{ deliverySummary.deliveryProductsMap[productId].productIndex }}</td>
-      <td>{{ deliverySummary.deliveryProductsMap[productId].productName }}</td>
-      <td>
-        <p *ngFor="let size of Object.keys(deliverySummary.deliveryProductsMap[productId].quantities)">
-          {{ size }}: {{ deliverySummary.deliveryProductsMap[productId].quantities[size] }}
-        </p>
-      </td>
-      <td>
-        <ng-container *ngFor="let size of getDifferenceSizeKeys(productId)">
-          <p *ngIf="getDifferenceQuantity(productId, size) < 0">
-            Brak {{ size }}: {{ getDifferenceQuantity(productId, size) }}
+    <tr *ngFor="let product of deliverySummary"
+        [class.highlight]="product.isExtraProduct">
+      <td>{{ product.productIndex }}</td>
+      <td>{{ product.productName }}</td>
+      <ng-container>
+
+        <td>
+          <p *ngFor="let size of product.sizes">
+            {{ size.size }}: {{ size.deliveryCount }}
           </p>
-          <p *ngIf="getDifferenceQuantity(productId, size) > 0">
-            Nadwyżka {{ size }}: {{ getDifferenceQuantity(productId, size) }}
-          </p>
-          <p *ngIf="getDifferenceQuantity(productId, size) === 0">
-            Zgadza się
-          </p>
-        </ng-container>
-      </td>
+        </td>
+        <td>
+          <ng-container *ngFor="let size of product.sizes">
+            <p *ngIf="size.differenceCount < 0">
+              Brak {{ size.size }}: {{ size.differenceCount }}
+            </p>
+            <p *ngIf="size.differenceCount > 0">
+              Nadwyżka {{ size.size }}: {{ size.differenceCount }}
+            </p>
+            <p *ngIf="size.differenceCount === 0">
+              Zgadza się
+            </p>
+          </ng-container>
+        </td>
+      </ng-container>
+
     </tr>
     </tbody>
   </table>

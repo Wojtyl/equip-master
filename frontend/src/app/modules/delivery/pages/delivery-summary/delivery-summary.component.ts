@@ -10,7 +10,7 @@ import { DeliverySummary } from "../../models/delivery-summary";
 })
 export class DeliverySummaryComponent implements OnInit {
   private deliveryId: string;
-  deliverySummary: DeliverySummary;
+  protected deliverySummary: DeliverySummary[];
   constructor(private deliveryService: DeliveryService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -18,15 +18,5 @@ export class DeliverySummaryComponent implements OnInit {
     this.deliveryService.getDeliverySummary(this.deliveryId).subscribe(summary => {
       this.deliverySummary = summary.items;
     })
-  }
-
-  protected readonly Object = Object;
-
-  getDifferenceQuantity(productId: string, size: string) {
-    return this.deliverySummary.differenceMap[productId].quantities[size];
-  }
-
-  getDifferenceSizeKeys(productId: string) {
-    return Object.keys(this.deliverySummary.deliveryProductsMap[productId].quantities)
   }
 }

@@ -26,7 +26,7 @@ export class DeliveryPageComponent implements OnInit {
   supplierInvoices: Invoice[];
 
   ngOnInit(): void {
-    this.deliveryService.getAllDieliveries().subscribe(resData => {
+    this.deliveryService.getAllDeliveries().subscribe(resData => {
       this.deliveries = resData.items;
     })
     this.initForm();
@@ -58,7 +58,7 @@ export class DeliveryPageComponent implements OnInit {
     const data = this.deliveryForm.value;
     data.supplier = data.supplier._id;
     this.deliveryService.addDelivery(data).subscribe(() => {
-      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData.items)
+      this.deliveryService.getAllDeliveries().subscribe(resData => this.deliveries = resData.items)
     });
   }
 
@@ -68,7 +68,7 @@ export class DeliveryPageComponent implements OnInit {
 
   onDelete(id: string):void {
     this.deliveryService.deleteDelivery(id).subscribe(() => {
-      this.deliveryService.getAllDieliveries().subscribe(resData => this.deliveries = resData.items)
+      this.deliveryService.getAllDeliveries().subscribe(resData => this.deliveries = resData.items)
     })
   }
 }
