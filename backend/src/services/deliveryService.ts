@@ -8,9 +8,12 @@ import { AppError } from "../utils/appError";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
 import { IDeliveryWithProducts } from "../models/delivery-with-products-model";
 import { ProductsQuantityMap } from "../controllers/deliveryController";
+import { IProductBox } from "../interfaces/product-box";
+import { InvoiceService } from "./invoiceService";
 
 export class DeliveryService {
     private roleService: RoleService = new RoleService();
+    private invoiceService: InvoiceService = new InvoiceService();
 
     async findDeliveryByIdOrThrow(id: string | Types.ObjectId, options?) {
         return Delivery.findById(id).orFail(new AppError('Delivery with that ID not found!', 404));
@@ -181,23 +184,25 @@ export class DeliveryService {
                     if (productSize) {
                         return {
                             ...differenceMap,
-                            [size]: deliveryProducts[invoiceProduct].quantities[size] - invoiceProducts[invoiceProduct].quantities[size]
-                        }
-                    } else {
-                        return {
-                            ...differenceMap,
-                            [size]: invoiceProducts[invoiceProduct].quantities[size] * -1
+                            [size]: { quantity: deliveryProducts[invoiceProduct].quantities[size].quantity - invoiceProducts[invoiceProduct].quantities[size].quantity, isExtraSize: false }
                         }
                     }
 
-                }, {} as {[key: number]: number})
+                    else {
+                        return {
+                            ...differenceMap,
+                            [size]: { quantity: invoiceProducts[invoiceProduct].quantities[size].quantity * -1, isExtraSize: false }
+                        }
+                    }
+
+                }, {} as {[key: number]: {quantity: number, isExtraSize: boolean}})
             } else {
                 differences = Object.keys(invoiceProducts[invoiceProduct].quantities).reduce((differenceMap, size) => {
                     return {
                         ...differenceMap,
-                        [size]: invoiceProducts[invoiceProduct].quantities[size] * -1
+                        [size]: { quantity: invoiceProducts[invoiceProduct].quantities[size].quantity * -1, isExtraSize: true }
                     }
-                }, {} as {[key: number]: number})
+                }, {} as {[key: number]: {quantity: number, isExtraSize: boolean}})
             }
 
             return {
@@ -210,14 +215,34 @@ export class DeliveryService {
             }
         }, {} as ProductsQuantityMap)
 
+
         const extraProducts = Object.keys(deliveryProducts).filter(productId => !invoiceProducts[productId])
 
         if (extraProducts.length > 0) {
             extraProducts.forEach(id => {
-                differencesMap[id] = deliveryProducts[id];
-                differencesMap[id].isExtraProduct = true;
+                differencesMap[id] = {
+                    ...deliveryProducts[id],
+                    isExtraProduct: true
+                }
+
+                differencesMap[id].quantities = Object.keys(deliveryProducts[id].quantities).reduce((differenceMap, size) => {
+                    return {
+                        ...differenceMap,
+                        [size]: { quantity: deliveryProducts[id].quantities[size].quantity * -1, isExtraSize: true }
+                    }
+                }, {} as {[key: number]: {quantity: number, isExtraSize: boolean}})
             })
         }
+
+        Object.keys(deliveryProducts).forEach(product => {
+            const pro = deliveryProducts[product];
+            Object.keys(pro.quantities).forEach(size => {
+                const si = pro.quantities[size];
+                if (!invoiceProducts[product]?.quantities[size]) {
+                    differencesMap[product].quantities[size] = { quantity: si.quantity, isExtraSize: true}
+                }
+            })
+        })
 
         return differencesMap;
     }

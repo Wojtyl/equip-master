@@ -10,7 +10,7 @@ supplierRouter
   .route("/")
     .all(authController.auth)
     .get(supplierController.findSupplierWithProducts())
-    .post(generalController.getOne(Supplier))
+    .post(generalController.createOne(Supplier))
     .delete(generalController.deleteAll(Supplier));
 
 supplierRouter
