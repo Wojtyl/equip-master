@@ -1,0 +1,22 @@
+<div>
+  <form *ngIf="invoiceForm" [formGroup]="invoiceForm">
+    <div>
+      <label for="suplier">Dostawca</label>
+      <select id="suplier" formControlName="supplier">
+        <option [ngValue]="invoice.supplier._id">{{invoice.supplier.name}}</option>
+      </select>
+    </div>
+    <div>
+      <label for="number">Numer faktury</label>
+      <input id="number" formControlName="invoiceNumber" type="text">
+    </div>
+    <div>
+      <label for="currency">Waluta</label>
+      <input id="currency" formControlName="currency" type="text">
+    </div>
+    <div>
+      <label for="date">Data wystawienia faktury</label>
+      <input id="date" formControlName="date" type="date">
+    </div>
+  </form>
+</div>

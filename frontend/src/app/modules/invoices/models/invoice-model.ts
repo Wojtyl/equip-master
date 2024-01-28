@@ -1,6 +1,10 @@
 export interface Invoice {
   _id: string;
-  supplierId: string;
+  currency: string;
+  supplier: {
+    _id: string;
+    name: string;
+  };
   invoiceNumber: string;
   products: {
     productId: string;

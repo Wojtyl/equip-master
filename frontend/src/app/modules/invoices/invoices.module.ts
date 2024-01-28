@@ -4,11 +4,18 @@ import { InvoicesRoutingModule } from './invoices-routing.module';
 import { SharedModule } from "../../shared/shared.module";
 
 import * as pages from './pages';
+import * as components from './components';
+import { InvoicesTableComponent } from './components/invoices-table/invoices-table.component'
+
 
 
 @NgModule({
   declarations: [
-    pages.InvoiceAddPageComponent
+    pages.InvoiceAddPageComponent,
+    pages.InvoicePageComponent,
+    pages.InvoiceDetailsPageComponent,
+    components.InvoiceFormComponent,
+    InvoicesTableComponent
   ],
   imports: [
     CommonModule,

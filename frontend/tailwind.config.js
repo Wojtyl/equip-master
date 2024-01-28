@@ -4,7 +4,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        alterbridge: "#faa32a",
+        'dark-bg-1': '#212027',
+        'dark-bg-2': '#26252C',
+        'dark-font-primary': '#F0F0F1',
+        'dark-font-secondary': '#878796'
       },
       borderWidth: {
         '1': '1px'

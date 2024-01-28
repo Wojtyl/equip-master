@@ -37,7 +37,7 @@ export class InvoiceAddPageComponent implements OnInit {
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe(suppliers => this.suppliers = suppliers.supplier);
     this.invoiceService.getAllInvoices().subscribe((resData) => {
-      this.invoices = resData.invoice;
+      this.invoices = resData.items;
     });
 
     this.invoiceForm.get('supplier')?.valueChanges.subscribe((supp) => {
@@ -87,10 +87,11 @@ export class InvoiceAddPageComponent implements OnInit {
   getAllInvoiceValues() {
     return {
       invoiceNumber: this.invoiceForm.get('invoiceNumber')?.value,
-      supplierId: this.invoiceForm.get('supplier')?.value._id,
+      supplier: this.invoiceForm.get('supplier')?.value._id,
       date: this.invoiceForm.get('invoiceDate')!.value,
       nettoPrice: this.invoiceForm.get('nettoPrice')?.value,
       products: this.mapProducts(),
+      currency: 'PLN'
     };
   }
 

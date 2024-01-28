@@ -2,26 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { apiUrl } from 'src/environments/apiurl';
 
-import { invoiceProducts } from 'src/app/shared/models/invoiceProductsModel';
-
-interface ProductOnInvoice {
-  productName: string;
-  quantity: number;
-  price: number;
-}
-
-interface Invoice {
-  _id: string;
-  invoiceNumber: string;
-  date: Date;
-  nettoPrice: number;
-  products: ProductOnInvoice[];
-}
-
-interface AllInvoicesResponse {
-  status: string;
-  invoice: Invoice[];
-}
+import { ListResponse } from "../../shared/models/list-response";
+import { Invoice } from "./models/invoice-model";
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +23,15 @@ export class InvoiceService {
   }
 
   getAllInvoices() {
-    return this.http.get<AllInvoicesResponse>(`${apiUrl}invoices`);
+    return this.http.get<ListResponse<Invoice[]>>(`${apiUrl}invoices`);
+  }
+
+  deleteInvoice(id: string) {
+    return this.http.delete<ListResponse<Invoice[]>>(`${apiUrl}invoices/${id}`);
+  }
+
+  getInvoiceDetails(id: string) {
+    return this.http.get<ListResponse<Invoice>>(`${apiUrl}invoices/${id}`);
+
   }
 }
