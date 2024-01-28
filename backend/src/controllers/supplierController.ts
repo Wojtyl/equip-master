@@ -36,7 +36,7 @@ export const findSupplierInvoices = () => catchAsync(async (req: Request, res: R
     const invoices = await Invoice.aggregate([
         {
           $match: {
-              supplierId: {
+              supplier: {
                   $eq: new Types.ObjectId(req.params.id)
               }
           }
