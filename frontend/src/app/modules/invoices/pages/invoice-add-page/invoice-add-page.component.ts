@@ -1,9 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms';
 import { InvoiceService } from '../../invoice.service';
 import { SupplierService } from '../../../suppliers/supplier.service';
 import { ProductService } from '../../../products/product.service';
 import { Supplier } from 'src/app/shared/models/supplierModel';
+import { CustomAsyncValidators, CustomValidationErrors } from "../../../../core/utils/async-vaildators";
+import { ValidationService } from "../../../../shared/services/validation.service";
+import { Product } from "../../../../shared/models/productModel";
+
+export enum FormFields {
+  Supplier = 'supplier',
+  InvoiceNumber = 'invoiceNumber',
+  InvoiceDate = 'invoiceDate',
+  NettoPrice = 'nettoPrice',
+  Currency = 'currency',
+  Products = 'products',
+}
+
+interface InvoiceProduct {
+  product: Product;
+  quantity: number;
+  price: number;
+  size: string;
+}
 
 @Component({
   selector: 'app-invoice-add-page',
@@ -12,79 +39,93 @@ import { Supplier } from 'src/app/shared/models/supplierModel';
 })
 export class InvoiceAddPageComponent implements OnInit {
   invoiceForm: FormGroup;
-
   suppliers: any = null;
-
-  isAdding = false;
-
   productsGroup: FormGroup;
-
   selectedSupplier: Supplier;
-
   invoiceTotalPrice = 0;
-
   isEditingControl = -1;
-
   editingFormGroup: UntypedFormGroup;
 
-  productAdded = false;
+  pageSizes = [1, 5, 10, 30, -1];
+  totalPageCount = 1;
+  maxPageElements = 5;
+  currentPage = 1;
+  controls: AbstractControl<any>[];
 
-  invoices: any[];
+  protected readonly FormFields = FormFields;
+  protected readonly CustomValidationErrors = CustomValidationErrors;
 
-  constructor(private formBuilder: FormBuilder, private invoiceService: InvoiceService, private supplierService: SupplierService, private productService: ProductService) {}
+  constructor(private formBuilder: FormBuilder,
+              private invoiceService: InvoiceService,
+              private supplierService: SupplierService,
+              private productService: ProductService,
+              private validationService: ValidationService) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.supplierService.getAllSuppliers().subscribe(suppliers => this.suppliers = suppliers.supplier);
-    this.invoiceService.getAllInvoices().subscribe((resData) => {
-      this.invoices = resData.items;
-    });
+    this.initAddProductForm();
+    this.supplierService.getAllSuppliers()
+      .subscribe((suppliers) => {
+        this.suppliers = suppliers.supplier;
+      })
 
-    this.invoiceForm.get('supplier')?.valueChanges.subscribe((supp) => {
-      this.selectedSupplier = supp;
+    this.invoiceForm.get('supplier')?.valueChanges.subscribe((supplier) => {
+      this.selectedSupplier = supplier;
+    })
+
+    this.invoiceForm.get(FormFields.Products)?.valueChanges.subscribe(() => {
+      this.setupPagination();
     })
   }
-  initForm() {
+
+  private initForm() {
     this.invoiceForm = this.formBuilder.group({
-      supplier: [null, Validators.required],
-      invoiceDate: [null, Validators.required],
-      invoiceNumber: [null, Validators.required],
-      nettoPrice: [null, Validators.required],
-      products: new FormArray([]),
+      [FormFields.Supplier]: [null, Validators.required],
+      [FormFields.InvoiceDate]: [null, Validators.required],
+      [FormFields.InvoiceNumber]: [null, Validators.required, [CustomAsyncValidators.uniqueInvoiceNumber(this.validationService)]],
+      [FormFields.NettoPrice]: [null, Validators.required],
+      [FormFields.Products]: new FormArray([]),
+      [FormFields.Currency]: [null, Validators.required]
     });
   }
 
-  onSubmit() {
-    this.invoiceService.addInvoice(this.getAllInvoiceValues()).subscribe();
+  public checkFormValid() {
+    return this.invoiceForm.touched && this.invoiceForm.valid;
   }
 
-  addProductsFormInit() {
-    this.isAdding ? this.isAdding = false : this.initAddProductForm();
+  public getControlErrors(controlName: FormFields) {
+    return this.invoiceForm.get(controlName)?.errors ?? {};
   }
 
-  initAddProductForm() {
-    this.isAdding = true;
-      this.productsGroup = this.formBuilder.group({
-        product: null,
-        quantity: null,
-        price: null,
-        size: null
-      });
+  private setupPagination() {
+    const elements = (this.invoiceForm.get(FormFields.Products) as FormArray).controls;
+    if (elements?.length > 0) {
+      this.totalPageCount = Math.ceil(elements.length / this.maxPageElements);
+    }
+    this.paginateControls(this.currentPage);
   }
 
-  getProductsControls() {
-    return (<FormArray>this.invoiceForm.get('products')).controls as FormControl[];
+  private initAddProductForm() {
+    this.productsGroup = this.formBuilder.group({
+      product: null,
+      quantity: null,
+      price: null,
+      size: null,
+    });
   }
 
-  addProduct() {
+  public getProductsControlsRaw(): InvoiceProduct[] {
+    return this.invoiceForm.get('products')?.getRawValue();
+  }
+
+  public addProduct() {
     const { price, quantity } = this.productsGroup.value;
     const control = new FormControl(this.productsGroup.value);
     this.invoiceTotalPrice += price * quantity;
-    this.productAdded = true;
     (<FormArray>this.invoiceForm.get('products')).push(control);
   }
 
-  getAllInvoiceValues() {
+  private getAllInvoiceValues() {
     return {
       invoiceNumber: this.invoiceForm.get('invoiceNumber')?.value,
       supplier: this.invoiceForm.get('supplier')?.value._id,
@@ -95,8 +136,8 @@ export class InvoiceAddPageComponent implements OnInit {
     };
   }
 
-  editControl(control, i) {
-    const { quantity, price } = control.getRawValue();
+  public editControl(i: number) {
+    const { quantity, price } = this.controls[i].getRawValue();
     this.editingFormGroup = this.formBuilder.group({
       quantity,
       price
@@ -104,11 +145,11 @@ export class InvoiceAddPageComponent implements OnInit {
     this.isEditingControl = i;
   }
 
-  updateControl(control: FormControl) {
-    const oldValues = control.getRawValue();
+  public updateControl(i: number) {
+    const oldValues = this.controls[i].getRawValue();
     const { quantity: newQ, price: newP } = this.editingFormGroup.getRawValue();
     this.invoiceTotalPrice += (newQ * newP) - (oldValues.quantity * oldValues.price);
-    control.patchValue({
+    this.controls[i].patchValue({
       ...oldValues,
       price: newP,
       quantity: newQ
@@ -116,11 +157,35 @@ export class InvoiceAddPageComponent implements OnInit {
     this.isEditingControl = -1;
   }
 
-  cancelEdit() {
+  public cancelEdit() {
     this.isEditingControl = -1;
   }
 
-  mapProducts() {
+  public paginateControls(page: number) {
+    const elements = (this.invoiceForm.get(FormFields.Products) as FormArray).controls;
+    this.currentPage = page;
+    this.totalPageCount = Math.ceil(elements.length / this.maxPageElements);
+    if (this.maxPageElements === -1) {
+      this.controls = elements;
+    } else {
+      this.controls = elements.slice((page - 1) * this.maxPageElements, (page - 1) * this.maxPageElements + this.maxPageElements);
+    }
+  }
+
+  public changePaginationSize(size: number) {
+    this.maxPageElements = size;
+    this.paginateControls(this.currentPage);
+  }
+
+  public getPageCount() {
+    if (this.maxPageElements === -1) {
+      return []
+    } else {
+      return new Array(this.totalPageCount);
+    }
+  }
+
+  private mapProducts() {
     return this.invoiceForm.get('products')?.value.map((prod) => {
       return {
         productId: prod.product._id,
@@ -129,5 +194,13 @@ export class InvoiceAddPageComponent implements OnInit {
         size: prod.size
       };
     })
+  }
+
+  public getInvoiceTotalAmount() {
+    return this.getProductsControlsRaw().reduce((a, b) => a + (b.quantity * b.price), 0)
+  }
+
+  public onSubmit() {
+    this.invoiceService.addInvoice(this.getAllInvoiceValues()).subscribe();
   }
 }
