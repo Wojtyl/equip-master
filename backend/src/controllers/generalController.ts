@@ -44,7 +44,7 @@ const updateOne = (Model) =>
 
     res.status(200).json({
       status: "success",
-      [modelName]: data,
+      items: data,
     });
   });
 

@@ -60,6 +60,7 @@ label {
 
 .p-inputtext {
   padding: 0.35rem 0.55rem !important;
+  font-size: 0.875rem !important;
 
   &:enabled:focus.ng-dirty.ng-invalid{
     box-shadow: 0 0 1px 0.2rem #e24c4c8f !important;
@@ -113,6 +114,7 @@ label {
 }
 
 .form-section-container {
+  min-height: 35rem;
   box-shadow: 0 0 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 

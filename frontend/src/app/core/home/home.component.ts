@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     this.http
       .get<any>(`${apiUrl}suppliers`)
       .subscribe((sup) => {
-        this.suppliers = sup.supplier;
+        this.suppliers = sup.items;
       });
   }
 }

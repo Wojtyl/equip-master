@@ -1,5 +1,6 @@
-export interface invoiceProducts {
-  product: string;
+export interface InvoiceProducts {
+  productId: string;
+  size: string;
   quantity: number;
   price: number;
 }

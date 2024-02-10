@@ -15,6 +15,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { ListboxModule } from 'primeng/listbox';
 import { InputNumberModule } from "primeng/inputnumber";
+import { TooltipModule } from 'primeng/tooltip';
+import { SkeletonModule } from 'primeng/skeleton';
+import { MessagesModule } from 'primeng/messages';
+
 //Component imports
 import * as components from './components'
 
@@ -38,8 +42,11 @@ import * as components from './components'
     InputTextModule,
     ListboxModule,
     MultiSelectModule,
+    MessagesModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SkeletonModule,
+    TooltipModule
   ],
   exports: [
     AutoCompleteModule,
@@ -55,8 +62,11 @@ import * as components from './components'
     InputTextModule,
     ListboxModule,
     MultiSelectModule,
+    MessagesModule,
     NgbModule,
     ReactiveFormsModule,
+    SkeletonModule,
+    TooltipModule,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
     components.AddProductComponent

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from "@angular/router";
-import { Invoice } from "../../models/invoice-model";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Invoice, InvoiceForm } from "../../models/invoice-model";
 import { InvoiceService } from "../../invoice.service";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-invoice-details-page',
@@ -12,22 +11,33 @@ import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 export class InvoiceDetailsPageComponent implements OnInit {
 
   protected invoice: Invoice;
+  public invoiceFormData: InvoiceForm | null;
+  public isLoading = true;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private invoiceService: InvoiceService) {
   }
 
   ngOnInit() {
-    console.log(window.history.state)
-    this.invoice = window.history.state.invoice;
-
-    if (!this.invoice) {
-      console.log('pobieram')
       this.invoiceService.getInvoiceDetails(this.route.snapshot.params['id']).subscribe(invoice => {
         this.invoice = invoice.items;
       });
+  }
+
+  onSubmit() {
+    if (this.invoiceFormData) {
+     this.invoiceService.updateInvoice(this.invoiceFormData, this.invoice._id)
+       .subscribe((invoice) => {
+       this.invoice = invoice.items;
+     })
     }
   }
 
+  onDelete() {
+    this.invoiceService.deleteInvoice(this.invoice._id).subscribe(() => {
+      this.router.navigate(['/invoices'])
+    });
+  }
 
 }

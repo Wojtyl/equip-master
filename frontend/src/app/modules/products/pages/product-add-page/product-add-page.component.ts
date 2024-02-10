@@ -32,7 +32,7 @@ export class ProductAddPageComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe((resData) => {
-      this.suppliers = resData.supplier;
+      this.suppliers = resData.items;
     });
 
     this.productService.getAllProducts().subscribe(products => {
