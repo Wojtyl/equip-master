@@ -13,7 +13,6 @@ import { Product } from "../../../../shared/models/productModel";
 import { Invoice, InvoiceForm } from "../../models/invoice-model";
 import { InvoiceProducts } from "../../../../shared/models/invoiceProductsModel";
 import { combineLatest, filter, Subject } from "rxjs";
-import { MessageService } from "primeng/api";
 
 export enum InvoiceFormFields {
   Supplier = 'supplier',
@@ -66,8 +65,7 @@ export class InvoiceFormComponent implements OnInit {
 
   constructor(private formBuilder: UntypedFormBuilder,
               private supplierService: SupplierService,
-              private validationService: ValidationService,
-              private messageService: MessageService) {
+              private validationService: ValidationService) {
   }
 
   ngOnInit(): void {
@@ -112,6 +110,7 @@ export class InvoiceFormComponent implements OnInit {
       this.createProductNameMap(this.selectedSupplier.products);
       this.invoice.products.forEach((product) => this.addProduct(product));
       this.setupPagination();
+      this.invoiceForm.get(InvoiceFormFields.Supplier)?.disable()
     }
   }
 
@@ -239,9 +238,5 @@ export class InvoiceFormComponent implements OnInit {
 
   private timestampToFormatDate(timestamp: number): Date | null {
     return this.invoice?.date ? new Date(timestamp) : null;
-  }
-
-  addMessage() {
-    this.messageService.add({id:'test', severity: 'success', summary: 'Test summary', detail: 'details'})
   }
 }
