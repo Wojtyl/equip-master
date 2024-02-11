@@ -25,9 +25,7 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.scss",
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -68,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "equip-master:build:production"
+              "buildTarget": "equip-master:build:production"
             },
             "development": {
-              "browserTarget": "equip-master:build:development"
+              "buildTarget": "equip-master:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "equip-master:build"
+            "buildTarget": "equip-master:build"
           }
         },
         "test": {
