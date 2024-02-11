@@ -199,12 +199,16 @@ export class InvoiceFormComponent implements OnInit {
 
   public paginateControls(page: number) {
     const elements = (this.invoiceForm.get(InvoiceFormFields.Products) as FormArray).controls;
-    this.currentPage = page;
     this.totalPageCount = Math.ceil(elements.length / this.maxPageElements);
+    if (page > this.totalPageCount) {
+      this.currentPage = this.totalPageCount;
+    } else {
+      this.currentPage = page;
+    }
     if (this.maxPageElements === -1) {
       this.controls = elements;
     } else {
-      this.controls = elements.slice((page - 1) * this.maxPageElements, (page - 1) * this.maxPageElements + this.maxPageElements);
+      this.controls = elements.slice((this.currentPage - 1) * this.maxPageElements, (this.currentPage - 1) * this.maxPageElements + this.maxPageElements);
     }
   }
 

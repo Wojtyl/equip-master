@@ -25,7 +25,8 @@
     </div>
     <div class="flex flex-col w-auto">
       <label class="input-label" for="invoiceDate">Data wystawienia faktury</label>
-      <p-calendar id="invoiceDate" class="w-full" dateFormat="dd-mm-yy" [formControlName]="FormFields.InvoiceDate" [showIcon]="true"></p-calendar>
+      <p-calendar id="invoiceDate" class="w-full" dateFormat="dd-mm-yy" [formControlName]="FormFields.InvoiceDate"
+                  [showIcon]="true"></p-calendar>
     </div>
     <div class="flex flex-col flex-grow">
       <label class="input-label" for="nettoPrice">Wartość netto</label>
@@ -49,18 +50,20 @@
       Wybrany dostawca nie posiada zadnych produktow. Kliknij tutaj aby dodać produkt
     </h2>
   </ng-container>
-  <app-add-product *ngIf="selectedSupplier?.products?.length && (!isEditMode || isEditing)" [formGroup]="productsGroup"
+  <app-add-product *ngIf="selectedSupplier?.products?.length" [formGroup]="productsGroup"
                    [products]="selectedSupplier.products" (onAddProduct)="addProduct()">
   </app-add-product>
   <div formArrayName="products">
     <div class="flex flex-col justify-end items-end text-sm text-secondary mb-2">
       <p class="text-gray-950 text-md font-bold">Pokaż:</p>
       <div class="flex gap-2 justify-end items-center">
-        <p *ngFor="let size of pageSizes"
-           class="cursor-pointer"
-           [ngClass]="{'font-bold text-gray-900': maxPageElements === size}"
-           (click)="changePaginationSize(size)">{{ size === -1 ? "Wszystko" : size }}
-        </p>
+        @for (size of pageSizes; track size) {
+          <button class="cursor-pointer"
+             [ngClass]="{'font-bold text-gray-900': maxPageElements === size}"
+             (click)="changePaginationSize(size)">
+            {{ size === -1 ? "Wszystko" : size }}
+          </button>
+        }
       </div>
     </div>
     <table
@@ -119,7 +122,7 @@
           produkt nie został jeszcze dodany
         </td>
       </tr>
-      <ng-container *ngFor="let product of controls; let i = index">
+      @for (product of controls; let i = $index; track product) {
         <tr>
           <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
             <div class="inline-flex items-center gap-x-3">
@@ -139,7 +142,7 @@
           <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
               <span *ngIf="isEditingControl !== i">
                 <span>{{ product.value.price }}</span>
-                <span class="font-bold"> {{getCurrency()}}</span>
+                <span class="font-bold"> {{ getCurrency() }}</span>
               </span>
             <ng-container *ngIf="isEditingControl === i" [formGroup]="editingFormGroup">
               <input pInputText class="p-inputtext-sm" type="number" formControlName="price"/>
@@ -156,30 +159,36 @@
           <td
             class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
             <span>{{ product.value.quantity * product.value.price }}</span>
-            <span class="font-bold"> {{getCurrency()}}</span>
+            <span class="font-bold"> {{ getCurrency() }}</span>
           </td>
           <td class="px-4 py-4 text-sm whitespace-nowrap">
-            <div *ngIf="!isEditMode || isEditing" class="flex items-center gap-x-6">
-              <button (click)="editControl(i)" *ngIf="isEditingControl !== i"
-                      class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                Edytuj
-              </button>
-              <button (click)="deleteControl(i)" *ngIf="isEditingControl !== i"
-                      class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                Usuń
-              </button>
-              <button (click)="cancelEdit()" *ngIf="isEditingControl === i"
-                      class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                Anuluj
-              </button>
-              <button (click)="updateControl(i)" *ngIf="isEditingControl === i"
-                      class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                Zapisz
-              </button>
-            </div>
+<!--            @if (!isEditMode || isEditing) {-->
+              <div class="flex items-center gap-x-6">
+                @if (isEditingControl === i) {
+                  <button (click)="cancelEdit()"
+                          class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                    Anuluj
+                  </button>
+                  <button (click)="updateControl(i)"
+                          class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                    Zapisz
+                  </button>
+                } @else {
+                  <button (click)="editControl(i)"
+                          class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                    Edytuj
+                  </button>
+                  <button (click)="deleteControl(i)"
+                          class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+                    Usuń
+                  </button>
+                }
+
+              </div>
+<!--            }-->
           </td>
         </tr>
-      </ng-container>
+      }
       </tbody>
       <tfoot *ngIf="getProductsControlsRaw()?.length !== 0">
       <tr>
@@ -191,7 +200,7 @@
         <td
           class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
           <span>{{ getInvoiceTotalAmount() }}</span>
-          <span class="font-bold"> {{getCurrency()}}</span>
+          <span class="font-bold"> {{ getCurrency() }}</span>
         </td>
       </tr>
       </tfoot>
@@ -201,7 +210,10 @@
       <div class="absolute left-0">
         <button (click)="paginateControls(currentPage - 1)"
                 [class.hidden]="!(totalPageCount > 1 && currentPage > 1)"
-                class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors
+                duration-200 bg-white border rounded-md gap-x-2
+                hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200
+                dark:border-gray-700 dark:hover:bg-gray-800">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/>
@@ -209,24 +221,28 @@
           <span>previous</span>
         </button>
       </div>
-
       <div class="items-center hidden md:flex gap-x-3">
-        <ng-container *ngFor="let page of getPageCount(); let i = index">
-          <button *ngIf="currentPage === i + 1"
-                  class="px-2 py-1 text-sm text-blue-500 rounded-md dark:bg-gray-800 bg-blue-100/60 cursor-pointer">{{ i + 1 }}
-          </button>
-          <button *ngIf="currentPage !== i + 1" (click)="paginateControls(i + 1)"
-                  class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300
+        @for (page of getPageCount(); let i = $index; track page) {
+          @if (currentPage === i + 1) {
+            <button class="px-2 py-1 text-sm text-blue-500 rounded-md dark:bg-gray-800 bg-blue-100/60 cursor-pointer">
+              {{ i + 1 }}
+            </button>
+          } @else {
+            <button (click)="paginateControls(i + 1)"
+                    class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300
                   hover:bg-gray-100 cursor-pointer">{{ i + 1 }}
-          </button>
-        </ng-container>
+            </button>
+          }
+        }
       </div>
 
       <div class="absolute right-0">
         <button
           (click)="paginateControls(currentPage + 1)"
           [class.hidden]="!(totalPageCount > 1 && currentPage < totalPageCount)"
-          class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+          class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors
+          duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900
+          dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
           <span>Next</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
