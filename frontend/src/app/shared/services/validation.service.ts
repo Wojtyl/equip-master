@@ -8,10 +8,17 @@ import { map } from "rxjs";
 })
 export class ValidationService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   public validateInvoiceNumber(invoiceNumber: string) {
-    return this.httpClient.post<{unique: boolean}>(`${apiUrl}validation/invoiceNumberUnique`, {invoiceNumber}).pipe(
+    return this.httpClient.post<{ unique: boolean }>(`${apiUrl}validation/invoiceNumberUnique`, { invoiceNumber }).pipe(
+      map(res => res.unique)
+    );
+  }
+
+  public validateSupplierVatID(supplierVatId: string) {
+    return this.httpClient.post<{ unique: boolean }>(`${apiUrl}validation/supplierVatIdUnique`, { supplierVatId }).pipe(
       map(res => res.unique)
     );
   }

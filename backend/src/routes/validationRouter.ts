@@ -7,5 +7,8 @@ validationRouter
     .route("/invoiceNumberUnique")
     .post(validationController.validateUniqueInvoiceNumber())
 
+validationRouter.route('/supplierVatIdUnique')
+    .post(validationController.validateUniqueSupplierVatId())
+
 
 export { validationRouter };
