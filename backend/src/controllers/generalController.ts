@@ -29,7 +29,7 @@ const getOne = (Model) =>
     const data = await Model.findById(req.params.id);
     res.status(200).json({
       status: "success",
-      [modelName]: data,
+      items: data,
     });
   });
 

@@ -70,6 +70,17 @@ label {
   font-size: 0.9rem !important;
 }
 
+.p-inputgroup {
+  button {
+    padding: 0.35rem 0.95rem !important;
+    font-size: 0.825rem !important;
+  }
+}
+
+.p-chip {
+  font-size: 0.825rem;
+}
+
 .input-label {
   font-size: 0.9rem;
 }
@@ -111,9 +122,9 @@ label {
 }
 
 
-input:not([type="checkbox"]) {
-  @apply border-solid border-1 w-full py-2 px-3 rounded-xl;
-}
+//input:not([type="checkbox"]) {
+//  @apply border-solid border-1 w-full py-2 px-3 rounded-xl;
+//}
 
 h1 {
   @apply text-4xl

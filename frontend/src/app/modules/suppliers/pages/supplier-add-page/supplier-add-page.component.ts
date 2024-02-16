@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { SupplierService } from '../../supplier.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { Supplier } from "../../../../shared/models/supplierModel";
+import { SupplierService } from "../../supplier.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-supplier-add-page',
@@ -8,31 +9,20 @@ import { SupplierService } from '../../supplier.service';
   styleUrls: ['./supplier-add-page.component.scss'],
 })
 export class SupplierAddPageComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private supplierService: SupplierService) {}
-
-  supplierForm: FormGroup;
-
+  formData: Supplier | null
+  supplierService = inject(SupplierService);
+  router = inject(Router);
   ngOnInit(): void {
-    this.initForm();
-  }
-
-  initForm(): void {
-    this.supplierForm = this.formBuilder.group({
-      name: '',
-      taxIdNum: '',
-      description: '',
-      address: this.formBuilder.group({
-        street: '',
-        city: '',
-        postalCode: '',
-        state: '',
-        country: '',
-      }),
-      productColors: ''
-    });
   }
 
   onSubmit() {
-    this.supplierService.addSupplier(this.supplierForm.value).subscribe();
+    this.supplierService.addSupplier(this.formData).subscribe(() => {
+      window.alert('Supplier created successfully')
+      this.router.navigate(['/suppliers'])
+    });
+  }
+
+  setForm(formData: Supplier | null) {
+    this.formData = formData;
   }
 }

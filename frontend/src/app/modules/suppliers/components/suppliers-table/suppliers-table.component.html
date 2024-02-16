@@ -1,0 +1,27 @@
+<table *ngIf="suppliers" class="w-full text-sm table-auto">
+  <thead class="text-zinc-500">
+  <tr class="bg-zinc-100">
+    <td>Nazwa</td>
+    <td>NIP</td>
+    <td>Email</td>
+    <td>Telefon</td>
+    <td>Miasto</td>
+    <td></td>
+  </tr>
+  </thead>
+  <tbody>
+    @for (supplier of suppliers; track supplier._id; let i = $index) {
+      <tr>
+        <td>{{supplier.name}}</td>
+        <td>{{supplier.taxIdNum}}</td>
+        <td>{{supplier.email}}</td>
+        <td>{{supplier.phoneNumber}}</td>
+        <td>{{supplier.address.city}}</td>
+        <td class="flex items-center justify-center gap-1">
+          <app-svg-icon class="cursor-pointer" icon="expand_icon" [scale]="1.2" (click)="openDetails(i)"></app-svg-icon>
+        </td>
+      </tr>
+    }
+
+  </tbody>
+</table>

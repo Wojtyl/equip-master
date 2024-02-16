@@ -21,11 +21,19 @@ export class SupplierService {
     return this.http.get<ListResponse<Supplier[]>>(`${apiUrl}suppliers`);
   }
 
+  getSupplier(id: string) {
+    return this.http.get<ListResponse<Supplier>>(`${apiUrl}suppliers/${id}`);
+  }
+
   getSupplierInvoices(supplierId: string): Observable<ListResponse<Invoice[]>> {
     return this.http.get<ListResponse<Invoice[]>>(`${apiUrl}suppliers/${supplierId}/invoices`)
   }
 
   getSupplierProducts(supplierId: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${apiUrl}suppliers/${supplierId}/products`);
+  }
+
+  updateSupplier(formData: Supplier, supplierId: any) {
+    return this.http.patch(`${apiUrl}suppliers/${supplierId}`, formData);
   }
 }

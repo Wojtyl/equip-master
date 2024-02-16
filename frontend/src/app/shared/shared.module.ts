@@ -18,21 +18,31 @@ import { InputNumberModule } from "primeng/inputnumber";
 import { TooltipModule } from 'primeng/tooltip';
 import { SkeletonModule } from 'primeng/skeleton';
 import { MessagesModule } from 'primeng/messages';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ChipModule } from 'primeng/chip';
+
 
 //Component imports
-import * as components from './components'
+import * as components from './components';
+
+//Form fields imports
+import * as form from './forms';
 
 @NgModule({
   declarations: [
     components.AddProductComponent,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
+    form.InputFieldComponent,
+    form.FormControlsHeaderComponent,
   ],
   imports: [
     AutoCompleteModule,
     ButtonModule,
     CalendarModule,
     ChipsModule,
+    ChipModule,
     CommonModule,
     DropdownModule,
     FormsModule,
@@ -40,6 +50,8 @@ import * as components from './components'
     HttpClientModule,
     InputNumberModule,
     InputTextModule,
+    InputGroupAddonModule,
+    InputGroupModule,
     ListboxModule,
     MultiSelectModule,
     MessagesModule,
@@ -53,6 +65,7 @@ import * as components from './components'
     ButtonModule,
     CalendarModule,
     ChipsModule,
+    ChipModule,
     CommonModule,
     DropdownModule,
     FormsModule,
@@ -60,6 +73,8 @@ import * as components from './components'
     HttpClientModule,
     InputNumberModule,
     InputTextModule,
+    InputGroupAddonModule,
+    InputGroupModule,
     ListboxModule,
     MultiSelectModule,
     MessagesModule,
@@ -69,7 +84,9 @@ import * as components from './components'
     TooltipModule,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
-    components.AddProductComponent
+    components.AddProductComponent,
+    form.InputFieldComponent,
+    form.FormControlsHeaderComponent
   ]
 })
 export class SharedModule { }

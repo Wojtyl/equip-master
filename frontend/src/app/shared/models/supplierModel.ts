@@ -5,13 +5,18 @@ interface Address {
   state: string;
   city: string;
   country: string;
+  street: string;
 }
 
 export interface Supplier {
   _id: string;
   address: Address;
   name: string;
-  taxIdNum: string;
+  email: string;
+  phoneNumber: string;
+  taxIdNum: number;
+  contact: string;
+  website: string;
   descrption: string;
   active: boolean;
   addedAt: Date;
