@@ -40,6 +40,9 @@ class ServerApp {
       console.log(process.env.DB_CONNECTION);
       app.use(morgan("dev"));
     }
+
+    app.use("/images/product", e.static(`${__dirname}/public/images/products`))
+
     app.use("/api/v1/auth", authRouter);
     app.use("/api/v1/suppliers", supplierRouter);
     app.use("/api/v1/deliveries", deliveryRouter);

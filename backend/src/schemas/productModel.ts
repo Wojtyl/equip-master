@@ -11,6 +11,7 @@ export interface IProduct {
   attributes: attributes;
   category: string;
   supplierId: Types.ObjectId;
+  imageUrl: string;
   createdAt: Date;
   createdBy: Types.ObjectId;
 }
@@ -47,6 +48,9 @@ const productSchema = new mongoose.Schema<
     colour: {
       type: String,
     },
+  },
+  imageUrl: {
+    type: String
   },
   category: [
     {

@@ -10,7 +10,7 @@ import * as components from './components';
 @NgModule({
   declarations: [
     pages.InvoiceAddPageComponent,
-    pages.InvoicePageComponent,
+    pages.InvoicesPageComponent,
     pages.InvoiceDetailsPageComponent,
     components.InvoiceFormComponent,
     InvoicesTableComponent

@@ -36,7 +36,7 @@ export class ProductAddPageComponent implements OnInit {
     });
 
     this.productService.getAllProducts().subscribe(products => {
-      this.products = products.product;
+      this.products = products.items;
     })
 
     this.categoryService.getCategories().subscribe(categories => {

@@ -6,8 +6,16 @@ import { ProductService } from "./product.service";
 const routes: Routes = [
   {
     path: '',
+    component: components.ProductsPageComponent
+  },
+  {
+    path: ':id/edit',
+    component: components.ProductDetailsPageComponent
+  },
+  {
+    path: 'add',
     component: components.ProductAddPageComponent
-  }
+  },
 ];
 
 @NgModule({

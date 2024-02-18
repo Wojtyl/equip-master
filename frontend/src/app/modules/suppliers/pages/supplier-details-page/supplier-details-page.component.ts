@@ -18,7 +18,6 @@ export class SupplierDetailsPageComponent implements OnInit {
   ngOnInit() {
     this.getSupplier$.subscribe(response => {
       this.supplier = response.items;
-      window.alert('Supplier updated successfully')
     })
   }
 
@@ -28,7 +27,9 @@ export class SupplierDetailsPageComponent implements OnInit {
 
   onSubmit() {
     if (this.formData) {
-      this.supplierService.updateSupplier(this.formData, this.supplierId).subscribe();
+      this.supplierService.updateSupplier(this.formData, this.supplierId).subscribe(() => {
+        window.alert('Supplier updated successfully');
+      });
     }
   }
 }

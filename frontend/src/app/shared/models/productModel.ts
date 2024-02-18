@@ -5,6 +5,7 @@ export interface Product {
   createdAt: Date,
   productIndex: string,
   supplierId: string,
+  imageUrl: string,
   name: string
 }
 

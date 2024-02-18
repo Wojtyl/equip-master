@@ -23,11 +23,7 @@ export class ProductService {
   }
 
   getAllProducts() {
-    return this.http.get<ProductResponse>(`${apiUrl}products`);
-  }
-
-  deleteProduct(id: string) {
-    return this.http.delete<unknown>(`${apiUrl}products/${id}`);
+    return this.http.get<ListResponse<Product[]>>(`${apiUrl}products`);
   }
 
   getProductBySupplier(id: string) {

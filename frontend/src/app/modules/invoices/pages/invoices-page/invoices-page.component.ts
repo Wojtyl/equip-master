@@ -3,11 +3,11 @@ import { InvoiceService } from "../../invoice.service";
 import { Invoice } from "../../models/invoice-model";
 
 @Component({
-  selector: 'app-invoice-page',
-  templateUrl: './invoice-page.component.html',
-  styleUrls: ['./invoice-page.component.scss']
+  selector: 'app-invoices-page',
+  templateUrl: './invoices-page.component.html',
+  styleUrls: ['./invoices-page.component.scss']
 })
-export class InvoicePageComponent implements OnInit {
+export class InvoicesPageComponent implements OnInit {
   protected invoices: Invoice[];
 
   constructor(public invoiceService: InvoiceService) {

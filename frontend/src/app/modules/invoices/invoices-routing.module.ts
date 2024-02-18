@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     runGuardsAndResolvers: "always",
-    component: pages.InvoicePageComponent,
+    component: pages.InvoicesPageComponent,
   },
   {
     path: 'create',

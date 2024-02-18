@@ -1,0 +1,29 @@
+.product-card-container {
+  background-color: rgba(243, 240, 240, 0.51);
+  box-shadow: 0 3px 25px -17px rgba(66, 68, 90, 1);
+  height: 100%;
+  width: 18rem;
+  border-radius: 10px;
+
+
+  img {
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+.product-size {
+  background-color: rgba(208, 208, 208, 0.42);
+  padding: 0.1rem 0.3rem;
+  border-radius: 5px;
+}
+
+.btn-product {
+  &, &:hover {
+    transition: all 0.3s ease;
+  }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 14px -3px rgb(176, 176, 178);
+  }
+
+}
