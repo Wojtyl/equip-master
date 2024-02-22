@@ -29,7 +29,7 @@ class ServerApp {
     app.use(cors());
 
     //Body parser, reading data from body into req.body
-    app.use(e.json({ limit: "10kb" }));
+    app.use(e.json({ limit: "1000kb" }));
     app.use(e.urlencoded({ extended: true, limit: "10kb" }));
 
     //Cookies parser to get req.cookies

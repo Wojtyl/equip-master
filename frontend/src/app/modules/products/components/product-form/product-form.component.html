@@ -1,1 +1,66 @@
-<p>product-form works!</p>
+<form *ngIf="productForm" [formGroup]="productForm">
+  <app-form-controls-header header="Dane produktu" subtitle="Podaj główne dane produktu"></app-form-controls-header>
+  <div class="form-section grid grid-cols-2 gap-4">
+    <app-input-field label="Nazwa" controlName="name" name="name"></app-input-field>
+    <app-input-field label="Indeks" controlName="productIndex" name="index"></app-input-field>
+    <div class="flex flex-col flex-grow">
+      <label class="input-label" for="supplier">Dostawca</label>
+      <p-dropdown class="w-full"
+                  id="supplier"
+                  [options]="suppliers"
+                  optionValue="_id"
+                  optionLabel="name"
+                  placeholder="Wybierz dostawcę"
+                  formControlName="supplier"
+                  [filter]="true">
+      </p-dropdown>
+    </div>
+    <div class="flex flex-col flex-grow">
+      <label class="input-label" for="category">Kategoria</label>
+      <p-dropdown class="w-full"
+                  id="category"
+                  [options]="categories"
+                  optionValue="_id"
+                  optionLabel="name"
+                  placeholder="Wybierz kategorię"
+                  formControlName="category"
+                  [filter]="true">
+      </p-dropdown>
+      <span class="text-sm text-blue-500 mt-2 cursor-pointer hover:text-blue-600">Dodaj kategorię +</span>
+    </div>
+    <div formGroupName="attributes">
+      <label class="input-label" for="supplier">Rozmiar</label>
+      <p-listbox formControlName="size" [options]="sizes" optionValue="name" optionLabel="name" [style]="{'width':'15rem'}" [multiple]="true" [metaKeySelection]="false" [listStyle]="{'max-height': '220px'}"></p-listbox>
+    </div>
+    <div class="flex flex-col col-span-2 flex-grow">
+      <label class="input-label" for="supplier">Opis</label>
+      <textarea pInputTextarea formControlName="description" rows="5"></textarea>
+    </div>
+
+    <div class="flex flex-col col-span-2 flex-grow">
+      <label class="input-label" for="category">Dodaj zdjęcie</label>
+      <div class="flex items-center justify-center w-full">
+        <label for="dropzone-file"
+               class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+
+            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+            </svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span>
+              or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          </div>
+          <input #addImageInput id="dropzone-file" type="file" (change)="onImageAdded()" class="hidden"/>
+        </label>
+      </div>
+      <div class="flex gap-4">
+        @for (image of uploadedImages; track image) {
+          <img [src]="image" alt="preview image" class="w-48 h-48 object-cover">
+        }
+      </div>
+    </div>
+  </div>
+</form>

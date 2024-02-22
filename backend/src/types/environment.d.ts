@@ -11,6 +11,8 @@ declare global {
             NODE_ENV: string;
             JWT_SECRET: string;
             JWT_EXPIRES_IN: string;
+            APP_URL: string;
+            PRODUCT_IMAGE_BUCKET: string;
         }
     }
 }

@@ -13,7 +13,7 @@ const routes: Routes = [
     component: components.ProductDetailsPageComponent
   },
   {
-    path: 'add',
+    path: 'create',
     component: components.ProductAddPageComponent
   },
 ];

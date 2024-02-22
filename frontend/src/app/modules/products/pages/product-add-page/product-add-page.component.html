@@ -1,60 +1,24 @@
-<div>
-  <div class="flex flex-col justify-center items-center h-full">
-    <div class="w-3/6 mb-8">
-      <h1 class="font-bold text-5xl leading-snug">Dodaj produkt</h1>
-      <p class="text-gray-500">
-        Produkty są kluczowym elementem dostawy - w końcu to je zamawiamy. Dodaj
-        produkty, są potrzebne m.in do stworzenia faktury czy dostawy.
-      </p>
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/products"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Dodaj produkt</h1>
+        <p class="text-gray-500 line-clamp-3">Dodaj wszystkie produkty z Twojego asortymentu</p>
+      </div>
     </div>
-    <form
-      [formGroup]="productForm"
-      class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit"
-      (ngSubmit)="onSubmit()"
-    >
-      <div class="flex flex-col col-span-2">
-        <label for="supplier">Dostawca</label>
-        <app-multiselect-dropdown
-          controlName="supplierId"
-          [items]="suppliers"
-          placeholder="Wybierz dostawcę"
-          (selectedItem)="onSelect($event)"
-        ></app-multiselect-dropdown>
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <app-product-form (uploadFile)="uploadFile = $event" (productFormData)="productFormData = $event"></app-product-form>
+      <div class="flex w-full justify-center items-center">
+        <p-button (click)="onSubmit()" [disabled]="!productFormData" class="mt-[4rem] w-[15rem]" label="Wyślij"
+                  styleClass="p-button-primary rounded-lg w-full"></p-button>
       </div>
-      <div class="flex flex-col">
-        <label for="name">Nazwa produktu</label>
-        <input type="text" id="name" pInputText formControlName="name" />
-      </div>
-      <div class="flex flex-col col-span-2">
-        <label for="index">Indeks</label>
-        <input type="text" id="index" pInputText formControlName="index" />
-      </div>
-      <div class="flex flex-col col-span-2">
-        <label for="index">Rozmiar</label>
-        <div class="card p-fluid">
-          <p-chips [addOnBlur]="true" [addOnTab]="true" formControlName="size"></p-chips>
-        </div>
-      </div>
-      <div class="flex flex-col col-span-2">
-        <label for="color">Kolor</label>
-        <p-listbox [options]="productColors" [metaKeySelection]="false" [multiple]="true"
-                   formControlName="color" optionValue="name" optionLabel="name" [style]="{ width: '15rem' }"
-                   [listStyle]="{'max-height': '220px'}">
-        </p-listbox>
-      </div>
-      <div class="flex flex-col w-auto mb-2">
-        <label for="category">Kategoria</label>
-        <p-listbox [options]="categories" [metaKeySelection]="false" [multiple]="true"
-                   formControlName="category" optionLabel="name" [style]="{ width: '20rem' }"
-                   [listStyle]="{'max-height': '220px'}">
-        </p-listbox>
-      </div>
-      <p-button
-        (click)="onSubmit()"
-        class="mt-3"
-        label="Wyślij"
-        styleClass="p-button-secondary"
-      ></p-button>
-    </form>
+    </div>
   </div>
 </div>

@@ -10,6 +10,7 @@ export interface IProduct {
   productIndex: string;
   attributes: attributes;
   category: string;
+  description: string;
   supplierId: Types.ObjectId;
   imageUrl: string;
   createdAt: Date;
@@ -38,11 +39,14 @@ const productSchema = new mongoose.Schema<
     type: String,
     unique: true,
   },
+  description: {
+    type: String,
+  },
   attributes: {
     size: [
       {
         type: String,
-        // required: [true, "Product must have a given size"],
+        required: [true, "Product must have a given size"],
       },
     ],
     colour: {

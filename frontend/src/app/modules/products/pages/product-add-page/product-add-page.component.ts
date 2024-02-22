@@ -27,6 +27,10 @@ export class ProductAddPageComponent implements OnInit {
 
   categories: ICategory[] = []
 
+  productFormData: Product | null;
+
+  uploadFile: File;
+
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService, private productService: ProductService, private categoryService: CategoryService) {}
 
   ngOnInit() {
@@ -40,7 +44,7 @@ export class ProductAddPageComponent implements OnInit {
     })
 
     this.categoryService.getCategories().subscribe(categories => {
-      this.categories = categories.category;
+      this.categories = categories.items;
     })
   }
 
@@ -87,16 +91,11 @@ export class ProductAddPageComponent implements OnInit {
   }
 
   onSubmit() {
-    const data = {
-      name: this.productForm.get('name')?.value,
-      productIndex: this.productForm.get('index')?.value,
-      category: this.productForm.get('category')?.value,
-      supplierId: this.productForm.get('supplierId')?.value._id,
-      attributes: {
-        size: this.productForm.get('size')?.value,
-        colour: this.productForm.get('color')?.value
-      }
-    }
-    this.productService.addProduct(data).subscribe();
+    const formData = new FormData();
+
+    formData.append('image', this.uploadFile)
+    formData.append('product', JSON.stringify(this.productFormData));
+
+    this.productService.addProduct(formData).subscribe(() => window.alert('Product created successfully'));
   }
 }

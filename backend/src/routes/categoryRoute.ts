@@ -5,7 +5,7 @@ import * as authController from "../controllers/authController";
 
 categoryRouter
   .route("/")
-  .get(authController.auth, categoryController.getAllDeliveries)
-  .post(authController.auth, categoryController.createDelivery);
+  .get(authController.auth, categoryController.getAllCategories)
+  .post(authController.auth, categoryController.createCategory);
 
   export { categoryRouter }

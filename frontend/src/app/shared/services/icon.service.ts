@@ -49,11 +49,7 @@ export class IconService {
           svgElement.setAttribute('fill', colorInHex);
           svgElement.querySelectorAll('path').forEach(el => el.setAttribute('fill', colorInHex))
         }
-        console.log(window.btoa(new XMLSerializer().serializeToString(svgElement)))
-
-        const x = `data:image/svg+xml;base64,${window.btoa(new XMLSerializer().serializeToString(svgElement))}`;
-        console.log(x)
-        return x;
+        return `data:image/svg+xml;base64,${window.btoa(new XMLSerializer().serializeToString(svgElement))}`;
       })
     )
   }

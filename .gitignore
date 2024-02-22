@@ -6,3 +6,4 @@ backend/.DS_Store
 *.code-workspace
 */.idea
 backend/uploads
+backend/public/images
