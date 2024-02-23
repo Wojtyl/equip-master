@@ -23,4 +23,8 @@ export class ProductsTableComponent implements OnInit {
   openDetails(i: number) {
     this.router.navigate([this.products[i]._id, 'details'], {state: { invoice: this.products[i] }, relativeTo: this.route})
   }
+
+  onImageError(product: Product) {
+    product.imageUrl = this.fallbackImg;
+  }
 }

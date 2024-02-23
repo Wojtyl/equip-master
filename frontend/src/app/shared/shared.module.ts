@@ -21,13 +21,15 @@ import { MessagesModule } from 'primeng/messages';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ChipModule } from 'primeng/chip';
-
+import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 //Component imports
 import * as components from './components';
 
 //Form fields imports
 import * as form from './forms';
+import { FormFileUploadComponent } from './forms/form-file-upload/form-file-upload.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import * as form from './forms';
     components.SvgIconComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
+    FormFileUploadComponent,
   ],
   imports: [
     AutoCompleteModule,
@@ -45,6 +48,7 @@ import * as form from './forms';
     ChipModule,
     CommonModule,
     DropdownModule,
+    DialogModule,
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
@@ -56,6 +60,7 @@ import * as form from './forms';
     MultiSelectModule,
     MessagesModule,
     NgbModule,
+    OverlayPanelModule,
     ReactiveFormsModule,
     SkeletonModule,
     TooltipModule
@@ -68,6 +73,7 @@ import * as form from './forms';
     ChipModule,
     CommonModule,
     DropdownModule,
+    DialogModule,
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
@@ -79,6 +85,7 @@ import * as form from './forms';
     MultiSelectModule,
     MessagesModule,
     NgbModule,
+    OverlayPanelModule,
     ReactiveFormsModule,
     SkeletonModule,
     TooltipModule,
@@ -86,7 +93,9 @@ import * as form from './forms';
     components.SvgIconComponent,
     components.AddProductComponent,
     form.InputFieldComponent,
-    form.FormControlsHeaderComponent
+    form.FormControlsHeaderComponent,
+    FormFileUploadComponent
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}

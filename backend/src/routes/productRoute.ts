@@ -1,8 +1,10 @@
 import e from "express";
 import * as productController from "../controllers/productController";
 import * as authController from "../controllers/authController";
+import * as generalController from "../controllers/generalController";
 import multer from "multer";
 import { Error } from "mongoose";
+import { ProductSize } from "../schemas/productSizeModel";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,10 +24,20 @@ productRouter
   .get(authController.auth, productController.getAllProducts)
   .post(authController.auth, upload.single('image'), productController.createProduct);
 
+productRouter.route("/sizes")
+    .get(authController.auth, async (req, res) => {
+        const productSizes = await ProductSize.find();
+        res.status(200).json({
+            status: 'success',
+            items: productSizes
+        })
+    })
+    .post(authController.auth, (req, res, next) => {console.log('ahahaha'); next()} ,generalController.createOne(ProductSize))
+
 productRouter
   .route("/:id")
   .get(authController.auth, productController.getProduct)
-  .patch(authController.auth, productController.updateProduct)
+  .patch(authController.auth, upload.single('image'), productController.updateProduct())
   .delete(authController.auth, productController.deleteProduct);
 
 productRouter

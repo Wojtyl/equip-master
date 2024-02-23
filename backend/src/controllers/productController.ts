@@ -27,7 +27,6 @@ export const getProductsByBox = () => catchAsync(async (req: Request, res: Respo
 
 export const getProduct = generalController.getOne(Product);
 export const getAllProducts = generalController.getAll(Product);
-export const updateProduct = generalController.updateOne(Product);
 export const deleteProduct = generalController.deleteOne(Product);
 
 
@@ -46,6 +45,18 @@ const createCustomProduct = () => catchAsync(async (req: Request, res, next) => 
 
   const product = JSON.parse(req.body.product);
   const prod = await Product.create({...product, imageUrl: filePath});
+  res.status(201).json({
+    status: "success",
+    items: prod
+  });
+})
+
+export const updateProduct = () => catchAsync(async (req: Request, res, next) => {
+  const product: IProduct = JSON.parse(req.body.product);
+  if (req.file) {
+    product.imageUrl = pathGenerator.getProductImagePath(req.file.filename);
+  }
+  const prod = await Product.findByIdAndUpdate(req.params.id, {...product}, {runValidators: true, new: true});
   res.status(201).json({
     status: "success",
     items: prod
