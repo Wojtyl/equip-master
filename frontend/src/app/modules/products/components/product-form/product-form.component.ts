@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
@@ -28,7 +28,8 @@ import { OverlayPanel } from "primeng/overlaypanel";
 export class ProductFormComponent implements OnInit {
   @ViewChild('addImageInput') addImageInput: ElementRef<HTMLInputElement>;
   @Output() productFormData = new Subject<Product | null>();
-  @Output() uploadFile = new Subject<File>();
+  @Output() uploadFile = new Subject<File | null>();
+  @Output() imageRemoved = new Subject<boolean>();
   @Input() product: Product;
 
   fb = inject(FormBuilder);
@@ -42,13 +43,10 @@ export class ProductFormComponent implements OnInit {
     name: ['', Validators.required]
   })
 
-  isAddingSize = false;
-  isAddingCategory = false;
-
   productSizes: ProductSize[];
   suppliers: Supplier[];
   categories: ICategory[];
-  imagePreview: string;
+  imagePreview: string | undefined;
 
   ngOnInit() {
     forkJoin([this.suppliersService.getAllSuppliers(),
@@ -93,5 +91,11 @@ export class ProductFormComponent implements OnInit {
       sizeForm?.patchValue(newVal)
       this.cdr.detectChanges()
     })
+  }
+
+  removeImage() {
+    this.imagePreview = undefined;
+    this.uploadFile.next(null);
+    this.imageRemoved.next(true);
   }
 }

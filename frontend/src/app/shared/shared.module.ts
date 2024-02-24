@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 //Primeng import
 import { InputTextModule } from 'primeng/inputtext';
 import { ChipsModule } from 'primeng/chips';
@@ -29,16 +30,16 @@ import * as components from './components';
 
 //Form fields imports
 import * as form from './forms';
-import { FormFileUploadComponent } from './forms/form-file-upload/form-file-upload.component';
 
 @NgModule({
   declarations: [
     components.AddProductComponent,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
+    components.StepperComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
-    FormFileUploadComponent,
+    form.FormFileUploadComponent
   ],
   imports: [
     AutoCompleteModule,
@@ -92,9 +93,10 @@ import { FormFileUploadComponent } from './forms/form-file-upload/form-file-uplo
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
     components.AddProductComponent,
+    components.StepperComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
-    FormFileUploadComponent
+    form.FormFileUploadComponent
   ]
 })
 export class SharedModule {

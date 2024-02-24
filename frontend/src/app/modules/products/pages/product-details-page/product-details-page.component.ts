@@ -11,11 +11,13 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class ProductDetailsPageComponent implements OnInit {
   public productFormData: Product | null;
   public product: Product;
+  public imageRemoved = false;
+
   private productService = inject(ProductService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private productId: string;
-  uploadFile: File;
+  uploadFile: File | null;
   ngOnInit() {
     this.productId = this.route.snapshot.params['id'];
     this.productService.getProductById(this.productId)
@@ -24,6 +26,8 @@ export class ProductDetailsPageComponent implements OnInit {
 
   protected onSubmit() {
     const formData = new FormData();
+
+    if (this.imageRemoved) this.productFormData!.imageUrl = '';
 
     if (this.productFormData) {
       formData.append('product', JSON.stringify(this.productFormData));

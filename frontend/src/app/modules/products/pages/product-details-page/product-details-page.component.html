@@ -14,9 +14,13 @@
       </div>
     </div>
     <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
-      <app-product-form *ngIf="product" [product]="product" (uploadFile)="uploadFile = $event" (productFormData)="productFormData = $event"></app-product-form>
+      <app-product-form *ngIf="product" [product]="product" (uploadFile)="uploadFile = $event"
+                        (imageRemoved)="imageRemoved = $event" (productFormData)="productFormData = $event">
+      </app-product-form>
       <div class="flex w-full justify-center items-center">
-        <p-button (click)="onSubmit()" [disabled]="!productFormData" class="mt-[4rem] w-[15rem]" label="Wyślij"
+        <p-button [routerLink]="['/products']" class="mt-[4rem] me-4 w-[10rem]" label="Anuluj"
+                  styleClass="p-button-danger rounded-lg w-full"></p-button>
+        <p-button (click)="onSubmit()" [disabled]="!productFormData" class="mt-[4rem] w-[10rem]" label="Wyślij"
                   styleClass="p-button-primary rounded-lg w-full"></p-button>
       </div>
     </div>
