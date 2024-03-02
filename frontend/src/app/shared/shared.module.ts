@@ -36,7 +36,6 @@ import * as form from './forms';
     components.AddProductComponent,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
-    components.StepperComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
     form.FormFileUploadComponent
@@ -93,7 +92,6 @@ import * as form from './forms';
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
     components.AddProductComponent,
-    components.StepperComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
     form.FormFileUploadComponent

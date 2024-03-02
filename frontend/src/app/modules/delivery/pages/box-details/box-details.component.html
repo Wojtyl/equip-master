@@ -9,14 +9,6 @@
     <button class="rounded-[0.5rem] h-1/2" (click)="getSelectedProduct()">Dodaj produkt</button>
     <button *ngIf="!boxDetails.closed" class="rounded-[0.5rem] h-1/2" (click)="closeBox()">Zamknij pudło</button>
   </div>
-  <div  class="flex" [formGroup]="addProductForm">
-    <p-dropdown id="product" class="w-20" [options]="products" optionLabel="name" optionValue="_id" formControlName="productId"
-                [filter]="true"></p-dropdown>
-    <p-dropdown [disabled]="!selectedProduct.attributes.size" id="size" [options]="selectedProduct.attributes.size" formControlName="size"
-                [filter]="true"></p-dropdown>
-    <input>
-
-  </div>
   <table class="w-full p-10">
     <thead class="font-thin text-gray-500 uppercase">
       <tr class="text-start">
