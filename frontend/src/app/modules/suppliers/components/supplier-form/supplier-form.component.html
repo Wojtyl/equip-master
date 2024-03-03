@@ -1,0 +1,46 @@
+<form [formGroup]="supplierForm">
+  <section>
+    <app-form-controls-header header="Dane dostawcy" subtitle="Wprowadź główne dane"/>
+    <div class="form-section grid grid-cols-2 gap-4">
+      <app-input-field label="Nazwa" [controlName]="FormFields.Name" name="name"></app-input-field>
+      <app-input-field label="NIP" [controlName]="FormFields.TaxID" name="taxId">
+          <span *ngIf="getControlErrors(FormFields.TaxID)[CustomValidationErrors.SupplierVatIdNotUnique]"
+                class="text-secondary form-error mt-2">Supplier number exists</span>
+      </app-input-field>
+      <app-input-field label="Osoba kontaktowa" [controlName]="FormFields.ContactPerson"
+                       name="contactPerson"></app-input-field>
+      <app-input-field label="Email" [controlName]="FormFields.Email" name="email"></app-input-field>
+      <app-input-field label="Telefon" [controlName]="FormFields.Phone" name="phone"></app-input-field>
+      <app-input-field label="Witryna" [controlName]="FormFields.Website" name="website"></app-input-field>
+    </div>
+  </section>
+
+  <section>
+    <app-form-controls-header header="Adres" subtitle="Wprowadź dane adresowe"/>
+    <div class="form-section grid grid-cols-2 gap-4" [formGroup]="getAddressFormGroup()">
+      <app-input-field label="Ulica" [controlName]="AddressFormFields.Street" name="street"></app-input-field>
+      <app-input-field label="Kraj" [controlName]="AddressFormFields.Country" name="country"></app-input-field>
+      <app-input-field label="Województwo" [controlName]="AddressFormFields.State" name="state"></app-input-field>
+      <app-input-field label="Miasto" [controlName]="AddressFormFields.City" name="city"></app-input-field>
+      <app-input-field label="Kod pocztowy" [controlName]="AddressFormFields.PostalCode"
+                       name="postalCode"></app-input-field>
+    </div>
+  </section>
+
+  <section>
+    <app-form-controls-header header="Kolory" subtitle="Dodaj kolory produktów"/>
+    <div class="form-section grid grid-cols-2 gap-4">
+      <p-inputGroup>
+        <input type="text" #colourValue pInputText placeholder="Kolor"/>
+        <button type="button" pButton class="p-button-danger" (click)="addColor(colourValue)">Dodaj</button>
+      </p-inputGroup>
+
+      <div class="col-span-2">
+        @for (colour of getProductColours(); track colour) {
+          <p-chip class="me-2" [label]="colour" (onRemove)="removeColour(colour)" [removable]="true"></p-chip>
+        }
+      </div>
+
+    </div>
+  </section>
+</form>

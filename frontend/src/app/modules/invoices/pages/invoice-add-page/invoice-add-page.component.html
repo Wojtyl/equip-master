@@ -1,86 +1,26 @@
-<div class="flex flex-col justify-center items-center h-full">
-  <div class="w-3/6 mb-8">
-    <h1 class="font-bold text-5xl leading-snug">Dodaj fakturę</h1>
-    <p class="text-gray-500">Na jej podstawie stworzona będzie dostawa, która po jej zakończeniu porówna dostarczony towar z zamówionym</p>
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/invoices"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Dodaj fakturę</h1>
+        <p class="text-gray-500 line-clamp-3">Na jej podstawie stworzona będzie dostawa, która po jej zakończeniu
+          porówna dostarczony
+          towar z zamówionym</p>
+      </div>
+    </div>
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <app-invoice-form (invoiceFormData)="invoiceFormData = $event"></app-invoice-form>
+      <div class="flex w-full justify-center items-center">
+        <p-button (click)="onSubmit()" [disabled]="!invoiceFormData" class="mt-[4rem] w-[15rem]" label="Wyślij"
+                  styleClass="p-button-primary rounded-lg w-full"></p-button>
+      </div>
+    </div>
   </div>
-  <form
-    [formGroup]="invoiceForm"
-    class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit"
-    (ngSubmit)="onSubmit()"
-  >
-    <div class="flex flex-col col-span-2">
-      <label for="supplier">Dostawca</label>
-      <p-dropdown [options]="suppliers" optionLabel="name" formControlName="supplier" [filter]="true"></p-dropdown>
-    </div>
-    <div class="flex flex-col">
-      <label for="invoiceNumber">Numer Faktury</label>
-      <input pInputText type="text" id="invoiceNumber" formControlName="invoiceNumber" />
-    </div>
-    <div class="flex flex-col col-span-2">
-      <label  for="nettoPrice">Wartość netto</label>
-      <input pInputText type="number" id="nettoPrice" formControlName="nettoPrice" />
-    </div>
-    <div class="flex flex-col w-auto mb-2">
-      <label for="invoiceDate">Data wystawienia aktury</label>
-      <p-calendar id="invoiceDate" class="w-1/2" formControlName="invoiceDate" [showIcon]="true"></p-calendar>
-    </div>
-    <div *ngIf="selectedSupplier && selectedSupplier.products.length > 0" class="flex justify-between col-span-2">
-      <h2 class="font-semibold">Artykuły</h2>
-<!--      <button type="button" (click)="addProductsFormInit()">+</button>-->
-      <app-svg-icon class="cursor-pointer"  [class.collapse]="isAdding"  (click)="addProductsFormInit()" icon="expand_icon" [scale]="1.2" [strokeWidth]="'2'"></app-svg-icon>
-    </div>
-    <div *ngIf="!selectedSupplier">
-      <h2>Wybierz dostawcę aby dodać produkty do faktury</h2>
-    </div>
-    <div *ngIf="selectedSupplier && selectedSupplier.products.length === 0">
-      <h2 class="mt-2">Wybrany dostawca nie posiada zadnych produktow. Kliknij tutaj aby dodać produkt</h2>
-    </div>
-    <app-add-product *ngIf="isAdding && selectedSupplier.products.length" [formGroup]="productsGroup" [products]="selectedSupplier.products" (onAddProduct)="addProduct()"> 0"></app-add-product>
-    <div formArrayName="products">
-      <table class="table-auto w-full" *ngIf="isAdding && productAdded">
-        <thead>
-          <tr class="border-[2px] border-gray-600">
-              <th class="font-normal">Nazwa</th>
-            <th class="font-normal">Rozmiar</th>
-            <th class="font-normal">Cena/szt</th>
-            <th class="font-normal">Ilość</th>
-            <th class="font-normal">Cena łączna</th>
-            <th class="font-normal"></th>
-          </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let control of getProductsControls(); let i = index">
-          <tr *ngIf="isEditingControl !== i">
-            <td>{{control.value.product?.name}}</td>
-            <td>{{control.value.size}}</td>
-            <td>{{control.value.price}}</td>
-            <td>{{control.value.quantity}}</td>
-            <td>{{control.value.price * control.value.quantity}}</td>
-            <td>
-              <app-svg-icon *ngIf="isEditingControl !== i" class="cursor-pointer" icon="edit_icon" (click)="editControl(control, i)"></app-svg-icon>
-            </td>
-          </tr>
-
-          <tr *ngIf="isEditingControl === i" [formGroup]="editingFormGroup" >
-            <td>{{control.value.product?.name}}</td>
-            <td>{{control.value.size}}</td>
-            <td>
-              <input type="number" formControlName="price">
-            </td>
-            <td>
-              <input type="number" formControlName="quantity">
-            </td>
-            <td>{{control.value.price * control.value.quantity}}</td>
-            <td class="flex flex-col justify-center items-center">
-              <app-svg-icon *ngIf="isEditingControl === i" class="cursor-pointer" icon="check_icon" (click)="updateControl(control)"></app-svg-icon>
-              <app-svg-icon *ngIf="isEditingControl === i" class="cursor-pointer" icon="close_icon" (click)="cancelEdit()"></app-svg-icon>
-            </td>
-          </tr>
-        </ng-container>
-        </tbody>
-      </table>
-    </div>
-    <p class="mt-5">Łączna kwota Netto faktury: {{invoiceTotalPrice}}</p>
-    <p-button class="mt-3" type="submit" label="Wyślij" styleClass="p-button-secondary"></p-button>
-  </form>
 </div>

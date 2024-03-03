@@ -26,21 +26,21 @@ export class DeliveryPageComponent implements OnInit {
   supplierInvoices: Invoice[];
 
   ngOnInit(): void {
-    this.deliveryService.getAllDeliveries().subscribe(resData => {
-      this.deliveries = resData.items;
+    this.deliveryService.getAllDeliveries().subscribe(response => {
+      this.deliveries = response.items;
     })
     this.initForm();
-    this.supplierService.getAllSuppliers().subscribe((resData) => {
-      this.suppliers = resData.supplier;
+    this.supplierService.getAllSuppliers().subscribe((response) => {
+      this.suppliers = response.items;
 
-      this.supplierService.getSupplierInvoices(this.suppliers[0]._id).subscribe(data => {
-        this.supplierInvoices = data.invoices;
+      this.supplierService.getSupplierInvoices(this.suppliers[0]._id).subscribe(response => {
+        this.supplierInvoices = response.items;
       })
     });
 
     this.deliveryForm.get('supplier')?.valueChanges.subscribe((supplier: Supplier) => {
-      this.supplierService.getSupplierInvoices(supplier._id).subscribe(data => {
-        this.supplierInvoices = data.invoices;
+      this.supplierService.getSupplierInvoices(supplier._id).subscribe(response => {
+        this.supplierInvoices = response.items;
       })
     })
   }

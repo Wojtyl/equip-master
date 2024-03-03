@@ -5,6 +5,14 @@ export class InvoiceService {
 
     //NOTE: This is good method to get products with quantity and size for comparison with box delivery
     //(to check if sum of products on invoice is equal with products on delivery)
+    public async getInvoiceByNumber(inveoiceNumber: string) {
+        return Invoice.find({
+            invoiceNumber: {
+                $eq: inveoiceNumber
+            }
+        });
+    }
+
     async getInvoiceProductsWithQuantityByDelivery(invoiceId: string) {
         const data = await Invoice.aggregate([
             {

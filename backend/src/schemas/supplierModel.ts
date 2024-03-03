@@ -12,6 +12,17 @@ const supplierSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  email: {
+    type: String,
+    required: [true, "Please provide email address"]
+  },
+  website: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+    required: [true, "Please provide supplier phone number"]
+  },
   address: {
     street: {
       type: String,
@@ -34,6 +45,20 @@ const supplierSchema = new mongoose.Schema({
       required: [true, "Please provide supplier address"],
     },
   },
+  /*
+  * TODO: In future
+  *        colorCode: {
+        type: String,
+        required: [true, "Color must have it's code"]
+      },
+      colorName: {
+        type: String,
+        required: [true, "Color must have it's name"]
+      },
+    colorHex: {
+        type: String,
+    }
+  * */
   productColors: [{
     type: String
   }],

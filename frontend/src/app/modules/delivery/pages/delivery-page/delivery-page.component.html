@@ -49,7 +49,7 @@
         <td>{{delivery.supplier.name}}</td>
         <td>{{delivery.date | date:'dd.MM.yyy'}}</td>
         <td>{{delivery.description}}</td>
-        <td>{{delivery.invoice.invoiceNumber}}</td>
+        <td>{{delivery?.invoice?.invoiceNumber}}</td>
         <td>
           <p-button label="Kontynuuj" styleClass="p-button-secondary" (onClick)="onContinue(delivery._id)"></p-button>
           <p-button label="Usuń" styleClass="p-button-danger" (onClick)="onDelete(delivery._id)"></p-button>

@@ -1,61 +1,25 @@
-<div>
-  <div class="flex flex-col justify-center items-center h-full">
-    <div class="w-3/6 mb-8">
-      <h1 class="font-bold text-5xl leading-snug">Dodaj dostawcę</h1>
-      <p class="text-gray-500">
-        Dodaj dostawcę aby móc przyypisać do niego produkty, które później będą wykorzystywane podczas dodawania dostawy.
-      </p>
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/suppliers"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Dodaj dostawcę</h1>
+        <p class="text-gray-500 line-clamp-3">
+          Dodaj dostawcę aby móc przyypisać do niego produkty, które później będą wykorzystywane podczas dodawania dostawy.</p>
+      </div>
     </div>
-    <form
-      [formGroup]="supplierForm"
-      class="flex flex-col shadow-xl w-3/6 p-7 rounded-lg h-fit"
-      (ngSubmit)="onSubmit()"
-    >
-      <div class="flex flex-col">
-        <label for="name">Nazwa</label>
-        <input type="text" id="name" pInputText formControlName="name" />
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <app-supplier-form (supplierFormData)="setForm($event)"></app-supplier-form>
+      <div class="flex w-full justify-center items-center">
+        <p-button class="mt-[4rem] w-[15rem]" (click)="onSubmit()" [disabled]="!formData" label="Wyślij"
+                  styleClass="p-button-primary rounded-lg w-full"></p-button>
       </div>
-      <div class="flex flex-col col-span-2">
-        <label for="index">Numer NIP</label>
-        <input type="text" id="index" pInputText formControlName="taxIdNum" />
-      </div>
-      <div class="flex flex-col col-span-2">
-        <label for="description">Opis</label>
-        <input type="text" id="description" pInputText formControlName="description" />
-      </div>
-      <div formGroupName="address">
-        <div class="flex flex-col col-span-2">
-          <label for="street">Ulica</label>
-          <input type="text" id="street" pInputText formControlName="street" />
-        </div>
-        <div class="flex flex-col col-span-2">
-          <label for="postalCode">Kod pocztowy</label>
-          <input type="text" id="postalCode" pInputText formControlName="postalCode" />
-        </div>
-        <div class="flex flex-col col-span-2">
-          <label for="city">Miasto</label>
-          <input type="text" id="city" pInputText formControlName="city" />
-        </div>
-        <div class="flex flex-col col-span-2">
-          <label for="state">Województwo</label>
-          <input type="text" id="state" pInputText formControlName="state" />
-        </div>
-        <div class="flex flex-col col-span-2">
-          <label for="country">Kraj</label>
-          <input type="text" id="country" pInputText formControlName="country" />
-        </div>
-      </div>
-      <div>
-        <label for="colors">Kolory produktów</label>
-        <p-chips [addOnBlur]="true" [addOnTab]="true" formControlName="productColors"></p-chips>
-      </div>
-      <p-button
-        (click)="onSubmit()"
-        class="mt-3"
-        label="Wyślij"
-        styleClass="p-button-secondary"
-      ></p-button>
-    </form>
+    </div>
   </div>
 </div>
-

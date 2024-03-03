@@ -6,6 +6,9 @@ import { Request, Response } from "express";
 import { SupplierService } from "../services/SupplierService";
 import { AppError } from "../utils/appError";
 import { Box } from "../schemas/boxModel";
+import { ImagePathGenerator } from "../utils/imagePathGenerator";
+
+const pathGenerator = new ImagePathGenerator();
 
 const supplierService = new SupplierService();
 export const getProductsByBox = () => catchAsync(async (req: Request, res: Response) => {
@@ -24,7 +27,6 @@ export const getProductsByBox = () => catchAsync(async (req: Request, res: Respo
 
 export const getProduct = generalController.getOne(Product);
 export const getAllProducts = generalController.getAll(Product);
-export const updateProduct = generalController.updateOne(Product);
 export const deleteProduct = generalController.deleteOne(Product);
 
 
@@ -38,30 +40,26 @@ const x = () => catchAsync(async (req, res, next) => {
   });
 })
 
-const createCustomProduct = () => catchAsync(async (req, res, next) => {
-  let products = [];
-  const data = {...req.body as IProduct};
+const createCustomProduct = () => catchAsync(async (req: Request, res, next) => {
+  const filePath = req.file ? pathGenerator.getProductImagePath(req.file.filename) : '';
 
-  if (req.body.attributes?.colour?.length > 1) {
-    for (const colour of req.body.attributes.colour) {
-      data.name += ' ' + colour;
-      data.productIndex += ' ' + colour
-      data.attributes.colour = colour;
-      const newProduct = new Product({...data, createdBy: req.user.id})
-      // @ts-ignore
-      products.push(newProduct);
-    }
-  } else {
-    if (data.attributes.colour) {
-      data.attributes.colour = data.attributes?.colour[0];
-    }
-    // @ts-ignore
-    products.push(new Product({...req.body, createdBy: req.user.id}))
-  }
-  await Product.create(...products)
+  const product = JSON.parse(req.body.product);
+  const prod = await Product.create({...product, imageUrl: filePath});
   res.status(201).json({
     status: "success",
-    products,
+    items: prod
+  });
+})
+
+export const updateProduct = () => catchAsync(async (req: Request, res, next) => {
+  const product: IProduct = JSON.parse(req.body.product);
+  if (req.file) {
+    product.imageUrl = pathGenerator.getProductImagePath(req.file.filename);
+  }
+  const prod = await Product.findByIdAndUpdate(req.params.id, {...product}, {runValidators: true, new: true});
+  res.status(201).json({
+    status: "success",
+    items: prod
   });
 })
 

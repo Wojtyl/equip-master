@@ -135,7 +135,7 @@ export const getDeliverySummary = () => catchAsync(async (req: Request, res: Res
         const sizes = Object.keys(differenceMap[productId].quantities).map(size => {
             return {
                 size,
-                deliveryCount: deliveryProductsMap[productId].quantities[size]?.quantity ?? 0,
+                deliveryCount: deliveryProductsMap[productId]?.quantities[size]?.quantity ?? 0,
                 differenceCount: differenceMap[productId].quantities[size].quantity,
                 isExtraSize: differenceMap[productId].quantities[size].isExtraSize
             }

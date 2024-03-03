@@ -6,7 +6,15 @@ import * as pages from './pages';
 const routes: Routes = [
   {
     path: '',
+    component: pages.SuppliersListPageComponent
+  },
+  {
+    path: 'create',
     component: pages.SupplierAddPageComponent
+  },
+  {
+    path: ':id/details',
+    component: pages.SupplierDetailsPageComponent
   }
 ];
 

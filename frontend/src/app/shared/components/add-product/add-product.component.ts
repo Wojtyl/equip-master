@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Product } from 'src/app/shared/models/productModel';
+import { DropdownChangeEvent } from "primeng/dropdown";
 
 @Component({
   selector: 'app-add-product',
@@ -14,8 +15,8 @@ export class AddProductComponent {
 
   selectedProduct: Product | undefined;
 
-  onSelect(event: any) {
-    this.selectedProduct = event.value;
+  onSelect(event: DropdownChangeEvent) {
+    this.selectedProduct = this.products.find(product => product._id === event.value);
   }
 
   addProduct() {

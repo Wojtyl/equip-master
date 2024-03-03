@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 //Primeng import
 import { InputTextModule } from 'primeng/inputtext';
 import { ChipsModule } from 'primeng/chips';
@@ -15,51 +16,86 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { ListboxModule } from 'primeng/listbox';
 import { InputNumberModule } from "primeng/inputnumber";
+import { TooltipModule } from 'primeng/tooltip';
+import { SkeletonModule } from 'primeng/skeleton';
+import { MessagesModule } from 'primeng/messages';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ChipModule } from 'primeng/chip';
+import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 //Component imports
-import * as components from './components'
+import * as components from './components';
+
+//Form fields imports
+import * as form from './forms';
 
 @NgModule({
   declarations: [
     components.AddProductComponent,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
+    form.InputFieldComponent,
+    form.FormControlsHeaderComponent,
+    form.FormFileUploadComponent
   ],
   imports: [
     AutoCompleteModule,
     ButtonModule,
     CalendarModule,
     ChipsModule,
+    ChipModule,
     CommonModule,
     DropdownModule,
+    DialogModule,
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
     InputNumberModule,
     InputTextModule,
+    InputGroupAddonModule,
+    InputGroupModule,
     ListboxModule,
     MultiSelectModule,
+    MessagesModule,
     NgbModule,
-    ReactiveFormsModule
+    OverlayPanelModule,
+    ReactiveFormsModule,
+    SkeletonModule,
+    TooltipModule
   ],
   exports: [
     AutoCompleteModule,
     ButtonModule,
     CalendarModule,
     ChipsModule,
+    ChipModule,
     CommonModule,
     DropdownModule,
+    DialogModule,
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
     InputNumberModule,
     InputTextModule,
+    InputGroupAddonModule,
+    InputGroupModule,
     ListboxModule,
     MultiSelectModule,
+    MessagesModule,
     NgbModule,
+    OverlayPanelModule,
     ReactiveFormsModule,
+    SkeletonModule,
+    TooltipModule,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
-    components.AddProductComponent
+    components.AddProductComponent,
+    form.InputFieldComponent,
+    form.FormControlsHeaderComponent,
+    form.FormFileUploadComponent
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}

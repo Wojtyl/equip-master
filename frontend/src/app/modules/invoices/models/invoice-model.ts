@@ -1,12 +1,23 @@
+import { InvoiceProducts } from "../../../shared/models/invoiceProductsModel";
+
 export interface Invoice {
   _id: string;
-  supplierId: string;
+  currency: string;
+  supplier: {
+    _id: string;
+    name: string;
+  };
   invoiceNumber: string;
-  products: {
-    productId: string;
-    quantity: number;
-    size: string;
-  }[];
-  date: Date;
+  products: InvoiceProducts[];
+  date: number;
+  nettoPrice: number;
+}
+
+export interface InvoiceForm {
+  currency: string;
+  supplier: string;
+  invoiceNumber: string;
+  products: InvoiceProducts[];
+  date: number;
   nettoPrice: number;
 }

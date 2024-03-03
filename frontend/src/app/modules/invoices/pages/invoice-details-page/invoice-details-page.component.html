@@ -1,0 +1,44 @@
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/invoices"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Edytuj fakturę</h1>
+        <p class="text-gray-500 line-clamp-3">W tym miejscu zobaczysz szczegóły faktury</p>
+      </div>
+    </div>
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <div *ngIf="isLoading">
+        <p-skeleton styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="8rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="15rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="6rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="10rem" height="4rem"></p-skeleton>
+      </div>
+      <section [ngClass]="{'hidden': isLoading}" id="invoice-form">
+        <app-invoice-form *ngIf="invoice"
+                          (invoiceFormData)="invoiceFormData = $event"
+                          (isLoaded)="isLoading = $event"
+                          [invoice]="invoice"
+                          [isEditMode]="true"></app-invoice-form>
+        <div class="flex w-full justify-center items-center gap-4">
+          <p-button (click)="onSubmit()" [disabled]="!invoiceFormData" class="mt-[4rem] w-[12rem]" label="Zapisz"
+                    styleClass="p-button-primary rounded-lg w-full"></p-button>
+          <p-button (click)="onDelete()" class="mt-[4rem] w-[12rem]" label="Usuń"
+                    pTooltip="Nie możesz usunąć faktury do której jest zaczęta dostawa" tooltipPosition="bottom"
+                    styleClass="p-button-danger rounded-lg w-full"></p-button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

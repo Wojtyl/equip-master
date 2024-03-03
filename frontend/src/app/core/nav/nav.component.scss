@@ -2,7 +2,7 @@
 
 .router-link-active {
   text-decoration: none;
-  background-color: antiquewhite;
+  @apply bg-[#F0EFEF] text-black
 }
 
 .router-link-active:visited {
@@ -10,5 +10,5 @@
 }
 
 a {
-  @apply text-gray-500 w-28 text-center py-1 rounded;
+  @apply text-gray-500 text-sm w-28 py-2 px-4 w-full rounded-xl;
 }

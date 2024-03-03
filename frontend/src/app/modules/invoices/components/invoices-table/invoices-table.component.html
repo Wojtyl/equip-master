@@ -1,0 +1,23 @@
+<table *ngIf="invoices" class="w-full text-sm table-auto">
+  <thead class="text-zinc-500">
+    <tr class="bg-zinc-100">
+      <td>Numer</td>
+      <td>Data wystawienia</td>
+      <td>Dostawca</td>
+      <td>Wartość</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let invoice of invoices; index as i">
+      <td>{{invoice.invoiceNumber}}</td>
+      <td>{{invoice.date | date:'dd/MM/yyyy'}}</td>
+      <td>{{invoice.supplier.name}}</td>
+      <td>{{invoice.nettoPrice}} {{invoice.currency}}</td>
+      <td class="flex items-center justify-center gap-1">
+<!--        <app-svg-icon class="cursor-pointer" icon="delete_icon" [scale]="1" (click)="deleteInvoice(i)"></app-svg-icon>-->
+        <app-svg-icon class="cursor-pointer" icon="expand_icon" [scale]="1.2" (click)="openDetails(i)"></app-svg-icon>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -3,6 +3,10 @@ import {IconService} from "../../services/icon.service";
 import {Subject, Subscription} from "rxjs";
 import {iconOptions} from "../../models/icon-options";
 
+/**
+ * Component to generate SVG element inside HTML. As @param {string} icon argument provide name of SVG file inside assets/icons folder.
+ * @example <app-svg-icon icon="delete_icon" iconClass="mt-4 px-2" scale=2 fill="#3df4ac" stroke="#a4cdf2" strokeWidth="3px" [triggerable]="true">
+ */
 @Component({
   selector: 'app-svg-icon',
   templateUrl: './svg-icon.component.html',

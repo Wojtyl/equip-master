@@ -7,7 +7,17 @@ const routes: Routes = [
   {
     path: '',
     runGuardsAndResolvers: "always",
-    component: pages.InvoiceAddPageComponent,
+    component: pages.InvoicesPageComponent,
+  },
+  {
+    path: 'create',
+    runGuardsAndResolvers: "always",
+    component: pages.InvoiceAddPageComponent
+  },
+  {
+    path: ':id/details',
+    runGuardsAndResolvers: "always",
+    component: pages.InvoiceDetailsPageComponent
   }
 ];
 
