@@ -1,0 +1,74 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { SupplierService } from '../../../suppliers/supplier.service';
+import { Supplier } from 'src/app/shared/models/supplierModel';
+import { DeliveryService } from '../../delivery-service.service';
+import { Router } from '@angular/router';
+import { IDeliveryList } from '../../models/delivery-list-model';
+import { Invoice } from "../../../invoices/models/invoice-model";
+
+@Component({
+  selector: 'app-delivery-page',
+  templateUrl: './delivery-page.component.html',
+  styleUrls: ['./delivery-page.component.scss'],
+})
+export class DeliveryPageComponent implements OnInit {
+  constructor(
+    private supplierService: SupplierService,
+    private deliveryService: DeliveryService,
+    private formBuilder: FormBuilder,
+    private router: Router) {}
+
+  deliveryForm: FormGroup;
+
+  suppliers: Supplier[];
+  deliveries: IDeliveryList[] = [];
+  supplierInvoices: Invoice[];
+
+  ngOnInit(): void {
+    this.deliveryService.getAllDeliveries().subscribe(response => {
+      this.deliveries = response.items;
+    })
+    this.initForm();
+    this.supplierService.getAllSuppliers().subscribe((response) => {
+      this.suppliers = response.items;
+
+      this.supplierService.getSupplierInvoices(this.suppliers[0]._id).subscribe(response => {
+        this.supplierInvoices = response.items;
+      })
+    });
+
+    this.deliveryForm.get('supplier')?.valueChanges.subscribe((supplier: Supplier) => {
+      this.supplierService.getSupplierInvoices(supplier._id).subscribe(response => {
+        this.supplierInvoices = response.items;
+      })
+    })
+  }
+
+  initForm() {
+    this.deliveryForm = this.formBuilder.group({
+      supplier: '',
+      date: '',
+      description: '',
+      invoice: '',
+    });
+  }
+
+  onSubmit() {
+    const data = this.deliveryForm.value;
+    data.supplier = data.supplier._id;
+    this.deliveryService.addDelivery(data).subscribe(() => {
+      this.deliveryService.getAllDeliveries().subscribe(resData => this.deliveries = resData.items)
+    });
+  }
+
+  onContinue(id: string) {
+    this.router.navigate([`/delivery/${id}`]);
+  }
+
+  onDelete(id: string):void {
+    this.deliveryService.deleteDelivery(id).subscribe(() => {
+      this.deliveryService.getAllDeliveries().subscribe(resData => this.deliveries = resData.items)
+    })
+  }
+}

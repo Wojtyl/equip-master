@@ -9,34 +9,31 @@ const createOne = (Model) =>
     const newModel = await Model.create({ ...req.body, createdBy: user.id });
     res.status(201).json({
       status: "success",
-      [modelName]: newModel,
+      items: newModel,
     });
   });
 
 const getAll = (Model) =>
   catchAsync(async (req, res, next) => {
-    const modelName = getModelName(Model);
     const data = await Model.find();
     res.status(200).json({
       status: "success",
-      [modelName]: data
+      items: data
     });
   });
 
 const getOne = (Model) =>
   catchAsync(async (req: Request, res: Response, next) => {
-    const modelName = getModelName(Model);
     const data = await Model.findById(req.params.id);
     res.status(200).json({
       status: "success",
-      [modelName]: data,
+      items: data,
     });
   });
 
 const updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
     console.log("Parameters: ", req.params);
-    const modelName = getModelName(Model);
     const data = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -44,7 +41,7 @@ const updateOne = (Model) =>
 
     res.status(200).json({
       status: "success",
-      [modelName]: data,
+      items: data,
     });
   });
 

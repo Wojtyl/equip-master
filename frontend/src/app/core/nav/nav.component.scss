@@ -1,0 +1,14 @@
+@import "../../../styles";
+
+.router-link-active {
+  text-decoration: none;
+  @apply bg-[#F0EFEF] text-black
+}
+
+.router-link-active:visited {
+  text-decoration: none;
+}
+
+a {
+  @apply text-gray-500 text-sm w-28 py-2 px-4 w-full rounded-xl;
+}

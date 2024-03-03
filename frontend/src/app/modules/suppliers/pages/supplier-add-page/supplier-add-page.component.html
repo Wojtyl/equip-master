@@ -1,0 +1,25 @@
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/suppliers"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Dodaj dostawcę</h1>
+        <p class="text-gray-500 line-clamp-3">
+          Dodaj dostawcę aby móc przyypisać do niego produkty, które później będą wykorzystywane podczas dodawania dostawy.</p>
+      </div>
+    </div>
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <app-supplier-form (supplierFormData)="setForm($event)"></app-supplier-form>
+      <div class="flex w-full justify-center items-center">
+        <p-button class="mt-[4rem] w-[15rem]" (click)="onSubmit()" [disabled]="!formData" label="Wyślij"
+                  styleClass="p-button-primary rounded-lg w-full"></p-button>
+      </div>
+    </div>
+  </div>
+</div>

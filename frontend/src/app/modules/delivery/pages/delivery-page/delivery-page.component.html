@@ -1,0 +1,61 @@
+<div>
+  <form
+    [formGroup]="deliveryForm"
+    class="flex flex-col bg-slate-100 p-4"
+  >
+    <label for="supplier">Dostawca</label>
+    <p-dropdown
+      formControlName="supplier"
+      [options]="suppliers"
+      optionLabel="name"
+      [filter]="true"
+    ></p-dropdown>
+    <label for="date">Data</label>
+    <input type="date" id="date" formControlName="date">
+
+    <label for="description">Opis dostawy</label>
+    <input
+      type="text"
+      id="description"
+      formControlName="description"
+    />
+    <label for="invoice">Numer Faktury</label>
+    <p-dropdown
+      id="invoice"
+      formControlName="invoice"
+      [options]="supplierInvoices"
+      optionLabel="invoiceNumber"
+      [filter]="true"
+    ></p-dropdown>
+
+    <button type="button" (click)="onSubmit()">Submit</button>
+  </form>
+
+  <h1>Deliveries</h1>
+  <table class="table-fix w-[1000px] text-center border-collapse border border-slate-500" *ngIf="deliveries.length > 0">
+    <thead>
+      <tr>
+        <th>Lp.</th>
+        <th>Dostawca</th>
+        <th>Data</th>
+        <th>Opis</th>
+        <th>Numer faktury</th>
+        <th>Akcja</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let delivery of deliveries; let i = index ">
+        <td>{{i+1}}</td>
+        <td>{{delivery.supplier.name}}</td>
+        <td>{{delivery.date | date:'dd.MM.yyy'}}</td>
+        <td>{{delivery.description}}</td>
+        <td>{{delivery?.invoice?.invoiceNumber}}</td>
+        <td>
+          <p-button label="Kontynuuj" styleClass="p-button-secondary" (onClick)="onContinue(delivery._id)"></p-button>
+          <p-button label="Usuń" styleClass="p-button-danger" (onClick)="onDelete(delivery._id)"></p-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 *ngIf="deliveries.length === 0">Nie ma jeszcze zadnych dostaw</h2>
+</div>

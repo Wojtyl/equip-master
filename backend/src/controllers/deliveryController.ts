@@ -73,9 +73,12 @@ export interface ProductQuantity {
     productName: string;
     productId: string;
     productIndex: string;
-    isExtraProduct?: boolean;
+    isExtraProduct: boolean;
     quantities: {
-        [size: string]: number;
+        [size: string]: {
+            quantity: number,
+            isExtraSize: boolean
+        };
     }
 }
 
@@ -86,7 +89,7 @@ export interface ProductsQuantityMap {
 function mapToProductList(productList: IProductBox[]) {
     return productList.reduce((acc, item) => {
         const selectedElement = acc[item.productId];
-        const selectedElementQuantities = selectedElement?.quantities?.[item.size];
+        const selectedElementQuantities = selectedElement?.quantities?.[item.size]?.quantity;
         return {
             ...acc,
             [item.productId]: {
@@ -95,11 +98,24 @@ function mapToProductList(productList: IProductBox[]) {
                 productIndex: item.productIndex,
                 quantities: {
                     ...selectedElement?.quantities,
-                    [item.size]: selectedElementQuantities ? item.quantity + selectedElementQuantities : item.quantity
+                    [item.size]: { quantity: selectedElementQuantities ? item.quantity + selectedElementQuantities : item.quantity }
                 }
             }
         }
     }, {} as ProductsQuantityMap)
+}
+
+interface Summary {
+    productIndex: string;
+    productName: string;
+    id: string;
+    isExtraProduct: boolean;
+    sizes: {
+       size: string;
+       deliveryCount: number;
+       differenceCount: number;
+       isExtraSize: boolean;
+    }[]
 }
 
 export const getDeliverySummary = () => catchAsync(async (req: Request, res: Response) => {
@@ -115,9 +131,27 @@ export const getDeliverySummary = () => catchAsync(async (req: Request, res: Res
 
     const differenceMap = deliveryService.compareDeliveryWithInvoice(deliveryProductsMap, invoiceProductsMap);
 
+    const summary: Summary[] = Object.keys(differenceMap).map(productId => {
+        const sizes = Object.keys(differenceMap[productId].quantities).map(size => {
+            return {
+                size,
+                deliveryCount: deliveryProductsMap[productId]?.quantities[size]?.quantity ?? 0,
+                differenceCount: differenceMap[productId].quantities[size].quantity,
+                isExtraSize: differenceMap[productId].quantities[size].isExtraSize
+            }
+        })
+        return {
+            id: productId,
+            isExtraProduct: differenceMap[productId]?.isExtraProduct ?? false,
+            productIndex: differenceMap[productId].productIndex,
+            productName: differenceMap[productId].productName,
+            sizes
+        }
+    })
+
     res.status(200).json({
         status: 'success',
-        items: differenceMap
+        items: summary
     })
 })
 

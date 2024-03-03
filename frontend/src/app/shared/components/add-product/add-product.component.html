@@ -1,0 +1,27 @@
+<div [formGroup]="formGroup" class="form-section grid grid-cols-5 gap-4 items-end">
+  <div class="flex gap-2 w-full">
+    <div class="flex flex-col w-full">
+      <label class=input-label for="">Indeks</label>
+      <p-dropdown [options]="products" id="product"
+                  optionLabel="name"
+                  optionValue="_id"
+                  placeholder="Wybierz produkt"
+                  (onChange)="onSelect($event)"
+                  formControlName="productId">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <label class="input-label" for="size">Rozmiar</label>
+    <p-dropdown id="size" [options]="selectedProduct?.attributes?.size || []" placeholder="Wybierz rozmiar" formControlName="size"></p-dropdown>
+  </div>
+  <div class="flex flex-col">
+    <label class="input-label" for="price">Cena</label>
+    <input pInputText id="price" class="p-inputtext-sm" type="number" formControlName="price"/>
+  </div>
+  <div class="flex flex-col">
+    <label class="input-label" for="quantity">Ilość</label>
+    <input pInputText id="quantity" class="p-inputtext-sm" type="number" formControlName="quantity"/>
+  </div>
+  <p-button label="Dodaj" styleClass="p-button-primary w-full h-[2.2em]" class="w-full flex justify-center self-end" (onClick)="addProduct()"></p-button>
+</div>

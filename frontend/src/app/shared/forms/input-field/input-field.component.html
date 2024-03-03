@@ -1,0 +1,5 @@
+<div class="flex flex-col col-span-2 flex-grow" [ngClass]="styleClass">
+  <label class="input-label" [for]="name">{{label}}</label>
+  <input pInputText class="w-full" [type]="type" [id]="name" [formControl]="control"/>
+  <ng-content></ng-content>
+</div>

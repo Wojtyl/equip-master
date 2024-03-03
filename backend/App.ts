@@ -17,6 +17,7 @@ import { boxRouter } from './src/routes/boxRoute'
 import { colorRouter } from "./src/routes/colorRoute";
 import { roleRouter } from "./src/routes/roleRoute";
 import { errorController } from "./src/controllers/errorController";
+import { validationRouter } from "./src/routes/validationRouter";
 
 dotenv.config({ path: "./.env" });
 
@@ -28,7 +29,7 @@ class ServerApp {
     app.use(cors());
 
     //Body parser, reading data from body into req.body
-    app.use(e.json({ limit: "10kb" }));
+    app.use(e.json({ limit: "1000kb" }));
     app.use(e.urlencoded({ extended: true, limit: "10kb" }));
 
     //Cookies parser to get req.cookies
@@ -39,6 +40,9 @@ class ServerApp {
       console.log(process.env.DB_CONNECTION);
       app.use(morgan("dev"));
     }
+
+    app.use("/images/product", e.static(`${__dirname}/public/images/products`))
+
     app.use("/api/v1/auth", authRouter);
     app.use("/api/v1/suppliers", supplierRouter);
     app.use("/api/v1/deliveries", deliveryRouter);
@@ -48,6 +52,7 @@ class ServerApp {
     app.use("/api/v1/colors", colorRouter);
     app.use("/api/v1/boxes", boxRouter);
     app.use("/api/v1/roles", roleRouter);
+    app.use("/api/v1/validation", validationRouter)
 
     app.use(errorController);
   }

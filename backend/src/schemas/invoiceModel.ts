@@ -4,10 +4,11 @@ import { IProductInvoice } from "../interfaces/product-invoice";
 interface IInvoice {
   deliveryId: Types.ObjectId,
   invoiceNumber: string,
-  date: Date,
-  supplierId: Types.ObjectId,
+  date: Number,
+  supplier: Types.ObjectId,
   products: IProductInvoice[],
   nettoPrice: Number,
+  currency: String
 }
 
 const invoiceSchema = new mongoose.Schema<IInvoice>({
@@ -18,8 +19,10 @@ const invoiceSchema = new mongoose.Schema<IInvoice>({
     type: String,
     required: [true, "Invoice must have a number"],
   },
-  supplierId: {
+  supplier: {
     type: Schema.Types.ObjectId,
+    ref: 'Supplier',
+    required: [true, "Supplier must be provided"],
   },
   products: [
     {
@@ -38,17 +41,24 @@ const invoiceSchema = new mongoose.Schema<IInvoice>({
       },
       color: {
         type: String
+      },
+      price: {
+        type: Number
       }
     },
   ],
   date: {
-    type: Date,
+    type: Number,
     required: [true, "Invoice must have a date"],
   },
   nettoPrice: {
     type: Number,
     required: [true, "Invoice must have netto price"],
   },
+  currency: {
+    type: String,
+    required: [true, "Invoice must have a currency"],
+  }
 });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);

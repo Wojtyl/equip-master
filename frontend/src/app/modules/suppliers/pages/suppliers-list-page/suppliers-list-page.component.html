@@ -1,0 +1,14 @@
+<div class="p-10 flex flex-col w-full h-full bg-success">
+  <div class="flex justify-between items-center mb-5">
+    <h1>Dostawcy</h1>
+    <button class="btn btn-add" [routerLink]="['create']">
+      <span>+</span>
+    </button>
+
+  </div>
+  <div>
+    <div class="flex items-center justify-end mb-5">
+    </div>
+      <app-suppliers-table [suppliers]="suppliers"></app-suppliers-table>
+  </div>
+</div>
