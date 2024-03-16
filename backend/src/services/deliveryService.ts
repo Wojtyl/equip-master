@@ -69,6 +69,28 @@ export class DeliveryService {
                 }
             },
             {
+                $lookup: {
+                    from: 'invoices',
+                    localField: 'invoice',
+                    foreignField: '_id',
+                    as: 'invoice',
+                    pipeline: [
+                        {$limit: 1},
+                        {
+                            $project: {
+                                _id: 1,
+                                invoiceNumber: 1,
+                            }
+                        }
+                    ]
+
+                },
+            },
+
+            {
+                $unwind: '$invoice'
+            },
+            {
                 $limit: 1
             }
         ])).then(data => {

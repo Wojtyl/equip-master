@@ -3,10 +3,12 @@ export interface DeliverySummary {
   productName: string;
   id: string;
   isExtraProduct: boolean;
-  sizes: {
-    size: string;
-    deliveryCount: number;
-    differenceCount: number;
-    isExtraSize: boolean;
-  }[]
+  sizes: ProductSizes[];
+}
+
+export interface ProductSizes {
+  size: string;
+  deliveryCount: number;
+  differenceCount: number;
+  isExtraSize: boolean;
 }

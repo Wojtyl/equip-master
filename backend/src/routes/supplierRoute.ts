@@ -22,7 +22,7 @@ supplierRouter
 
 supplierRouter
     .route("/:id/invoices")
-      .get(supplierController.findSupplierInvoices())
+      .get(supplierController.findSupplierInvoicesWithoutDelivery())
 
 supplierRouter
     .route("/:id/products")

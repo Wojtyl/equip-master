@@ -14,8 +14,8 @@ export class DeliveryService {
 
   constructor(private http: HttpClient) { }
 
-  addDelivery(data: any) {
-    return this.http.post(`${apiUrl}deliveries`, data);
+  addDelivery(data: {date: string, description: string, invoice: string, supplier: string}) {
+    return this.http.post<ListResponse<IDeliveryDetails>>(`${apiUrl}deliveries`, data);
   }
 
   getAllDeliveries(): Observable<ListResponse<IDeliveryList[]>> {

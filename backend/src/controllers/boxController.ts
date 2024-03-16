@@ -19,10 +19,10 @@ export class BoxController {
     createBox = () => catchAsync(async (req: URequest, res: Response) => {
         const box = await Box.create({ ...req.body, createdBy: req.user.id });
         await boxService.changeBoxStatus(BoxStatus.New, req.user.id, 'Created box', box);
-        const deliveryDetails = await deliveryService.getDeliveryBoxes(req.body.deliveryId)
+        // const deliveryDetails = await deliveryService.getDeliveryBoxes(req.body.deliveryId)
         res.status(200).json({
             status: 200,
-            items: deliveryDetails
+            items: box
         })
     })
 
@@ -75,7 +75,7 @@ export class BoxController {
         const box = await Box.findById(req.params.id).orFail(new AppError('Box not found', 404));
         const delivery = await Delivery.findById(box.deliveryId).orFail(new AppError('Delivery with that ID not found!', 404));
         if (delivery.closed) throw new AppError('You can\'t delete box if delivery is already closed!', 403);
-        box.deleteOne();
+        await box.deleteOne();
         await boxService.deleteBoxFromDelivery(box.deliveryId.toString(), box._id.toString());
         res.status(200).json({
             status: 'success',

@@ -1,58 +1,37 @@
-<div>
-  <form
-    [formGroup]="deliveryForm"
-    class="flex flex-col bg-slate-100 p-4"
-  >
-    <label for="supplier">Dostawca</label>
-    <p-dropdown
-      formControlName="supplier"
-      [options]="suppliers"
-      optionLabel="name"
-      [filter]="true"
-    ></p-dropdown>
-    <label for="date">Data</label>
-    <input type="date" id="date" formControlName="date">
+<div class="p-10">
+  <div class="flex justify-between items-center mb-5">
+  <h1>Dostawy</h1>
+    <button class="btn btn-add" [routerLink]="['create']">
+      <span>+</span>
+    </button>
+  </div>
 
-    <label for="description">Opis dostawy</label>
-    <input
-      type="text"
-      id="description"
-      formControlName="description"
-    />
-    <label for="invoice">Numer Faktury</label>
-    <p-dropdown
-      id="invoice"
-      formControlName="invoice"
-      [options]="supplierInvoices"
-      optionLabel="invoiceNumber"
-      [filter]="true"
-    ></p-dropdown>
 
-    <button type="button" (click)="onSubmit()">Submit</button>
-  </form>
-
-  <h1>Deliveries</h1>
-  <table class="table-fix w-[1000px] text-center border-collapse border border-slate-500" *ngIf="deliveries.length > 0">
+  <table class="table-list" *ngIf="deliveries.length > 0">
     <thead>
       <tr>
-        <th>Lp.</th>
-        <th>Dostawca</th>
-        <th>Data</th>
-        <th>Opis</th>
-        <th>Numer faktury</th>
-        <th>Akcja</th>
+        <td>Dostawca</td>
+        <td>Data</td>
+        <td>Status</td>
+        <td>Numer faktury</td>
+        <td>Opis</td>
+        <td class="text-center">Akcja</td>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let delivery of deliveries; let i = index ">
-        <td>{{i+1}}</td>
         <td>{{delivery.supplier.name}}</td>
         <td>{{delivery.date | date:'dd.MM.yyy'}}</td>
-        <td>{{delivery.description}}</td>
+        <td>{{delivery.status}}</td>
         <td>{{delivery?.invoice?.invoiceNumber}}</td>
+        <td>{{delivery.description}}</td>
         <td>
-          <p-button label="Kontynuuj" styleClass="p-button-secondary" (onClick)="onContinue(delivery._id)"></p-button>
-          <p-button label="Usuń" styleClass="p-button-danger" (onClick)="onDelete(delivery._id)"></p-button>
+          <div class="card flex justify-center">
+            <div class="flex items-center">
+            <p-menu #menu [model]="items" [popup]="true"></p-menu>
+              <app-svg-icon icon="dots_icon" [fill]="'#000'" [strokeWidth]="'0'" [scale]="0.3" (click)="menu.toggle(toggleMenu($event, delivery._id))"></app-svg-icon>
+            </div>
+          </div>
         </td>
       </tr>
     </tbody>

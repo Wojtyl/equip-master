@@ -41,8 +41,9 @@ const createDeliveryService = () =>
         const status = {
             changedBy: user.id,
             status: 'NEW',
-            date: new Date
+            date: new Date()
         }
+
         const deliveryData = new Delivery({ ...req.body, createdBy: user.id })
         deliveryData.statuses.push(status);
         const delivery = await Delivery.create(deliveryData);

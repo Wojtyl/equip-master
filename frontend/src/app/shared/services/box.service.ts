@@ -13,8 +13,8 @@ export class BoxService {
 
   constructor(private http: HttpClient) { }
 
-  addBoxToDelivery(deliveryId: string): Observable<ListResponse<IDeliveryDetails>> {
-    return this.http.post<ListResponse<IDeliveryDetails>>(`${apiUrl}boxes`, {
+  addBoxToDelivery(deliveryId: string) {
+    return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes`, {
       deliveryId
     });
   }

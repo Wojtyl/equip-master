@@ -5,6 +5,7 @@ import { SharedModule } from "../../shared/shared.module";
 
 import * as pages from './pages';
 import * as components from './components';
+import { InputTextareaModule } from "primeng/inputtextarea";
 
 @NgModule({
   declarations: [
@@ -13,12 +14,18 @@ import * as components from './components';
     pages.DeliverySummaryComponent,
     pages.BoxDetailsComponent,
     components.DeliveryAddBoxComponent,
-    components.DeliveryBoxTableComponent
+    components.DeliveryBoxTableComponent,
+    //################################
+    pages.DeliveryCreationPageComponent,
+    components.DeliveryInformationStepComponent,
+    components.DeliveryCountingStepComponent,
+    components.DeliverySummaryStepComponent,
   ],
   imports: [
     CommonModule,
     DeliveryRoutingModule,
-    SharedModule
+    SharedModule,
+    InputTextareaModule
   ]
 })
 export class DeliveryModule { }

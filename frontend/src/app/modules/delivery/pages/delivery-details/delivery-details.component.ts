@@ -11,9 +11,9 @@ import { BoxService } from "../../../../shared/services/box.service";
   styleUrls: ['./delivery-details.component.scss']
 })
 export class DeliveryDetailsComponent implements OnInit, OnDestroy {
-  deliveryId: string;
-  delivery: IDeliveryDetails;
-  subscriptions = new Subscription()
+  protected deliveryId: string;
+  protected delivery: IDeliveryDetails;
+  protected subscriptions = new Subscription()
   protected deliveryFinishable: boolean;
 
   constructor(private activeRoute: ActivatedRoute,
@@ -40,9 +40,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   addBox() {
-    this.boxService.addBoxToDelivery(this.deliveryId).subscribe(data => {
-      this.delivery = data.items;
-    })
   }
 
   deleteBox(boxId: string) {

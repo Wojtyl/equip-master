@@ -1,5 +1,5 @@
 <div *ngIf="boxDetails" class="m-8">
-  <a [routerLink]="['/delivery', boxDetails.deliveryId]">Back</a>
+  <a [routerLink]="['/delivery/create', boxDetails.deliveryId, 'counting']">Back</a>
   <div class="flex justify-center items-center">
     <app-svg-icon [scale]="6" icon="box_icon" ></app-svg-icon>
   </div>

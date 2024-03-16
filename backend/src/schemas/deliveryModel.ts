@@ -16,6 +16,7 @@ const deliverySchema = new mongoose.Schema({
   invoice: {
     type: mongoose.Types.ObjectId,
     ref: 'Invoice',
+    unique: [true, 'Invoice with that ID already exists'],
     required: [true, "Delivery must have an invoice"],
   },
   closed: {

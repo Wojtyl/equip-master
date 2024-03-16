@@ -24,6 +24,8 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { MenuModule } from 'primeng/menu';
+import { StepsModule } from 'primeng/steps';
 
 //Component imports
 import * as components from './components';
@@ -36,6 +38,7 @@ import * as form from './forms';
     components.AddProductComponent,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
+    components.StepperComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
     form.FormFileUploadComponent
@@ -59,10 +62,12 @@ import * as form from './forms';
     ListboxModule,
     MultiSelectModule,
     MessagesModule,
+    MenuModule,
     NgbModule,
     OverlayPanelModule,
     ReactiveFormsModule,
     SkeletonModule,
+    StepsModule,
     TooltipModule
   ],
   exports: [
@@ -84,14 +89,17 @@ import * as form from './forms';
     ListboxModule,
     MultiSelectModule,
     MessagesModule,
+    MenuModule,
     NgbModule,
     OverlayPanelModule,
     ReactiveFormsModule,
     SkeletonModule,
+    StepsModule,
     TooltipModule,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,
     components.AddProductComponent,
+    components.StepperComponent,
     form.InputFieldComponent,
     form.FormControlsHeaderComponent,
     form.FormFileUploadComponent

@@ -1,6 +1,6 @@
-<table *ngIf="invoices" class="w-full text-sm table-auto">
-  <thead class="text-zinc-500">
-    <tr class="bg-zinc-100">
+<table *ngIf="invoices" class="table-list">
+  <thead>
+    <tr>
       <td>Numer</td>
       <td>Data wystawienia</td>
       <td>Dostawca</td>
@@ -15,7 +15,6 @@
       <td>{{invoice.supplier.name}}</td>
       <td>{{invoice.nettoPrice}} {{invoice.currency}}</td>
       <td class="flex items-center justify-center gap-1">
-<!--        <app-svg-icon class="cursor-pointer" icon="delete_icon" [scale]="1" (click)="deleteInvoice(i)"></app-svg-icon>-->
         <app-svg-icon class="cursor-pointer" icon="expand_icon" [scale]="1.2" (click)="openDetails(i)"></app-svg-icon>
       </td>
     </tr>

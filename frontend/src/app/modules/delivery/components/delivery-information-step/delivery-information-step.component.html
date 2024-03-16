@@ -1,0 +1,49 @@
+<div class="container mx-auto px-10">
+  <section id="header" [class]="'h-full'">
+    <div class="flex">
+      <div>
+        <h1 class="font-medium">Stwórz dostawę</h1>
+      </div>
+    </div>
+  </section>
+  <section>
+    <form [formGroup]="deliveryInformationFormGroup">
+      <div class="form-section grid grid-cols-2 gap-4">
+        <div class="flex flex-col col-span-2 w-auto">
+          <label class="input-label" for="supplier">Dostawca:</label>
+          <p-dropdown
+            id="supplier"
+            formControlName="supplier"
+            [options]="suppliers"
+            optionLabel="name"
+            optionValue="_id"
+            [filter]="true"
+          ></p-dropdown>
+        </div>
+        <div class="flex flex-col w-auto">
+          <label class="input-label" for="invoice">Numer faktury:</label>
+          <p-dropdown
+            id="invoice"
+            formControlName="invoice"
+            [options]="supplierInvoices"
+            optionLabel="invoiceNumber"
+            optionValue="_id"
+            [filter]="true"
+          ></p-dropdown>
+        </div>
+        <div class="flex flex-col w-auto">
+          <label class="input-label" for="invoiceDate">Data wystawienia faktury:</label>
+          <p-calendar id="invoiceDate" class="w-full" dateFormat="dd-mm-yy" formControlName="date"
+                      [showIcon]="true"></p-calendar>
+        </div>
+        <div class="flex flex-col col-span-2 w-auto">
+          <label class="input-label" for="description">Opis dostawy:</label>
+          <textarea pInputTextarea id="description" formControlName="description" rows="5"></textarea>
+        </div>
+      </div>
+    </form>
+    <div class="w-100 flex justify-end">
+      <p-button label="Kontynuuj" styleClass="p-button-primary" (onClick)="createDeliveryAndNavigate()"></p-button>
+    </div>
+  </section>
+</div>

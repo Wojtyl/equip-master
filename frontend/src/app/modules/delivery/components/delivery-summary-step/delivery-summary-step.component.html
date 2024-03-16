@@ -1,0 +1,107 @@
+<p *ngIf="!deliverySummary">Loading...</p>
+
+<div class="container mx-auto px-10" *ngIf="deliverySummary">
+  <section id="header" [class]="'h-full'">
+    <div class="flex">
+      <div>
+        <h1 class="font-medium">Podusmowanie dostawy</h1>
+      </div>
+    </div>
+  </section>
+
+  <section id="filters" class="w-full flex justify-between h-[2.5rem] my-4">
+    <div class="w-[20rem] h-full">
+      <input class="w-[20rem] h-[2.5rem] px-2 border-1 border-zinc-300">
+    </div>
+  </section>
+
+  <section id="table">
+    <table class="box-table">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Indeks</th>
+        <th>Produkt</th>
+        <th>Łączna ilość</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (product of deliverySummary; track product.id; let i = $index) {
+          <tr
+            [class.highlight]="product.isExtraProduct">
+            <td class="w-1">
+              <div class="w-16 flex items-center justify-center">
+                <div [ngClass]="{'block': openedDetailsRow !== i, 'hidden': openedDetailsRow === i }">
+                  <app-svg-icon icon="expand_icon" (click)="openDetails(i)" [scale]="1.3"></app-svg-icon>
+                </div>
+                <div [ngClass]="{'block': openedDetailsRow === i, 'hidden': openedDetailsRow !== i }">
+                  <app-svg-icon icon="close_icon" (click)="openedDetailsRow = null" [scale]="1.3"></app-svg-icon>
+                </div>
+              </div>
+            </td>
+            <td>{{ product.productIndex }}</td>
+            <td>
+              <div class="flex">
+                <span>{{ product.productName }}</span>
+              </div>
+            </td>
+            <ng-container>
+              <td>
+                {{ getAllProductSizesQuantity(product.sizes) }}
+              </td>
+              <td>
+                <ng-container *ngIf="checkProductSizesDifference(product.sizes) as differenceCount; else ok">
+                  @if (differenceCount > 0) {
+                    <span>{{ 'Nadwyżka ' + differenceCount }}</span>
+                  } @else if (differenceCount < 0) {
+                    <span>{{ 'Brak ' + Math.abs(differenceCount) }}</span>
+                  }
+                </ng-container>
+                <ng-template #ok><span>Zgadza się</span></ng-template>
+              </td>
+            </ng-container>
+
+          </tr>
+          <tr *ngIf="openedDetailsRow === i" class="bg-amber-100">
+            <td class="details-row" colspan="5">
+              <!--              TODO: Change table to list with fields.
+                                  Inspiration: https://dribbble.com/shots/4426557-Uber-for-Business
+             -->
+
+              <table class="w-full box-table">
+                <thead>
+                <tr>
+                  <th>Rozmiar</th>
+                  <th>Ilość na fakturze</th>
+                  <th>Ilość w dostawie</th>
+                  <th>Różnice</th>
+                  <th>Bonus</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (size of product.sizes; track size.size) {
+                    <tr>
+                      <td>{{ size.size }}</td>
+                      <td>{{ size.deliveryCount - size.differenceCount }}</td>
+                      <td>{{ size.deliveryCount }}</td>
+                      <td>
+                        @if (size.differenceCount < 0) {
+                          <span>Brak </span>
+                        } @else if (size.differenceCount > 0) {
+                          <span>Nadwyżka </span>
+                        }
+                        {{ Math.abs(size.differenceCount) }}
+                      </td>
+                      <td>{{ size.isExtraSize ? 'TAK' : 'NIE' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>
