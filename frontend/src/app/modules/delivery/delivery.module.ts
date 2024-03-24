@@ -10,12 +10,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 @NgModule({
   declarations: [
     pages.DeliveryPageComponent,
-    pages.DeliveryDetailsComponent,
-    pages.DeliverySummaryComponent,
     pages.BoxDetailsComponent,
-    components.DeliveryAddBoxComponent,
-    components.DeliveryBoxTableComponent,
-    //################################
     pages.DeliveryCreationPageComponent,
     components.DeliveryInformationStepComponent,
     components.DeliveryCountingStepComponent,
