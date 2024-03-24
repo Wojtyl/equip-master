@@ -1,29 +1,41 @@
-<div *ngIf="products"
-     class="grid auto-rows-fr items-center justify-center flex-wrap gap-4 grid-cols-3">
-  @for (product of products; track product._id) {
-    <div class="product-card-container flex flex-col pt-2">
-      <div class="h-[11rem] relative">
-        <img class="object-contain w-full h-full" [src]="getProductImage(product)" (error)="onImageError(product)" alt="Product image">
-      </div>
-      <div class="product-information p-4 flex flex-col flex-1">
-        <div class="mt-2">
-          <p class="product-name text-lg text-[#121714] font-bold leading-5">{{ product.name }}</p>
-          <p class="product-id mt-1 font-normal text-sm text-[#6D6F6E]">{{ product.productIndex }}</p>
+@if (products && products.length > 0) {
+  <div class="grid auto-rows-fr items-center justify-center flex-wrap gap-4 grid-cols-3">
+    @for (product of products; track product._id) {
+      <div class="product-card-container flex flex-col pt-2">
+        <div class="h-[11rem] relative">
+          <img class="object-contain w-full h-full" [src]="getProductImage(product)" (error)="onImageError(product)"
+               alt="Product image">
         </div>
-        <div class="mt-4 mb-2">
-          <div class="flex gap-x-2">
-            @for (size of product.attributes.size; track size) {
-              <span class="product-size text-sm">{{ size }}</span>
-            }
+        <div class="product-information p-4 flex flex-col flex-1">
+          <div class="mt-2">
+            <p class="product-name text-lg text-[#121714] font-bold leading-5">{{ product.name }}</p>
+            <p class="product-id mt-1 font-normal text-sm text-[#6D6F6E]">{{ product.productIndex }}</p>
+          </div>
+          <div class="mt-4 mb-2">
+            <div class="flex gap-x-2">
+              @for (size of product.attributes.size; track size) {
+                <span class="product-size text-sm">{{ size }}</span>
+              }
+            </div>
+          </div>
+          <div class="flex basis-10 mb-2 flex-1">
+            <div class="flex flex-1 justify-between items-end gap-x-2">
+              <button
+                class="btn-product flex-1 py-1 bg-black text-white text-sm font-bold rounded">{{ 'Więcej'  | uppercase }}
+              </button>
+              <button class="btn-product flex-1 py-1 bg-black text-white text-sm font-bold rounded"
+                      [routerLink]="[product._id, 'edit']">{{ "Edycja" | uppercase }}
+              </button>
+            </div>
           </div>
         </div>
-        <div class="flex basis-10 mb-2 flex-1">
-          <div class="flex flex-1 justify-between items-end gap-x-2">
-            <button class="btn-product flex-1 py-1 bg-black text-white text-sm font-bold rounded">{{ 'Więcej'  | uppercase}}</button>
-            <button class="btn-product flex-1 py-1 bg-black text-white text-sm font-bold rounded" [routerLink]="[product._id, 'edit']">{{ "Edycja" | uppercase }}</button>
-          </div>
-        </div>
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+} @else {
+  <div class="w-full p-8 text-center">
+    <app-svg-icon icon="empty-box_icon" fill="#000" strokeWidth="0" [scale]="2.3"></app-svg-icon>
+    <h2 class="font-normal">Brak produktów</h2>
+    <p class="font-light my-2">Aby zobaczyć listę produktów <span class="px-2 py-1 cursor-pointer rounded bg-blue-500 text-white" [routerLink]="['create']">Dodaj produkt</span></p>
+  </div>
+}

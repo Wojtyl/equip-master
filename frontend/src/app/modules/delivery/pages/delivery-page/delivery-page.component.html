@@ -1,40 +1,53 @@
 <div class="p-10">
   <div class="flex justify-between items-center mb-5">
-  <h1>Dostawy</h1>
+    <h1>Dostawy</h1>
     <button class="btn btn-add" [routerLink]="['create']">
       <span>+</span>
     </button>
   </div>
-
-
-  <table class="table-list" *ngIf="deliveries.length > 0">
+  <table class="table-list">
     <thead>
-      <tr>
-        <td>Dostawca</td>
-        <td>Data</td>
-        <td>Status</td>
-        <td>Numer faktury</td>
-        <td>Opis</td>
-        <td class="text-center">Akcja</td>
-      </tr>
+    <tr>
+      <td>Dostawca</td>
+      <td>Data</td>
+      <td>Status</td>
+      <td>Numer faktury</td>
+      <td>Opis</td>
+      <td class="text-center">Akcja</td>
+    </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let delivery of deliveries; let i = index ">
-        <td>{{delivery.supplier.name}}</td>
-        <td>{{delivery.date | date:'dd.MM.yyy'}}</td>
-        <td>{{delivery.status}}</td>
-        <td>{{delivery?.invoice?.invoiceNumber}}</td>
-        <td>{{delivery.description}}</td>
-        <td>
-          <div class="card flex justify-center">
-            <div class="flex items-center">
-            <p-menu #menu [model]="items" [popup]="true"></p-menu>
-              <app-svg-icon icon="dots_icon" [fill]="'#000'" [strokeWidth]="'0'" [scale]="0.3" (click)="menu.toggle(toggleMenu($event, delivery._id))"></app-svg-icon>
+      @for (delivery of deliveries; let i = $index; track delivery._id) {
+        <tr>
+          <td>{{ delivery.supplier.name }}</td>
+          <td>{{ delivery.date | date:'dd.MM.yyy' }}</td>
+          <td>{{ delivery.status }}</td>
+          <td>{{ delivery?.invoice?.invoiceNumber }}</td>
+          <td>{{ delivery.description }}</td>
+          <td>
+            <div class="card flex justify-center">
+              <div class="flex items-center">
+                <p-menu #menu [model]="items" [popup]="true"></p-menu>
+                <app-svg-icon icon="dots_icon" [fill]="'#000'" [strokeWidth]="'0'" [scale]="0.3"
+                              (click)="menu.toggle(toggleMenu($event, delivery._id))"></app-svg-icon>
+              </div>
             </div>
-          </div>
-        </td>
-      </tr>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7">
+
+            <div class="w-full p-8 text-center">
+              <app-svg-icon icon="delivery5_icon" fill="#000" strokeWidth="0" [scale]="1.8"></app-svg-icon>
+              <h2 class="font-normal">Brak dostw</h2>
+              <p class="font-light my-2">Jeszcze nie posiadasz, żadnych dostaw. <span
+                class="px-2 py-1 cursor-pointer rounded bg-blue-500 text-white" [routerLink]="['create']">Rozpocznij dostawę</span>
+              </p>
+            </div>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
-  <h2 *ngIf="deliveries.length === 0">Nie ma jeszcze zadnych dostaw</h2>
 </div>
