@@ -3,8 +3,7 @@
   @for (product of products; track product._id) {
     <div class="product-card-container flex flex-col pt-2">
       <div class="h-[11rem] relative">
-        <img class="object-contain w-full h-full" [src]="product.imageUrl ?? fallbackImg" (error)="onImageError(product)" alt="Product image">
-        <!--                <span class="product-colour absolute bottom-0 right-4">{{product.attributes.colour}}</span>-->
+        <img class="object-contain w-full h-full" [src]="getProductImage(product)" (error)="onImageError(product)" alt="Product image">
       </div>
       <div class="product-information p-4 flex flex-col flex-1">
         <div class="mt-2">

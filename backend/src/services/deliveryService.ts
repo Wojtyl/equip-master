@@ -197,6 +197,11 @@ export class DeliveryService {
         };
     }
 
+    public updateDelivery(deliveryId: string, data) {
+        return Delivery.findByIdAndUpdate(deliveryId, data, {runValidators: true, new: true})
+            .orFail(new AppError('Delivery not found', 404));
+    }
+
     public compareDeliveryWithInvoice(deliveryProducts: ProductsQuantityMap, invoiceProducts: ProductsQuantityMap) {
         const differencesMap = Object.keys(invoiceProducts).reduce((acc, invoiceProduct) => {
             let differences;

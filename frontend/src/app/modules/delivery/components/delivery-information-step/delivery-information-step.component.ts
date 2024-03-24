@@ -1,12 +1,12 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SupplierService } from "../../../suppliers/supplier.service";
-import { mergeMap, of, Subscription, tap } from "rxjs";
+import { forkJoin, iif, map, mergeMap, of, Subscription, tap } from "rxjs";
 import { Supplier } from "../../../../shared/models/supplierModel";
-import { Invoice } from "../../../invoices/models/invoice-model";
 import { DeliveryService } from "../../delivery-service.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { StepperService } from "../../../../shared/services/stepper.service";
+import { IDeliveryDetails } from "../../models/delivery-details-model";
 
 @Component({
   selector: 'app-delivery-information-step',
@@ -24,22 +24,32 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
+  private deliveryId: string;
   public suppliers: Supplier[];
-  private invoicesMap: { [key: string]: Invoice[] } = {};
-  public supplierInvoices: Invoice[];
+  public supplierInvoices: {invoiceNumber: string, _id: string}[];
+  private invoicesMap: { [key: string]: {invoiceNumber: string, _id: string}[] } = {};
+  private delivery: IDeliveryDetails;
 
   ngOnInit() {
+    this.deliveryId = this.route.snapshot.params['id'];
     this.stepperService.setStep(1);
-    this.initForm();
-    this.subscriptions.add(this.supplierService.getAllSuppliers().subscribe(response => this.suppliers = response.items));
+
+    forkJoin(this.supplierService.getAllSuppliers(), this.getDelivery$()).subscribe(
+      ([suppliers, delivery]) => {
+        this.suppliers = suppliers.items;
+        this.delivery = delivery;
+        console.log(delivery)
+        this.initForm();
+      }
+    )
   }
 
   private initForm() {
     this.deliveryInformationFormGroup = this.formBuilder.group({
       supplier: ['', Validators.required],
       invoice: ['', Validators.required],
-      date: [null, Validators.required],
-      description: ['', Validators.required]
+      date: [this.delivery?.date ? new Date(this.delivery.date) : null, Validators.required],
+      description: [this.delivery?.description ?? '', Validators.required]
     })
 
     this.subscriptions.add(this.deliveryInformationFormGroup.get('supplier')?.valueChanges.pipe(
@@ -47,7 +57,16 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
         mergeMap((supplierId) => {
           if (!this.invoicesMap[supplierId]) {
             return this.supplierService.getSupplierInvoices(supplierId).pipe(
-              tap(response => this.invoicesMap[supplierId] = this.supplierInvoices = response.items));
+              tap(response => {
+                this.invoicesMap[supplierId] = this.supplierInvoices = response.items;
+                if (this.deliveryId && this.delivery.supplier === supplierId) {
+                  this.invoicesMap[supplierId].push({
+                    invoiceNumber: this.delivery.invoice.invoiceNumber,
+                    _id: this.delivery.invoice._id,
+                  })
+                  this.deliveryInformationFormGroup.get('invoice')?.patchValue(this.delivery.invoice._id)
+                }
+              }));
           } else {
             this.supplierInvoices = this.invoicesMap[supplierId];
             return of(this.invoicesMap[supplierId]);
@@ -55,17 +74,32 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
         }),
       ).subscribe()
     )
+
+    if (this.deliveryId) this.deliveryInformationFormGroup.get('supplier')?.patchValue(this.delivery.supplier);
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
 
+  getDelivery$() {
+    return iif(() => !!this.deliveryId,
+      this.deliveryService.getDelivery(this.deliveryId)
+        .pipe(map(response => response.items)),
+      of({} as IDeliveryDetails))
+  }
+
   createDeliveryAndNavigate() {
     const data = this.deliveryInformationFormGroup.getRawValue();
-    this.deliveryService.addDelivery(data).subscribe(data => {
-      const delivery = data.items;
-      this.router.navigate([ delivery._id, 'counting'], {relativeTo: this.route})
-    })
+    if (this.deliveryId) {
+      this.deliveryService.updateDelivery(data, this.deliveryId).subscribe(() => {
+        this.router.navigate([ 'counting'], {relativeTo: this.route})
+      })
+    } else {
+      this.deliveryService.addDelivery(data).subscribe(data => {
+        const delivery = data.items;
+        this.router.navigate([ delivery._id, 'counting'], {relativeTo: this.route})
+      })
+    }
   }
 }

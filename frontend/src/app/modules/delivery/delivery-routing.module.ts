@@ -20,6 +20,10 @@ const routes: Routes = [
         component: components.DeliveryInformationStepComponent
       },
       {
+        path: ':id',
+        component: components.DeliveryInformationStepComponent
+      },
+      {
         path: ':id/counting',
         component: components.DeliveryCountingStepComponent
       },

@@ -41,4 +41,8 @@ export class DeliveryService {
   reopenDelivery(deliveryId: string) {
     return this.http.post(`${apiUrl}deliveries/${deliveryId}/reopen`, {})
   }
+
+  updateDelivery(data: {date: string, description: string, invoice: string, supplier: string}, deliveryId: string) {
+    return this.http.patch(`${apiUrl}deliveries/${deliveryId}`, data)
+  }
 }

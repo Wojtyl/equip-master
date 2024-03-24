@@ -1,8 +1,9 @@
 <div class="container mx-auto px-10 my-8">
+  <span class="text-blue-600 cursor-pointer" [routerLink]="['..']">Krok wstecz</span>
   <section [class]="'h-full'" id="header">
     <div class="flex">
       <div *ngIf="delivery">
-        <h1 class="font-medium">Pudła w dostawie</h1>
+        <h1 class="font-medium my-2">Pudła w dostawie</h1>
         <h4 class="font-light text-zinc-700">Faktura: <span class="font-normal text-zinc-900 cursor-pointer" [routerLink]="['/invoices', delivery.invoice._id, 'details']">{{ delivery.invoice.invoiceNumber }}</span></h4>
         <h4 class="font-light text-zinc-700">Opis: <span class="font-normal text-md text-zinc-900">{{ delivery.description }}</span></h4>
       </div>

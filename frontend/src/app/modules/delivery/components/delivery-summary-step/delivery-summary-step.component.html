@@ -1,10 +1,10 @@
 <p *ngIf="!deliverySummary">Loading...</p>
-
 <div class="container mx-auto px-10" *ngIf="deliverySummary">
+  <span class="text-blue-600 cursor-pointer" [routerLink]="['..', 'counting']">Krok wstecz</span>
   <section id="header" [class]="'h-full'">
     <div class="flex">
       <div>
-        <h1 class="font-medium">Podusmowanie dostawy</h1>
+        <h1 class="font-medium my-2">Podusmowanie dostawy</h1>
       </div>
     </div>
   </section>

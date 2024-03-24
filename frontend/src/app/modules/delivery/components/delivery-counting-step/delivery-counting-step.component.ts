@@ -73,7 +73,10 @@ export class DeliveryCountingStepComponent implements OnInit, OnDestroy {
   }
 
   finishDelivery() {
-    this.deliveryService.finishDelivery(this.deliveryId).subscribe(() => this.delivery.closed = true)
+    this.deliveryService.finishDelivery(this.deliveryId).subscribe(() => {
+      this.delivery.closed = true;
+      this.router.navigate(['..', 'summary'], {relativeTo: this.activeRoute})
+    })
   }
 
   reopenDelivery() {
