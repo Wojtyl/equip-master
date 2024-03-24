@@ -65,8 +65,10 @@
                 <td class="">
                   <div class="flex items-center gap-2">
                     <app-svg-icon icon="delete_icon" iconClass="align-middle"
+                                  [triggerable]="true"
                                   (click)="deleteBox(box._id)"></app-svg-icon>
                     <app-svg-icon icon="expand_icon" iconClass="align-middle" strokeWidth="1" [scale]="1.2"
+                                  [triggerable]="true"
                                   (click)="openBox(box._id)"></app-svg-icon>
                   </div>
                 </td>

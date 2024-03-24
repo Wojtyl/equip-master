@@ -28,7 +28,7 @@
             <div class="card flex justify-center">
               <div class="flex items-center">
                 <p-menu #menu [model]="items" [popup]="true"></p-menu>
-                <app-svg-icon icon="dots_icon" [fill]="'#000'" [strokeWidth]="'0'" [scale]="0.3"
+                <app-svg-icon icon="dots_icon" [triggerable]="true" [fill]="'#000'" [strokeWidth]="'0'" [scale]="0.3"
                               (click)="menu.toggle(toggleMenu($event, delivery._id))"></app-svg-icon>
               </div>
             </div>
@@ -37,7 +37,6 @@
       } @empty {
         <tr>
           <td colspan="7">
-
             <div class="w-full p-8 text-center">
               <app-svg-icon icon="delivery5_icon" fill="#000" strokeWidth="0" [scale]="1.8"></app-svg-icon>
               <h2 class="font-normal">Brak dostw</h2>
