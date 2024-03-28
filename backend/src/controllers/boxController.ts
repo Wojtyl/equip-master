@@ -42,6 +42,16 @@ export class BoxController {
         })
     })
 
+    openBox = () => catchAsync(async (req: URequest, res: Response) => {
+        const box = await boxService.findBoxByIdOrThrow(req.params.id);
+        await boxService.changeBoxStatus(BoxStatus.InProgress, req.user.id, "Box opened", box)
+        const updatedBox: BoxSchema = await boxService.findBoxWithProductDetails(req.params.id)
+        res.status(200).json({
+            items: updatedBox,
+            status: 'success'
+        })
+    })
+
     removeProductFromBox = () => catchAsync(async (req: URequest, res: Response) => {
         const box: HydratedDocument<BoxSchema> = await boxService.findBoxByIdOrThrow(req.params.id)
         const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);

@@ -38,4 +38,8 @@ export class BoxService {
   removeProductFromBox(boxId: string, data: {productElementId: string}) {
     return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/removeProduct`, data);
   }
+
+  openBox(boxId: string) {
+    return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/open`, {})
+  }
 }
