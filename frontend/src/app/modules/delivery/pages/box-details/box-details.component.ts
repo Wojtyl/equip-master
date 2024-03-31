@@ -28,7 +28,6 @@ export class BoxDetailsComponent implements  OnInit {
   addProductForm: UntypedFormGroup;
   productsForm: UntypedFormGroup;
   products: Product[];
-  selectedProduct: Product;
   visible = false;
   isEditing = -1;
   editingBoxProduct: BoxProductForm | undefined;
@@ -55,11 +54,6 @@ export class BoxDetailsComponent implements  OnInit {
       quantity: [null],
       size: [null]
     })
-
-    this.addProductForm.get('productId')!.valueChanges.subscribe(val => {
-      this.selectedProduct = this.products.find(prod => prod._id === val)!;
-      this.addProductForm.patchValue({quantity: null, size: null});
-    })
   }
 
   initProductsForm() {
@@ -75,14 +69,6 @@ export class BoxDetailsComponent implements  OnInit {
 
   showDialog() {
     this.visible = true;
-  }
-
-  onSubmit() {
-    this.boxService.addProductToBox(this.boxId, this.addProductForm.value).subscribe(box => {
-      this.boxDetails = box.items;
-      this.visible = false;
-      this.addProductForm.reset();
-    });
   }
 
   removeProduct(productElementId: string) {
