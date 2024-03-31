@@ -1,29 +1,58 @@
 <div *ngIf="boxDetails" class="m-8">
   <a [routerLink]="['/delivery/create', boxDetails.deliveryId, 'counting']">Back</a>
-  <div>
-    <div class="flex items-center">
-      <app-svg-icon [scale]="6" icon="box_icon"></app-svg-icon>
+
+  <section class="mt-4">
+    <div class="flex justify-between">
+      <div class="flex items-start justify-start gap-6">
+        <div class="">
+          <app-svg-icon [scale]="5" icon="box_icon"></app-svg-icon>
+        </div>
+        <div class="mt-4">
+          <h1 class="text-5xl text-center font-semibold">Pudło {{ boxDetails.boxNumber }}</h1>
+          @switch (boxDetails.statuses[0].status) {
+            @case (BoxStatus.Reopened) {
+              <p class="mt-2 inline-block status_reopened">Otwarte ponownie</p>
+            }
+            @case (BoxStatus.Closed) {
+              <p class="mt-2 inline-block status_closed">Zamknięte</p>
+            }
+            @case (BoxStatus.InProgress) {
+              <p class="mt-2 inline-block status_opened">Otwarte</p>
+            }
+            @case (BoxStatus.New) {
+              <p class="mt-2 inline-block status_opened">Otwarte</p>
+            }
+          }
+        </div>
+      </div>
+      <div class="mt-4">
+        <p class="font-semibold">Stworzone przez:</p>
+        <p class="text-right">{{ boxDetails.createdBy.name }}</p>
+        <p class="text-right">{{ boxDetails.createdAt | date:'dd.MM.yyyy hh:mm' }}</p>
+      </div>
     </div>
-    <div>
-      <h1 class="text-5xl text-center font-semibold">Pudło {{ boxDetails.boxNumber }}</h1>
-      <p class="text-center">{{ boxDetails.statuses[0].status }}</p>
+  </section>
+
+  <div class="flex gap-2 justify-between h-[2.5rem] my-6">
+    <div class="w-[20rem] h-full">
+      <input class="w-[20rem] h-[2.5rem] px-2 border-1 border-zinc-300">
+    </div>
+    <div class="flex gap-2">
+      @if (!boxDetails.closed) {
+        <button class="w-[10rem] h-full border-2 border-zinc-900 " (click)="showDialog()">Dodaj produkt</button>
+        <button class="w-[10rem] h-full text-white text-center bg-zinc-900" (click)="closeBox()">Zamknij pudło</button>
+        <app-box-add-product-form [products]="products"
+                                  [addProductForm]="addProductForm"
+                                  [boxId]="this.boxId"
+                                  [visible]="visible"
+                                  (boxDetailsUpdated)="boxDetails = $event"
+                                  (modalVisible)="visible = $event"></app-box-add-product-form>
+      } @else {
+        <button class="w-[10rem] h-full border-2 border-zinc-900 " (click)="openBox()">Otwórz pudło</button>
+      }
     </div>
   </div>
-  <div class="flex justify-center items-center gap-4 p-5 w-1/2 mx-auto mb-5">
-    @if (!boxDetails.closed) {
-      <button class="rounded-[0.5rem] h-1/2" (click)="showDialog()">Dodaj produkt</button>
-      <button class="rounded-[0.5rem] h-1/2" (click)="closeBox()">Zamknij pudło</button>
-      <app-box-add-product-form [products]="products"
-                        [addProductForm]="addProductForm"
-                        [boxId]="this.boxId"
-                        [visible]="visible"
-                        (boxDetailsUpdated)="boxDetails = $event"
-                        (modalVisible)="visible = $event"></app-box-add-product-form>
-    } @else {
-      <button class="rounded-[0.5rem] h-1/2" (click)="openBox()">Otwórz pudło</button>
-    }
-  </div>
-  <table class="w-full p-10">
+  <table class="w-full">
     <thead class="font-thin text-gray-500 uppercase">
     <tr class="text-start">
       <th class="text-start">Indeks</th>
@@ -57,14 +86,15 @@
           </td>
           <td class="w-[2rem]">
             @if (isEditing === i) {
-<!--              <input [formControl]="getProductArrayFormControl(i, 'productQuantity')">-->
-              <p-inputNumber inputId="integeronly" [formControl]="getProductArrayFormControl(i, 'productQuantity')"></p-inputNumber>
+              <!--              <input [formControl]="getProductArrayFormControl(i, 'productQuantity')">-->
+              <p-inputNumber inputId="integeronly"
+                             [formControl]="getProductArrayFormControl(i, 'productQuantity')"></p-inputNumber>
             } @else {
-            {{ product.quantity }}
+              {{ product.quantity }}
             }
           </td>
           <td class="flex justify-center">
-<!--            @if (isEditing === -1 || isEditing !== i) {-->
+            <!--            @if (isEditing === -1 || isEditing !== i) {-->
             @if (isEditing === i) {
               <app-svg-icon icon="close_icon" [triggerable]="true" (click)="cancelEdit(i)"></app-svg-icon>
               <app-svg-icon icon="check_icon" [triggerable]="true" (click)="updateProduct(i)"></app-svg-icon>

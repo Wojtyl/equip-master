@@ -6,6 +6,7 @@ import { FormArray, FormControl, UntypedFormBuilder, UntypedFormGroup } from "@a
 import { Product } from "../../../../shared/models/productModel";
 import { ProductService } from "../../../products/product.service";
 import { Subscription } from "rxjs";
+import { BoxStatus } from "../../../../shared/enums/box-status-enum";
 
 interface BoxProductForm {
   productId: string;
@@ -111,4 +112,6 @@ export class BoxDetailsComponent implements  OnInit {
   setupEditingProductSizes(productId: string) {
     this.editingProductSizes = this.products.find(product => product._id === productId)?.attributes!.size as string[];
   }
+
+  protected readonly BoxStatus = BoxStatus;
 }

@@ -1,4 +1,4 @@
-<p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+<p-dialog header="Header" [(visible)]="visible" (onHide)="closeModal()" [modal]="true" [style]="{ width: '25rem' }" [draggable]="false"
           [resizable]="false">
   <ng-template pTemplate="header">
   </ng-template>
@@ -6,7 +6,7 @@
     <h3 class="font-bold text-center text-2xl mb-9">Dodaj produkty</h3>
     <form
       [formGroup]="addProductForm"
-      class="flex flex-col justify-center shadow-xl p-7 rounded-lg h-fit w-full">
+      class="flex flex-col justify-center h-fit w-full">
       <div class="flex flex-col col-span-2">
         <label for="product">Produkt</label>
         <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="_id"

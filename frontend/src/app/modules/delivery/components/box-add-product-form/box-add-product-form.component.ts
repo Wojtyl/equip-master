@@ -30,8 +30,12 @@ export class BoxAddProductFormComponent implements OnInit{
   onSubmit() {
     this.boxService.addProductToBox(this.boxId, this.addProductForm.value).subscribe(box => {
       this.boxDetailsUpdated.next(box.items);
-      this.modalVisible.next(false)
-      this.addProductForm.reset();
+      this.closeModal();
     });
+  }
+
+  closeModal() {
+    this.modalVisible.next(false)
+    this.addProductForm.reset();
   }
 }

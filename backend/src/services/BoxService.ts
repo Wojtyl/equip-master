@@ -55,6 +55,22 @@ export class BoxService {
                 }
             },
             {
+              $lookup: {
+                  from: 'users',
+                  localField: 'createdBy',
+                  foreignField: '_id',
+                  as: 'createdBy',
+                  pipeline: [
+                      {
+                          $project: {
+                              'name': 1,
+                              '_id': 1
+                          }
+                      }
+                  ]
+              }
+            },
+            {
               $set: {
                   statuses: {
                       $sortArray: {
@@ -65,6 +81,9 @@ export class BoxService {
                       }
                   }
               }
+            },
+            {
+              $unwind: '$createdBy'
             },
             {
                 $project: {
