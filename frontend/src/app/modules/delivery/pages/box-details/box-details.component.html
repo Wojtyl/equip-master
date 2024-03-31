@@ -13,12 +13,12 @@
     @if (!boxDetails.closed) {
       <button class="rounded-[0.5rem] h-1/2" (click)="showDialog()">Dodaj produkt</button>
       <button class="rounded-[0.5rem] h-1/2" (click)="closeBox()">Zamknij pudło</button>
-      <app-box-add-form [products]="products"
+      <app-box-add-product-form [products]="products"
                         [addProductForm]="addProductForm"
                         [boxId]="this.boxId"
                         [visible]="visible"
                         (boxDetailsUpdated)="boxDetails = $event"
-                        (modalVisible)="visible = $event"></app-box-add-form>
+                        (modalVisible)="visible = $event"></app-box-add-product-form>
     } @else {
       <button class="rounded-[0.5rem] h-1/2" (click)="openBox()">Otwórz pudło</button>
     }

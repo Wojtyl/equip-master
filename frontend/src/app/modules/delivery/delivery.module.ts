@@ -6,17 +6,16 @@ import { SharedModule } from "../../shared/shared.module";
 import * as pages from './pages';
 import * as components from './components';
 import { InputTextareaModule } from "primeng/inputtextarea";
-import { BoxAddFormComponent } from './components/box-add-form/box-add-form.component';
 
 @NgModule({
   declarations: [
     pages.DeliveryPageComponent,
     pages.BoxDetailsComponent,
     pages.DeliveryCreationPageComponent,
+    components.BoxAddProductFormComponent,
     components.DeliveryInformationStepComponent,
     components.DeliveryCountingStepComponent,
     components.DeliverySummaryStepComponent,
-    BoxAddFormComponent,
   ],
   imports: [
     CommonModule,

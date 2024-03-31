@@ -6,11 +6,11 @@ import { BoxService } from "../../../../shared/services/box.service";
 import { IBoxDetails } from "../../models/box-model";
 
 @Component({
-  selector: 'app-box-add-form',
-  templateUrl: './box-add-form.component.html',
-  styleUrl: './box-add-form.component.scss'
+  selector: 'app-box-add-product-form',
+  templateUrl: './box-add-product-form.component.html',
+  styleUrl: './box-add-product-form.component.scss'
 })
-export class BoxAddFormComponent implements OnInit{
+export class BoxAddProductFormComponent implements OnInit{
   @Input() products: Product[];
   @Input() addProductForm: FormGroup;
   @Input() visible = false;
