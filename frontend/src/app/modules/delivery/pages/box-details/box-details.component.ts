@@ -32,8 +32,8 @@ export class BoxDetailsComponent implements  OnInit {
   visible = false;
   isEditing = -1;
   editingBoxProduct: BoxProductForm | undefined;
-  editingProductSub: Subscription
   editingProductSizes: string[];
+  editingProductSubscription: Subscription
 
   private get getProductsArray() {
     return this.productsForm.get('products') as FormArray;
@@ -63,8 +63,9 @@ export class BoxDetailsComponent implements  OnInit {
 
     this.boxDetails.products.forEach(product => this.getProductsArray.push(this.formBuilder.group({
       productId : [product.productId],
-      productSize: [product.size],
-      productQuantity: [product.quantity]
+      productIndex: [product.productIndex],
+      size: [product.size],
+      quantity: [product.quantity]
     })))
   }
 
@@ -73,8 +74,8 @@ export class BoxDetailsComponent implements  OnInit {
   }
 
   removeProduct(productElementId: string) {
-    this.boxService.removeProductFromBox(this.boxId, {productElementId})
-      .subscribe(box => this.boxDetails=box.items);
+    this.boxService.removeProductFromBox(this.boxId, productElementId)
+      .subscribe(box => this.boxDetails = box.items);
   }
 
   closeBox() {
@@ -87,15 +88,20 @@ export class BoxDetailsComponent implements  OnInit {
 
   editProduct(index: number) {
     this.editingBoxProduct = this.getProductsArray.get(index.toString())?.getRawValue();
+    this.getProductsArray.get(index.toString())?.get('productIndex')!.disable()
     this.setupEditingProductSizes(this.editingBoxProduct!.productId);
-    this.editingProductSub = this.getProductsArray.get(index.toString())!.get('productId')!.valueChanges.subscribe(productId => this.setupEditingProductSizes(productId))
+    this.editingProductSubscription = this.getProductsArray.get(index.toString())!.get('productId')!.valueChanges
+      .subscribe(productId => {
+        this.setupEditingProductSizes(productId);
+        this.getProductsArray.get(index.toString())?.get('productIndex')!.patchValue(this.products.find(prod => prod._id === productId)?.productIndex)
+      })
     this.isEditing = index;
   }
 
   cancelEdit(index: number) {
-    this.isEditing = -1;
     this.getProductsArray.get(index.toString())?.patchValue(this.editingBoxProduct);
-    this.editingProductSub.unsubscribe();
+    this.isEditing = -1;
+    this.editingProductSubscription.unsubscribe();
     this.editingBoxProduct = undefined;
   }
 
@@ -105,7 +111,13 @@ export class BoxDetailsComponent implements  OnInit {
   }
 
   updateProduct(i: number) {
-
+    const productElementId = this.boxDetails.products[i]._id;
+    const data = { ...this.getProductsArray.get(i.toString())!.getRawValue() };
+    this.boxService.editProductInBox(this.boxId, productElementId, data)
+      .subscribe(data => {
+        this.boxDetails.products = data.items.products;
+        this.cancelEdit(i)
+      });
 
   }
 

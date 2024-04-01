@@ -35,8 +35,12 @@ export class BoxService {
     return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/close`,{});
   }
 
-  removeProductFromBox(boxId: string, data: {productElementId: string}) {
-    return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/removeProduct`, data);
+  editProductInBox(boxId: string, productElementId: string,  data: { productId: string, quntity: number, size: string }) {
+    return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/product/${productElementId}`, data);
+  }
+
+  removeProductFromBox(boxId: string, productElementId: string) {
+    return this.http.delete<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/product/${productElementId}`);
   }
 
   openBox(boxId: string) {

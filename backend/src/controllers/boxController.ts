@@ -52,11 +52,21 @@ export class BoxController {
         })
     })
 
+    editProductInBox = () => catchAsync(async (req: URequest, res: Response) => {
+        await Box.findOneAndUpdate(
+            { 'products._id': req.params.productId },
+            { $set: { 'products.$': req.body } },
+            { new: true, runValidators: true });
+        
+        const data = await boxService.findBoxWithProductDetails(req.params.id);
+        res.status(200).json({status: 'success', items: data})
+    })
+
     removeProductFromBox = () => catchAsync(async (req: URequest, res: Response) => {
         const box: HydratedDocument<BoxSchema> = await boxService.findBoxByIdOrThrow(req.params.id)
         const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);
         if (delivery.closed) throw new AppError('You cannot remove items from box when delivery is already closed', 405);
-        await box.updateOne({ $pull: { products: { _id: req.body.productElementId } } }, {new: true, runValidators: true});
+        await box.updateOne({ $pull: { products: { _id: req.params.productId } } }, {new: true, runValidators: true});
         const statusMessage = 'Deleted from box'
         await boxService.changeBoxStatus(BoxStatus.InProgress, req.user.id, statusMessage, box);
         const updatedBox = await boxService.findBoxWithProductDetails(req.params.id);

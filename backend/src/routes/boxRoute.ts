@@ -25,7 +25,8 @@ boxRouter
     .post(authController.auth, boxController.openBox())
 
 boxRouter
-    .route("/:id/removeProduct")
-    .patch(authController.auth, boxController.removeProductFromBox())
+    .route("/:id/product/:productId")
+    .patch(authController.auth, boxController.editProductInBox())
+    .delete(authController.auth, boxController.removeProductFromBox())
 
 export { boxRouter };

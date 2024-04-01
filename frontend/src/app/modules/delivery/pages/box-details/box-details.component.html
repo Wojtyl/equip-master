@@ -52,7 +52,7 @@
       }
     </div>
   </div>
-  <table class="w-full">
+  <table class="w-full box-table">
     <thead class="font-thin text-gray-500 uppercase">
     <tr class="text-start">
       <th class="text-start">Indeks</th>
@@ -65,44 +65,40 @@
     <tbody [formGroup]="productsForm" *ngIf="productsForm">
       @for (product of boxDetails.products; let i = $index; track product._id) {
         <tr formArrayName="products">
-          <td>{{ product.productIndex }}</td>
-          <td>
-            @if (isEditing === i) {
+          @if (isEditing === i) {
+            <td>
+              <input  class="disabled:bg-transparent" [formControl]="getProductArrayFormControl(i, 'productIndex')">
+            </td>
+            <td>
               <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="_id"
                           [formControl]="getProductArrayFormControl(i, 'productId')" appendTo="body"
                           [filter]="true"></p-dropdown>
-            } @else {
-              {{ product.name }}
-            }
-          </td>
-          <td class="">
-            @if (isEditing === i) {
+            </td>
+            <td class="">
               <p-dropdown id="product" [options]="editingProductSizes"
-                          [formControl]="getProductArrayFormControl(i, 'productSize')" appendTo="body"
+                          [formControl]="getProductArrayFormControl(i, 'size')" appendTo="body"
                           [filter]="true"></p-dropdown>
-            } @else {
-              {{ product.size }}
-            }
-          </td>
-          <td class="w-[2rem]">
-            @if (isEditing === i) {
-              <!--              <input [formControl]="getProductArrayFormControl(i, 'productQuantity')">-->
+            </td>
+
+            <td class="w-[2rem]">
               <p-inputNumber inputId="integeronly"
-                             [formControl]="getProductArrayFormControl(i, 'productQuantity')"></p-inputNumber>
-            } @else {
-              {{ product.quantity }}
-            }
-          </td>
-          <td class="flex justify-center">
-            <!--            @if (isEditing === -1 || isEditing !== i) {-->
-            @if (isEditing === i) {
+                             [formControl]="getProductArrayFormControl(i, 'quantity')"></p-inputNumber>
+
+            </td>
+            <td class="flex justify-center">
               <app-svg-icon icon="close_icon" [triggerable]="true" (click)="cancelEdit(i)"></app-svg-icon>
               <app-svg-icon icon="check_icon" [triggerable]="true" (click)="updateProduct(i)"></app-svg-icon>
-            } @else {
+            </td>
+          } @else {
+            <td>{{ product.productIndex }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.size }}</td>
+            <td>{{ product.quantity }}</td>
+            <td class="flex justify-center">
               <app-svg-icon icon="edit_icon" [triggerable]="true" (click)="editProduct(i)"></app-svg-icon>
               <app-svg-icon icon="delete_icon" [triggerable]="true" (click)="removeProduct(product._id)"></app-svg-icon>
-            }
-          </td>
+            </td>
+          }
         </tr>
       }
     </tbody>
