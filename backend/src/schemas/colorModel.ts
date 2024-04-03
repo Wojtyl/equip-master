@@ -3,7 +3,7 @@ import mongoose, {Schema} from "mongoose";
 const colorSchema = new mongoose.Schema({
   date: {
     type: Date,
-    default: Date.now()
+    default: new Date()
   },
   code: {
     type: String,

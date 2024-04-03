@@ -21,7 +21,18 @@
           <app-svg-icon class="cursor-pointer" icon="expand_icon" [scale]="1.2" (click)="openDetails(i)"></app-svg-icon>
         </td>
       </tr>
+    } @empty {
+      <tr>
+        <td colspan="7">
+          <div class="w-full p-8 text-center">
+            <app-svg-icon icon="user_icon" strokeWidth="1.5" [scale]="5"></app-svg-icon>
+            <h2 class="font-normal mt-4">Brak dostawców</h2>
+            <p class="font-light mt-2">Żaden dostawca nie został wprowadzony. <span
+              class="px-2 py-1 cursor-pointer rounded bg-blue-500 text-white" [routerLink]="['create']">Dodaj dostawcę</span>
+            </p>
+          </div>
+        </td>
+      </tr>
     }
-
   </tbody>
 </table>

@@ -1,0 +1,5 @@
+@use 'src/styles/tables';
+
+.details-row {
+  @apply bg-zinc-50 #{!important};
+}

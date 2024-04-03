@@ -32,7 +32,10 @@ export const findSupplierWithProducts = () => catchAsync(async (_: Request, res:
         status: 'success',
         items: supplier});
 })
-export const findSupplierInvoices = () => catchAsync(async (req: Request, res: Response) => {
+
+/*TODO: Right now GET invoices by supplier id is in supplier controller and always returning invoices without any delivery
+*  Needed change: Move method to invoice controller and add param to determine if send back all invoices or only without delivery*/
+export const findSupplierInvoicesWithoutDelivery = () => catchAsync(async (req: Request, res: Response) => {
     const invoices = await Invoice.aggregate([
         {
           $match: {

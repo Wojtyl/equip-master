@@ -29,7 +29,7 @@ const boxSchema = new Schema<BoxSchema>(
     {
         createdAt: {
             type: Date,
-            default: Date.now()
+            default: new Date()
         },
         createdBy: {
             type: Schema.Types.ObjectId,
@@ -78,7 +78,7 @@ const boxSchema = new Schema<BoxSchema>(
                 },
                 date: {
                     type: Date,
-                    default: Date.now()
+                    default: new Date()
                 },
                 message: {
                     type: String,

@@ -38,6 +38,7 @@ export class SvgIconComponent implements OnInit, OnDestroy {
   constructor(private iconService: IconService) { }
 
   ngOnInit(): void {
+    this.triggerable ? this.iconClass += ' cursor-pointer' : '';
     const options: iconOptions = {
       fill: this.fill,
       scale: this.scale,

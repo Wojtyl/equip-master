@@ -1,5 +1,5 @@
 import { Box, BoxSchema } from "../schemas/boxModel";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument, Schema, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
 import { AppError } from "../utils/appError";
 import { BoxStatus } from "../enums/box-status-enum";
@@ -55,6 +55,22 @@ export class BoxService {
                 }
             },
             {
+              $lookup: {
+                  from: 'users',
+                  localField: 'createdBy',
+                  foreignField: '_id',
+                  as: 'createdBy',
+                  pipeline: [
+                      {
+                          $project: {
+                              'name': 1,
+                              '_id': 1
+                          }
+                      }
+                  ]
+              }
+            },
+            {
               $set: {
                   statuses: {
                       $sortArray: {
@@ -65,6 +81,9 @@ export class BoxService {
                       }
                   }
               }
+            },
+            {
+              $unwind: '$createdBy'
             },
             {
                 $project: {
@@ -120,6 +139,6 @@ export class BoxService {
             if (box.closed) await box.updateOne({closed: false});
             status = BoxStatus.Reopened
         }
-        return box.updateOne({$push: {statuses: {status, changedBy, message, date: Date.now()}}}, {new: true, runValidators: true})
+        return box.updateOne({$push: {statuses: {status, changedBy, message, date: new Date()}}}, {new: true, runValidators: true})
     }
 }
