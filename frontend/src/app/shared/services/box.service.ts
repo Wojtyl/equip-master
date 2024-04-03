@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { ListResponse } from "../models/list-response";
 import { IBoxDetails } from "src/app/modules/delivery/models/box-model";
 import { IDeliveryDetails } from "src/app/modules/delivery/models/delivery-details-model";
+import { BoxProductForm } from "../../modules/delivery/pages/box-details/box-details.component";
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class BoxService {
     return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/close`,{});
   }
 
-  editProductInBox(boxId: string, productElementId: string,  data: { productId: string, quntity: number, size: string }) {
+  editProductInBox(boxId: string, productElementId: string,  data: BoxProductForm) {
     return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/product/${productElementId}`, data);
   }
 

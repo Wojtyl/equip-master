@@ -1,5 +1,5 @@
 import { Box, BoxSchema } from "../schemas/boxModel";
-import { HydratedDocument, Types } from "mongoose";
+import { HydratedDocument, Schema, Types } from "mongoose";
 import { Delivery } from "../schemas/deliveryModel";
 import { AppError } from "../utils/appError";
 import { BoxStatus } from "../enums/box-status-enum";
@@ -139,6 +139,6 @@ export class BoxService {
             if (box.closed) await box.updateOne({closed: false});
             status = BoxStatus.Reopened
         }
-        return box.updateOne({$push: {statuses: {status, changedBy, message, date: Date.now()}}}, {new: true, runValidators: true})
+        return box.updateOne({$push: {statuses: {status, changedBy, message, date: new Date()}}}, {new: true, runValidators: true})
     }
 }

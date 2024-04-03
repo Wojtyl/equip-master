@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
 
 const deliverySchema = new mongoose.Schema({
   date: {
     type: Date,
-    default: Date.now(),
+    default: new Date(),
   },
   //TODO: Probably to get rid of this field - make more atomic approach and refer to boxes from box deliveryId
   boxOnDelivery: [
@@ -53,7 +53,7 @@ const deliverySchema = new mongoose.Schema({
     },
     date: {
       type: Date,
-      default: Date.now()
+      default: new Date()
     },
     message: {
       type: String,

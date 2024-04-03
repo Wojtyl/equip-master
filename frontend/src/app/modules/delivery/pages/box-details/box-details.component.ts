@@ -8,10 +8,10 @@ import { ProductService } from "../../../products/product.service";
 import { Subscription } from "rxjs";
 import { BoxStatus } from "../../../../shared/enums/box-status-enum";
 
-interface BoxProductForm {
+export interface BoxProductForm {
   productId: string;
-  productSize: string;
-  productQuantity: string;
+  size: string;
+  quantity: number;
 }
 @Component({
   selector: 'app-box-details',
@@ -44,7 +44,6 @@ export class BoxDetailsComponent implements  OnInit {
     this.boxService.getBoxDetails(this.boxId).subscribe(box => {
       this.boxDetails = box.items;
       this.initProductsForm();
-      console.log(this.productsForm)
     });
     this.productService.getDeliveryProductsByBox(this.boxId).subscribe(products => {
       this.products = products.items;
@@ -93,7 +92,15 @@ export class BoxDetailsComponent implements  OnInit {
     this.editingProductSubscription = this.getProductsArray.get(index.toString())!.get('productId')!.valueChanges
       .subscribe(productId => {
         this.setupEditingProductSizes(productId);
-        this.getProductsArray.get(index.toString())?.get('productIndex')!.patchValue(this.products.find(prod => prod._id === productId)?.productIndex)
+        const selectedSize = this.getProductsArray.get(index.toString())?.get('size')?.value;
+        const existingProductSize = this.editingProductSizes.some(size => size?.toLowerCase() === selectedSize?.toLowerCase());
+        if (!existingProductSize) {
+          this.getProductsArray.get(index.toString())?.get('size')?.patchValue(this.editingProductSizes[0]);
+        }
+        const product = this.products.find(prod => prod._id === productId)?.productIndex;
+        this.getProductsArray.get(index.toString())
+          ?.get('productIndex')!
+          .patchValue(product)
       })
     this.isEditing = index;
   }
@@ -112,13 +119,13 @@ export class BoxDetailsComponent implements  OnInit {
 
   updateProduct(i: number) {
     const productElementId = this.boxDetails.products[i]._id;
-    const data = { ...this.getProductsArray.get(i.toString())!.getRawValue() };
-    this.boxService.editProductInBox(this.boxId, productElementId, data)
+    const formData: BoxProductForm = this.getProductsArray.get(i.toString())!.getRawValue();
+    this.boxService.editProductInBox(this.boxId, productElementId, formData)
       .subscribe(data => {
         this.boxDetails.products = data.items.products;
+        this.editingBoxProduct = { ...data.items.products[i] }
         this.cancelEdit(i)
       });
-
   }
 
   setupEditingProductSizes(productId: string) {

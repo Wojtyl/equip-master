@@ -277,7 +277,7 @@ export class DeliveryService {
     public async changeDeliveryStatus(status: string, changedBy: string, message: string, deliveryId: string) {
         const delivery = await this.findDeliveryByIdOrThrow(deliveryId);
         return delivery.updateOne({
-            $push: { statuses: { status, changedBy, message, date: Date.now() } },
+            $push: { statuses: { status, changedBy, message, date: new Date() } },
             status
         }, { new: true, runValidators: true });
     }
