@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const productSizeSchema = new mongoose.Schema({
     date: {
         type: Date,
-        default: Date.now()
+        default: new Date()
     },
     name: {
         type: String,

@@ -68,7 +68,7 @@ const supplierSchema = new mongoose.Schema({
   },
   addedAt: {
     type: Date,
-    default: Date.now(),
+    default: new Date(),
   },
   contact: {
     type: String,

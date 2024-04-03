@@ -11,6 +11,7 @@ deliveryRouter
 deliveryRouter
   .route("/:id")
   .get(authController.auth, deliveryController.getDeliveryDetails())
+  .patch(authController.auth, deliveryController.updateDelivery())
   .delete(authController.auth, deliveryController.deleteDelivery())
 
 deliveryRouter

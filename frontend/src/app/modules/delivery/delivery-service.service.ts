@@ -14,8 +14,8 @@ export class DeliveryService {
 
   constructor(private http: HttpClient) { }
 
-  addDelivery(data: any) {
-    return this.http.post(`${apiUrl}deliveries`, data);
+  addDelivery(data: {date: string, description: string, invoice: string, supplier: string}) {
+    return this.http.post<ListResponse<IDeliveryDetails>>(`${apiUrl}deliveries`, data);
   }
 
   getAllDeliveries(): Observable<ListResponse<IDeliveryList[]>> {
@@ -40,5 +40,9 @@ export class DeliveryService {
 
   reopenDelivery(deliveryId: string) {
     return this.http.post(`${apiUrl}deliveries/${deliveryId}/reopen`, {})
+  }
+
+  updateDelivery(data: {date: string, description: string, invoice: string, supplier: string}, deliveryId: string) {
+    return this.http.patch(`${apiUrl}deliveries/${deliveryId}`, data)
   }
 }

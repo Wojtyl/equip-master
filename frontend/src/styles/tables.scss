@@ -1,0 +1,42 @@
+.table-list {
+  @apply w-full text-sm table-auto;
+  thead {
+    @apply text-zinc-500;
+
+    tr {
+      @apply bg-zinc-100;
+    }
+  }
+}
+
+.box-table {
+  @apply w-full border-orange-100;
+
+  thead, tr {
+    @apply border-1 border-zinc-300;
+  }
+
+  th {
+    @apply px-5 py-3 text-sm font-normal text-zinc-600 bg-zinc-100;
+  }
+
+  td {
+    @apply px-5 py-2 text-[0.9rem] bg-white text-zinc-900;
+  }
+}
+
+.table-empty-row {
+  @apply py-8 text-center #{!important};
+}
+
+.box-status_closed, .box-status_opened {
+  @apply font-normal p-1 px-2 rounded-2xl
+}
+
+.box-status_closed {
+  @apply text-green-600 bg-green-100
+}
+
+.box-status_opened {
+  @apply text-yellow-600 bg-yellow-100
+}

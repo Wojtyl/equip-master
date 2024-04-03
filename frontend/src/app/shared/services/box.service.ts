@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { ListResponse } from "../models/list-response";
 import { IBoxDetails } from "src/app/modules/delivery/models/box-model";
 import { IDeliveryDetails } from "src/app/modules/delivery/models/delivery-details-model";
+import { BoxProductForm } from "../../modules/delivery/pages/box-details/box-details.component";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class BoxService {
 
   constructor(private http: HttpClient) { }
 
-  addBoxToDelivery(deliveryId: string): Observable<ListResponse<IDeliveryDetails>> {
-    return this.http.post<ListResponse<IDeliveryDetails>>(`${apiUrl}boxes`, {
+  addBoxToDelivery(deliveryId: string) {
+    return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes`, {
       deliveryId
     });
   }
@@ -35,7 +36,15 @@ export class BoxService {
     return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/close`,{});
   }
 
-  removeProductFromBox(boxId: string, data: {productElementId: string}) {
-    return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/removeProduct`, data);
+  editProductInBox(boxId: string, productElementId: string,  data: BoxProductForm) {
+    return this.http.patch<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/product/${productElementId}`, data);
+  }
+
+  removeProductFromBox(boxId: string, productElementId: string) {
+    return this.http.delete<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/product/${productElementId}`);
+  }
+
+  openBox(boxId: string) {
+    return this.http.post<ListResponse<IBoxDetails>>(`${apiUrl}boxes/${boxId}/open`, {})
   }
 }

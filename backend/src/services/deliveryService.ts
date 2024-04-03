@@ -69,6 +69,28 @@ export class DeliveryService {
                 }
             },
             {
+                $lookup: {
+                    from: 'invoices',
+                    localField: 'invoice',
+                    foreignField: '_id',
+                    as: 'invoice',
+                    pipeline: [
+                        {$limit: 1},
+                        {
+                            $project: {
+                                _id: 1,
+                                invoiceNumber: 1,
+                            }
+                        }
+                    ]
+
+                },
+            },
+
+            {
+                $unwind: '$invoice'
+            },
+            {
                 $limit: 1
             }
         ])).then(data => {
@@ -175,6 +197,11 @@ export class DeliveryService {
         };
     }
 
+    public updateDelivery(deliveryId: string, data) {
+        return Delivery.findByIdAndUpdate(deliveryId, data, {runValidators: true, new: true})
+            .orFail(new AppError('Delivery not found', 404));
+    }
+
     public compareDeliveryWithInvoice(deliveryProducts: ProductsQuantityMap, invoiceProducts: ProductsQuantityMap) {
         const differencesMap = Object.keys(invoiceProducts).reduce((acc, invoiceProduct) => {
             let differences;
@@ -250,7 +277,7 @@ export class DeliveryService {
     public async changeDeliveryStatus(status: string, changedBy: string, message: string, deliveryId: string) {
         const delivery = await this.findDeliveryByIdOrThrow(deliveryId);
         return delivery.updateOne({
-            $push: { statuses: { status, changedBy, message, date: Date.now() } },
+            $push: { statuses: { status, changedBy, message, date: new Date() } },
             status
         }, { new: true, runValidators: true });
     }

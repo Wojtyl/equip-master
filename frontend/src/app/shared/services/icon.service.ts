@@ -21,10 +21,9 @@ export class IconService {
       map(svgFileContent => {
         const document = <XMLDocument>(new DOMParser().parseFromString(svgFileContent, 'image/svg+xml'));
         const svgElement = <SVGSVGElement>document.querySelector('svg');
-
         if (options) {
-          svgElement.setAttribute('width', (svgElement.width.baseVal.value * options.scale).toString());
-          svgElement.setAttribute('height', (svgElement.height.baseVal.value * options.scale).toString());
+          svgElement.setAttribute('width', (svgElement.width.baseVal.value > 0 ? svgElement.width.baseVal.value * options.scale : 100 * options.scale).toString());
+          svgElement.setAttribute('height', (svgElement.height.baseVal.value > 0 ? svgElement.height.baseVal.value * options.scale : 100 * options.scale).toString());
           svgElement.setAttribute('fill', options.fill)
           svgElement.setAttribute('stroke', options.stroke)
           svgElement.setAttribute('stroke-width', options.strokeWidth)

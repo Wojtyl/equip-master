@@ -68,7 +68,7 @@ const productSchema = new mongoose.Schema<
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: new Date(),
   },
   createdBy: {
     type: Schema.Types.ObjectId,

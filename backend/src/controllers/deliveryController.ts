@@ -7,6 +7,9 @@ import { DeliveryService } from "../services/deliveryService";
 import { IProductBox } from "../interfaces/product-box";
 import { InvoiceService } from "../services/invoiceService";
 
+
+
+
 export const getDelivery = generalController.getOne(Delivery);
 
 const deliveryService = new DeliveryService();
@@ -41,8 +44,9 @@ const createDeliveryService = () =>
         const status = {
             changedBy: user.id,
             status: 'NEW',
-            date: new Date
+            date: new Date()
         }
+
         const deliveryData = new Delivery({ ...req.body, createdBy: user.id })
         deliveryData.statuses.push(status);
         const delivery = await Delivery.create(deliveryData);
@@ -58,7 +62,14 @@ export const getDeliveryDetails = () => catchAsync(async (req: URequest, res: Re
         status: "success",
         items: data,
     });
+})
 
+export const updateDelivery = () => catchAsync( async (req: URequest, res: Response, next: NextFunction) => {
+    const data = await deliveryService.updateDelivery(req.params.id, req.body);
+    res.status(200).json({
+        status: "success",
+        items: data
+    })
 })
 
 export const closeDelivery = () => catchAsync(async (req: URequest, res: Response) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SupplierService } from '../../../suppliers/supplier.service';
 import { Supplier } from 'src/app/shared/models/supplierModel';
@@ -6,6 +6,8 @@ import { DeliveryService } from '../../delivery-service.service';
 import { Router } from '@angular/router';
 import { IDeliveryList } from '../../models/delivery-list-model';
 import { Invoice } from "../../../invoices/models/invoice-model";
+import { MenuItem } from "primeng/api";
+import { Menu } from "primeng/menu";
 
 @Component({
   selector: 'app-delivery-page',
@@ -19,13 +21,24 @@ export class DeliveryPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router) {}
 
+  @ViewChild('menu') menu: Menu;
+
   deliveryForm: FormGroup;
 
   suppliers: Supplier[];
   deliveries: IDeliveryList[] = [];
   supplierInvoices: Invoice[];
+  items: MenuItem[];
+  selectedId: string;
 
   ngOnInit(): void {
+    this.items = [{
+      label: 'Edytuj',
+      command: () =>  this.onContinue(this.selectedId)
+    },{
+      label: 'Usuń',
+      command: () =>  this.onDelete(this.selectedId)
+    }]
     this.deliveryService.getAllDeliveries().subscribe(response => {
       this.deliveries = response.items;
     })
@@ -63,12 +76,18 @@ export class DeliveryPageComponent implements OnInit {
   }
 
   onContinue(id: string) {
-    this.router.navigate([`/delivery/${id}`]);
+    this.router.navigate([`/delivery/create/${id}/counting`]);
   }
 
   onDelete(id: string):void {
     this.deliveryService.deleteDelivery(id).subscribe(() => {
       this.deliveryService.getAllDeliveries().subscribe(resData => this.deliveries = resData.items)
     })
+  }
+
+  toggleMenu(event: Event, deliveryId: string) {
+    // this.menu.toggle(event)
+    this.selectedId = deliveryId;
+    return event;
   }
 }
