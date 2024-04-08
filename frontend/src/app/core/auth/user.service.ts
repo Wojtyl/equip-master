@@ -2,34 +2,30 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { apiUrl } from 'src/environments/apiurl';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../../shared/models/userModel';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  user: BehaviorSubject<any> = new BehaviorSubject(undefined);
+  isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  token: string;
+  isLoggingIn$ = new BehaviorSubject<boolean>(false)
+
   constructor(private http: HttpClient, private router: Router) {
     if (localStorage.getItem('token')) {
       this.user.next({ token: localStorage.getItem('token') });
     }
   }
 
-  user: BehaviorSubject<any> = new BehaviorSubject(undefined);
-
-  isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  token: string;
 
   isLoggedIn() {
     return this.http.get<any>(`${apiUrl}auth/isloggedin`);
   }
 
-  getUser(email: string, password: string) {
-    return this.http.post<any>(`${apiUrl}auth/login`, {
-      email,
-      password,
-    });
+  getUser(data :{ email: string, password: string }) {
+    return this.http.post<any>(`${apiUrl}auth/login`, data);
   }
 
   getUserRole() {

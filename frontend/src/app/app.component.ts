@@ -8,8 +8,9 @@ import { UserService } from './core/auth/user.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private http: HttpClient, private userService: UserService) {}
-
+  constructor(
+    protected userService: UserService
+  ) { }
   ngOnInit(): void {
     if (localStorage.getItem('token')) {
       this.userService.isLoggedIn().subscribe({

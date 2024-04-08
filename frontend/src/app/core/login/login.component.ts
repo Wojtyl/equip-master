@@ -1,23 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../auth/user.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit{
-  constructor(private userService: UserService, private router: Router) {}
+export class LoginComponent implements OnInit, OnDestroy {
+  constructor(private userService: UserService, private router: Router, private fb: FormBuilder) {}
 
   isExpired = false;
+  loginForm: FormGroup;
 
   ngOnInit(): void {
-      this.userService.isExpired.subscribe(res => this.isExpired = res)
+    this.userService.isLoggingIn$.next(true);
+      this.userService.isExpired.subscribe(res => this.isExpired = res);
+
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    })
   }
 
   login(): void {
-      this.userService.getUser('dev4@eqmaster.pl', '12345').subscribe((res) => {
+    this.loginForm.markAllAsTouched();
+    if (this.loginForm.valid) {
+      this.userService.getUser(this.loginForm.getRawValue()).subscribe((res) => {
         const user = res.data.user;
 
         this.userService.user.next({
@@ -28,11 +38,16 @@ export class LoginComponent implements OnInit{
           token: res.token
         });
         localStorage.setItem('token', res.token);
-        this.router.navigate(['']);
+        this.router.navigate(['/']);
       });
+    }
   }
 
   logout(): void {
     this.userService.logout();
+  }
+
+  ngOnDestroy() {
+    this.userService.isLoggingIn$.next(false)
   }
 }

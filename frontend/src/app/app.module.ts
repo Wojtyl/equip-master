@@ -9,7 +9,7 @@ import { SharedModule } from "./shared/shared.module";
 import { LoginComponent } from './core/login/login.component';
 import { HomeComponent } from './core/home/home.component';
 import { NavComponent } from './core/nav/nav.component';
-import { UserInterceptorService } from './core/auth/user-interceptor.service';
+import { UserInterceptorService } from './core/interceptors/user-interceptor.service';
 
 @NgModule({
   declarations: [
