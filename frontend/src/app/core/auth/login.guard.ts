@@ -8,14 +8,14 @@ export const LoginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router)
   return userService.isLoggedIn().pipe(
     catchError(() => {
-      userService.isLoggingIn$.next(true);
-      return of(true)
+      return of(undefined)
     }),
-    take(1),
-    map(() => {
-        console.log('success')
-        // router.navigate(['/']);
-        return true;
+    map((data) => {
+        if (!data) {
+          return true;
+        }
+        router.navigate(['/']);
+        return false;
     })
   );
 };

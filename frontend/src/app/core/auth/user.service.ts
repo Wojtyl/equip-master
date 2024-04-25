@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { apiUrl } from 'src/environments/apiurl';
-import {BehaviorSubject, tap} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,8 +11,6 @@ export class UserService {
   token: string;
   user: BehaviorSubject<any> = new BehaviorSubject(undefined);
   isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  isLoggedIn$ = new BehaviorSubject(false);
-  isLoggingIn$ = new BehaviorSubject(false);
 
   constructor(private http: HttpClient, private router: Router) {
     if (localStorage.getItem('token')) {
@@ -20,13 +18,12 @@ export class UserService {
     }
   }
 
-
   isLoggedIn() {
     return this.http.get<any>(`${apiUrl}auth/isloggedin`);
   }
 
   getUser(data :{ email: string, password: string }) {
-    return this.http.post<any>(`${apiUrl}auth/login`, data).pipe(tap(() => this.isLoggedIn$.next(true)));
+    return this.http.post<any>(`${apiUrl}auth/login`, data);
   }
 
   getUserRole() {
@@ -39,7 +36,6 @@ export class UserService {
 
   logout() {
     this.user.next(undefined);
-    this.isLoggingIn$.next(true);
     localStorage.removeItem('token');
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../core/auth/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -13,7 +13,7 @@ import { fadeInOutAnimation } from "../../../core/animations/animation";
     trigger('fadeInOut', fadeInOutAnimation())
   ]
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent implements OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private fb: FormBuilder,
@@ -28,11 +28,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const isResettingPassword = this.route.snapshot.queryParams['resetPassword']
     if (isResettingPassword) this.isLogin = false;
-    this.userService.isLoggingIn$.next(true);
     this.userService.isExpired.subscribe(res => this.isExpired = res);
-  }
-
-  ngOnDestroy() {
-    this.userService.isLoggingIn$.next(false)
   }
 }
