@@ -1,19 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../auth/user.service';
+import { UserService } from '../../../core/auth/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { trigger } from "@angular/animations";
-import { fadeInOutAnimation } from "../animations/animation";
+import { fadeInOutAnimation } from "../../../core/animations/animation";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.scss'],
   animations: [
     trigger('fadeInOut', fadeInOutAnimation())
   ]
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginPageComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService,
               private router: Router,
               private fb: FormBuilder,
