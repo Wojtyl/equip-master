@@ -19,12 +19,12 @@ const routes: Routes = [
   },
   {
     path: 'invoices',
-    loadChildren: () => import('src/app/modules/invoices/invoices.module').then(m => m.InvoicesModule),
+    loadChildren: () => import('src/app/modules/core/invoices/invoices.module').then(m => m.InvoicesModule),
     canActivate: [UserGuard],
   },
   {
     path: 'suppliers',
-    loadChildren: () => import('src/app/modules/suppliers/suppliers.module').then(m => m.SuppliersModule),
+    loadChildren: () => import('src/app/modules/core/suppliers/suppliers.module').then(m => m.SuppliersModule),
     canActivate: [UserGuard, RoleGuard],
     data: {
       allowedRole: 'ADMIN'
@@ -32,12 +32,12 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    loadChildren: () => import('src/app/modules/products/products.module').then(m => m.ProductsModule),
+    loadChildren: () => import('src/app/modules/core/products/products.module').then(m => m.ProductsModule),
     canActivate: [UserGuard],
   },
   {
     path: 'delivery',
-    loadChildren: () => import('src/app/modules/delivery/delivery.module').then(m => m.DeliveryModule),
+    loadChildren: () => import('src/app/modules/core/delivery/delivery.module').then(m => m.DeliveryModule),
     canActivate: [UserGuard],
   },
   {

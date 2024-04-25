@@ -10,7 +10,7 @@ import { LoginComponent } from './core/login/login.component';
 import { HomeComponent } from './core/home/home.component';
 import { NavComponent } from './core/nav/nav.component';
 import { UserInterceptorService } from './core/interceptors/user-interceptor.service';
-import { CoreModule } from "./core/core.module";
+import { GeneralModule } from "./core/general.module";
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { CoreModule } from "./core/core.module";
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
-    CoreModule,
+    GeneralModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],
