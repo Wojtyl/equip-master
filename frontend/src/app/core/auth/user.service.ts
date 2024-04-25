@@ -49,4 +49,8 @@ export class UserService {
   refreshUserAuthToken() {
     return;
   }
+
+  resetPassword(email: string) {
+    return this.http.post(`${apiUrl}auth/resetPassword`, { email });
+  }
 }

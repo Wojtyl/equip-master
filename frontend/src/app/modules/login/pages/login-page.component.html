@@ -1,5 +1,5 @@
 <div class="w-full h-full flex background">
-  <div class="w-full h-[35rem] max-w-[55rem] self-center py-10 px-10 bg-white rounded-xl ms-[15rem]">
+  <div class="h-fit w-[30rem] self-center py-10 px-10 bg-white rounded-xl ms-[15rem]">
     @if (isLogin) {
       <app-login-form [mainTitle]="'LOGIN'" (toggleLogin)="isLogin = !isLogin" @fadeInOut></app-login-form>
     } @else {

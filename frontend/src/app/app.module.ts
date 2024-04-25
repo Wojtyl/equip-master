@@ -19,7 +19,7 @@ import { GeneralModule } from "./core/general.module";
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
-    GeneralModule,
+    // GeneralModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],

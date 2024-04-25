@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {CoreRoutingModule} from './core-routing.module';
 import {CoreComponent} from './core.component';
 import {GeneralModule} from "../../core/general.module";
-import {NavComponent} from "../../core/nav/nav.component";
+import {NavComponent} from "../../shared/components/nav/nav.component";
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import {NavComponent} from "../../core/nav/nav.component";
     NavComponent,
   ],
   imports: [
-    GeneralModule,
+    // GeneralModule,
     CommonModule,
     CoreRoutingModule
   ]
