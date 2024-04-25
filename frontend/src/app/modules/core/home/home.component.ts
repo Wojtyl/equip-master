@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { UserService } from '../auth/user.service';
+import { UserService } from '../../../core/auth/user.service';
 import { HttpClient } from '@angular/common/http';
 import { apiUrl } from 'src/environments/apiurl';
 import { FormBuilder, FormGroup } from '@angular/forms';
