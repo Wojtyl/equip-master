@@ -1,5 +1,5 @@
 <h1 class="text-3xl font-bold underline text-alterbridge">
-  Hello {{ user.name }}
+  Hello {{ user?.name }}
 </h1>
 <div *ngIf="suppliers.length > 0" class="flex-1">
   <h2>suppliers</h2>
@@ -7,12 +7,8 @@
     <p>{{ supplier.name }}</p>
   </div>
 </div>
-
 <br />
 
 <button
   class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-alterbridge hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
-  routerLink="/login"
->
-  Login page
-</button>
+  routerLink="/login">Login page</button>

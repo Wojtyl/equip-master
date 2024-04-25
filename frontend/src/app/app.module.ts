@@ -10,6 +10,7 @@ import { LoginComponent } from './core/login/login.component';
 import { HomeComponent } from './core/home/home.component';
 import { NavComponent } from './core/nav/nav.component';
 import { UserInterceptorService } from './core/interceptors/user-interceptor.service';
+import { CoreModule } from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -18,13 +19,14 @@ import { UserInterceptorService } from './core/interceptors/user-interceptor.ser
     HomeComponent,
     NavComponent,
   ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        SharedModule,
-        HttpClientModule,
-    ],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    SharedModule,
+    HttpClientModule,
+    CoreModule,
+  ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

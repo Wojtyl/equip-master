@@ -1,50 +1,35 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../auth/user.service';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { trigger } from "@angular/animations";
+import { fadeInOutAnimation } from "../animations/animation";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  animations: [
+    trigger('fadeInOut', fadeInOutAnimation())
+  ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  constructor(private userService: UserService, private router: Router, private fb: FormBuilder) {}
+  constructor(private userService: UserService,
+              private router: Router,
+              private fb: FormBuilder,
+              private route: ActivatedRoute
+  ) {
+  }
 
   isExpired = false;
   loginForm: FormGroup;
+  isLogin = true
 
   ngOnInit(): void {
+    const isResettingPassword = this.route.snapshot.queryParams['resetPassword']
+    if (isResettingPassword) this.isLogin = false;
     this.userService.isLoggingIn$.next(true);
-      this.userService.isExpired.subscribe(res => this.isExpired = res);
-
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required]]
-    })
-  }
-
-  login(): void {
-    this.loginForm.markAllAsTouched();
-    if (this.loginForm.valid) {
-      this.userService.getUser(this.loginForm.getRawValue()).subscribe((res) => {
-        const user = res.data.user;
-
-        this.userService.user.next({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          token: res.token
-        });
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/']);
-      });
-    }
-  }
-
-  logout(): void {
-    this.userService.logout();
+    this.userService.isExpired.subscribe(res => this.isExpired = res);
   }
 
   ngOnDestroy() {

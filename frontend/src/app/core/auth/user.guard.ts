@@ -13,6 +13,7 @@ export const UserGuard: CanActivateFn = (route, state) => {
         userService.expiredNotification();
         localStorage.removeItem('token');
       }
+      userService.isLoggingIn$.next(true)
       router.navigate(['login']);
       return of(false);
     }),

@@ -184,6 +184,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .status_reopened {
   @apply text-yellow-600 bg-yellow-100
-
 }
 
+.loading-spinner {
+  animation: loadingSpinner 1s linear 0s infinite;
+  //animation-iteration-count: infinite;
+}
+
+
+@keyframes loadingSpinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+
+}

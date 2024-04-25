@@ -4,6 +4,7 @@ import { HomeComponent } from './core/home/home.component';
 import { LoginComponent } from './core/login/login.component';
 import { UserGuard } from './core/auth/user.guard';
 import { RoleGuard } from "./core/guards/role-guard";
+import { LoginGuard } from "./core/auth/login.guard";
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: 'invoices',
