@@ -6,18 +6,12 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { SharedModule } from "./shared/shared.module";
 
-import { LoginComponent } from './core/login/login.component';
-import { HomeComponent } from './core/home/home.component';
-import { NavComponent } from './core/nav/nav.component';
 import { UserInterceptorService } from './core/interceptors/user-interceptor.service';
 import { GeneralModule } from "./core/general.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    HomeComponent,
-    NavComponent,
   ],
   imports: [
     AppRoutingModule,

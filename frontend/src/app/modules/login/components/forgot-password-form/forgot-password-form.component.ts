@@ -1,5 +1,5 @@
-import { Component, Output } from '@angular/core';
-import { Subject } from "rxjs";
+import {Component, Output} from '@angular/core';
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-forgot-password-form',
@@ -10,5 +10,6 @@ export class ForgotPasswordFormComponent {
 
   @Output() toggleLogin = new Subject<boolean>();
 
-  resetPassword() {}
+  resetPassword() {
+  }
 }
