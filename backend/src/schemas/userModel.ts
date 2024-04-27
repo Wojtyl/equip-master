@@ -9,6 +9,7 @@ interface IUser {
   passwordConfirm?: string;
   role: string;
   signupDate: Date;
+  resetToken: String;
 }
 
 interface IUserMethods {
@@ -60,6 +61,10 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     type: Date,
     default: new Date(),
   },
+  resetToken: {
+    type: String,
+    default: ''
+  }
 });
 
 userSchema.index({ email: 1 }, { unique: true });

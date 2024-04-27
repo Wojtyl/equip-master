@@ -1,12 +1,15 @@
-const { promisify } = require("util");
+import {Request, Response} from "express";
+
+const {promisify} = require("util");
 import jwt from "jsonwebtoken";
-import { catchAsync } from "../utils/catchAsync";
-import { AppError } from "../utils/appError";
-import { User } from "../schemas/userModel";
+import {catchAsync} from "../utils/catchAsync";
+import {AppError} from "../utils/appError";
+import {User} from "../schemas/userModel";
+
 const signToken = (id) =>
-  jwt.sign({ id: id }, process.env.JWT_SECRET as string, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+    jwt.sign({id: id}, process.env.JWT_SECRET as string, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
 
 const createSignToken = (user, statusCode, res) => {
   user.password = undefined;
@@ -36,7 +39,7 @@ const login = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide a login and password", 400));
   }
 
-  const user = await User.findOne({ email: data.email });
+  const user = await User.findOne({email: data.email});
 
   //Check if user exists and password is correct
   if (!user || !(await user.correctPassword!(data.password, user.password!))) {
@@ -61,8 +64,8 @@ const auth = async (req, res, next) => {
 
   let token;
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
@@ -71,8 +74,8 @@ const auth = async (req, res, next) => {
 
   try {
     const decodedToken = await promisify(jwt.verify)(
-      token,
-      process.env.JWT_SECRET
+        token,
+        process.env.JWT_SECRET
     );
 
     req.user = await User.findById(decodedToken.id);
@@ -81,7 +84,7 @@ const auth = async (req, res, next) => {
   } catch (err: any) {
     if (err.message === "jwt expired") {
       return next(
-        new AppError("Your session has expired. Please log in again!", 401)
+          new AppError("Your session has expired. Please log in again!", 401)
       );
     }
   }
@@ -89,17 +92,17 @@ const auth = async (req, res, next) => {
 
 const isLoggedIn = async (req, res, next) => {
   if (
-    !req.cookies.jwt &&
-    (!req.headers.authorization ||
-      req.headers.authorization.includes(null || undefined))
+      !req.cookies.jwt &&
+      (!req.headers.authorization ||
+          req.headers.authorization.includes(null || undefined))
   ) {
     return next(new AppError("You need to login first.", 403));
   }
 
   let token;
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
@@ -130,4 +133,19 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
-export { isLoggedIn, auth, signup, login };
+const resetPassword = catchAsync(async (req: Request, res: Response, next) => {
+  try {
+    const user = await User.findOne({email: {$eq: req.body.email}});
+    if (user) {
+      const token = jwt.sign({id: user._id}, process.env.JWT_RESET_PASSWORD_SECRET as string, {
+        expiresIn: process.env.JWT_RESET_PASSWORD_EXPIRES_IN
+      })
+      await user.updateOne({resetToken: token}, {new: true})
+    }
+    res.status(200).json({status: "success"});
+  } catch (e) {
+    res.status(200).json({status: "error", error: e})
+  }
+});
+
+export {isLoggedIn, auth, signup, login, resetPassword};

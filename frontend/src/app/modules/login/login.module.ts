@@ -7,6 +7,7 @@ import {LoginPageComponent} from "./pages/login-page.component";
 import {LoginFormComponent} from "./components/login-form/login-form.component";
 import {ForgotPasswordFormComponent} from "./components/forgot-password-form/forgot-password-form.component";
 import {SharedModule} from "../../shared/shared.module";
+import { ForgotPasswordConfirmComponent } from './components/forgot-password-confirm/forgot-password-confirm.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {SharedModule} from "../../shared/shared.module";
     LoginComponent,
     LoginPageComponent,
     LoginFormComponent,
-    ForgotPasswordFormComponent
+    ForgotPasswordFormComponent,
+    ForgotPasswordConfirmComponent
   ],
   imports: [
     CommonModule,

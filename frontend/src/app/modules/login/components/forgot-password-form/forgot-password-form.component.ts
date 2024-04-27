@@ -13,6 +13,7 @@ export class ForgotPasswordFormComponent implements OnInit {
 
   @Input() mainTitle = ''
   @Output() toggleLogin = new Subject<boolean>();
+  @Output() passwordReseted = new Subject<boolean>()
   resetForm: FormGroup;
   resetSubmitted = false;
   resetError = false;
@@ -33,6 +34,10 @@ export class ForgotPasswordFormComponent implements OnInit {
         catchError((e) => {
           return e
         })
-      ).subscribe()
+      ).subscribe(() => {
+        setTimeout(() => {
+          this.passwordReseted.next(true);
+        }, 1000)
+      })
   }
 }

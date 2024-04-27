@@ -24,10 +24,16 @@ export class LoginPageComponent implements OnInit {
   isExpired = false;
   loginForm: FormGroup;
   isLogin = true
+  passwordReseted = false;
 
   ngOnInit(): void {
     const isResettingPassword = this.route.snapshot.queryParams['resetPassword']
     if (isResettingPassword) this.isLogin = false;
     this.userService.isExpired.subscribe(res => this.isExpired = res);
+  }
+
+  onPasswordReseted() {
+    this.isLogin = !this.isLogin;
+    this.passwordReseted = true;
   }
 }
