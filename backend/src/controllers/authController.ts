@@ -43,7 +43,7 @@ const login = catchAsync(async (req, res, next) => {
 
   //Check if user exists and password is correct
   if (!user || !(await user.correctPassword!(data.password, user.password!))) {
-    throw new AppError("Wrong email or password", 400);
+    throw new AppError("Wrong email or password", 401);
   }
 
   createSignToken(user, 200, res);
@@ -51,7 +51,7 @@ const login = catchAsync(async (req, res, next) => {
 
 const signup = catchAsync(async (req, res, next) => {
   if (!req.body.email || !req.body.password) {
-    return next(new AppError("Please provide email and password", 403));
+    return next(new AppError("Please provide email and password", 400));
   }
   const user = await User.create(req.body);
   createSignToken(user, 200, res);
@@ -59,7 +59,7 @@ const signup = catchAsync(async (req, res, next) => {
 
 const auth = async (req, res, next) => {
   if (!req.cookies.jwt && !req.headers.authorization) {
-    return next(new AppError("You need to login first.", 403));
+    return next(new AppError("You need to login first.", 401));
   }
 
   let token;
@@ -96,7 +96,7 @@ const isLoggedIn = async (req, res, next) => {
       (!req.headers.authorization ||
           req.headers.authorization.includes(null || undefined))
   ) {
-    return next(new AppError("You need to login first.", 403));
+    return next(new AppError("You need to login first.", 401));
   }
 
   let token;
@@ -135,16 +135,17 @@ const isLoggedIn = async (req, res, next) => {
 
 const resetPassword = catchAsync(async (req: Request, res: Response, next) => {
   try {
-    const user = await User.findOne({email: {$eq: req.body.email}});
-    if (user) {
-      const token = jwt.sign({id: user._id}, process.env.JWT_RESET_PASSWORD_SECRET as string, {
-        expiresIn: process.env.JWT_RESET_PASSWORD_EXPIRES_IN
-      })
-      await user.updateOne({resetToken: token}, {new: true})
-    }
-    res.status(200).json({status: "success"});
+    const user = await User.findOne({email: {$eq: req.body.email}})
+        .orFail(() => new AppError("There is no user with that email", 404));
+    const token = jwt.sign({id: user._id}, process.env.JWT_RESET_PASSWORD_SECRET as string, {
+      expiresIn: process.env.JWT_RESET_PASSWORD_EXPIRES_IN
+    });
+    await user.updateOne({resetToken: token}, {new: true})
+    res.status(200)
+        .json({status: "success", email: req.body.email});
   } catch (e) {
-    res.status(200).json({status: "error", error: e})
+    res.status(+(e as AppError).statusCode)
+        .json({status: "error", error: (<AppError>e).message})
   }
 });
 

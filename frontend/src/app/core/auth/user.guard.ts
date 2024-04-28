@@ -11,9 +11,9 @@ export const UserGuard: CanActivateFn = (route, state) => {
     catchError((err) => {
       if (err.error.status === 'expired') {
         userService.expiredNotification();
-        localStorage.removeItem('token');
+        userService.removeUserToken();
       }
-      router.navigate(['login']);
+      router.navigate(['/auth/login']);
       return of(false);
     }),
     take(1),
@@ -21,7 +21,7 @@ export const UserGuard: CanActivateFn = (route, state) => {
       if (res.status === 'success') {
         return true;
       } else {
-        router.navigate(['login']);
+        router.navigate(['/auth/login']);
         return false;
       }
     })

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginPageComponent } from "./pages/login-page.component";
-import {LoginComponent} from "./login.component";
+import { LoginPageComponent } from "./pages/login-page/login-page.component";
+import { LoginComponent } from "./login.component";
+import { NewPasswordPageComponent } from "./pages/new-password-page/new-password-page.component";
 
 const routes: Routes = [
   {
@@ -10,7 +11,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      },
+      {
+        path: 'login',
         component: LoginPageComponent,
+      },
+      {
+        path: 'reset-password',
+        component: NewPasswordPageComponent
       }
     ]
   }
@@ -20,4 +30,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class LoginRoutingModule { }
+export class LoginRoutingModule {
+}

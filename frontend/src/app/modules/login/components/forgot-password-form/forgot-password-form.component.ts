@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {catchError, Subject, tap} from "rxjs";
+import {Component, inject, Input, OnInit, Output} from '@angular/core';
+import {Subject, tap} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../../../core/auth/user.service";
@@ -10,34 +10,44 @@ import {UserService} from "../../../../core/auth/user.service";
   styleUrl: './forgot-password-form.component.scss'
 })
 export class ForgotPasswordFormComponent implements OnInit {
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private userService = inject(UserService);
 
   @Input() mainTitle = ''
   @Output() toggleLogin = new Subject<boolean>();
   @Output() passwordReseted = new Subject<boolean>()
   resetForm: FormGroup;
   resetSubmitted = false;
-  resetError = false;
 
-  constructor(private router: Router, private fb: FormBuilder, private userService: UserService) {
+  get formValid() {
+    return this.resetForm.valid;
   }
 
   ngOnInit() {
     this.resetForm = this.fb.group({
-      email: ['', [Validators.required]]
+      email: [null, [Validators.required]]
     })
   }
 
   resetPassword() {
     this.resetSubmitted = true;
-      this.userService.resetPassword(this.resetForm.get('email')?.value).pipe(
-        tap(() => this.resetSubmitted = true),
-        catchError((e) => {
-          return e
-        })
-      ).subscribe(() => {
-        setTimeout(() => {
-          this.passwordReseted.next(true);
-        }, 1000)
-      })
+    this.userService.resetPassword(this.resetForm.get('email')?.value).pipe(
+      tap(() => this.resetSubmitted = true),
+    ).subscribe(
+      {
+        next: () => {
+          setTimeout(() => {
+            this.passwordReseted.next(true);
+          }, 1000)
+        },
+        error: () => {
+          setTimeout(() => {
+            this.resetForm.setErrors({'userNotFound': true})
+            this.resetSubmitted = false;
+          }, 700)
+        }
+      }
+    )
   }
 }

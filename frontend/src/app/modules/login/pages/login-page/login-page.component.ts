@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../core/auth/user.service';
+import { UserService } from '../../../../core/auth/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { trigger } from "@angular/animations";
-import { fadeInOutAnimation } from "../../../core/animations/animation";
+import { fadeInOutAnimation } from "../../../../core/animations/animation";
 
 @Component({
   selector: 'app-login-page',

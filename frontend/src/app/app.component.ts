@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { UserService } from './core/auth/user.service';
+import {LoginService} from "./modules/login/services/login.service";
 
 @Component({
   selector: 'app-root',
@@ -7,19 +8,27 @@ import { UserService } from './core/auth/user.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    protected userService: UserService
-  ) { }
+  private loginService = inject(LoginService);
+  private userService = inject(UserService);
+
   ngOnInit(): void {
-    if (localStorage.getItem('token')) {
+    if (this.userService.getUserToken()) {
       this.userService.isLoggedIn().subscribe({
         next: (user) => {
-          this.userService.user.next({ ...user.data.user, token: localStorage.getItem('token') });
+          this.userService.user.next({ ...user.data.user, token: this.userService.getUserToken() });
         },
         error: (err) => {
           // maybe send to user info?
         },
       });
     }
+
+    window.addEventListener('beforeunload', () => {
+      // TODO: Enhance remember me functionality. Current setup removes token even if browser is refreshed.
+      //  Probably better solution will be add logic with session storage
+      if (!this.loginService.userRemembered) {
+        this.userService.removeUserToken();
+      }
+    })
   }
 }

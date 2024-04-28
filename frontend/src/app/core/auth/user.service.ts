@@ -4,6 +4,8 @@ import { apiUrl } from 'src/environments/apiurl';
 import {BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
 
+const tokenName = 'token'
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,8 +15,8 @@ export class UserService {
   isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private http: HttpClient, private router: Router) {
-    if (localStorage.getItem('token')) {
-      this.user.next({ token: localStorage.getItem('token') });
+    if (localStorage.getItem(tokenName)) {
+      this.user.next({ token: localStorage.getItem(tokenName) });
     }
   }
 
@@ -36,7 +38,7 @@ export class UserService {
 
   logout() {
     this.user.next(undefined);
-    localStorage.removeItem('token');
+    this.removeUserToken();
   }
 
   expiredNotification() {
@@ -52,5 +54,17 @@ export class UserService {
 
   resetPassword(email: string) {
     return this.http.post(`${apiUrl}auth/resetPassword`, { email });
+  }
+
+  public getUserToken() {
+    return localStorage.getItem(tokenName);
+  }
+
+  public setUserToken(token: string) {
+    return localStorage.setItem(tokenName, token);
+  }
+
+  public removeUserToken() {
+    localStorage.removeItem(tokenName);
   }
 }

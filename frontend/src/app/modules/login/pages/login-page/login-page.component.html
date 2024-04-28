@@ -1,11 +1,13 @@
-<div class="w-full h-full flex background">
+<div class="w-full h-full flex">
   <div class="h-fit w-[30rem] self-center py-10 px-10 bg-white rounded-xl ms-[15rem]">
     @if (isLogin && !passwordReseted) {
       <app-login-form [mainTitle]="'LOGIN'" (toggleLogin)="isLogin = !isLogin" @fadeInOut></app-login-form>
     } @else if (passwordReseted) {
       <app-forgot-password-confirm (back)="passwordReseted = false"></app-forgot-password-confirm>
     } @else {
-      <app-forgot-password-form (toggleLogin)="isLogin = !isLogin" (passwordReseted)="onPasswordReseted()" @fadeInOut></app-forgot-password-form>
+      <app-forgot-password-form (toggleLogin)="isLogin = !isLogin"
+                                (passwordReseted)="onPasswordReseted()"
+                                @fadeInOut></app-forgot-password-form>
     }
   </div>
 </div>

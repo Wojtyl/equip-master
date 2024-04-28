@@ -191,6 +191,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   //animation-iteration-count: infinite;
 }
 
+.error-message {
+  @apply text-red-700 text-sm;
+}
 
 @keyframes loadingSpinner {
   from {

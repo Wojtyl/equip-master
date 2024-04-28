@@ -1,8 +1,10 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {catchError, Subject} from "rxjs";
-import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../../core/auth/user.service";
+import { Component, inject, Input, OnInit, Output } from '@angular/core';
+import { catchError, of, Subject } from "rxjs";
+import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UserService } from "../../../../core/auth/user.service";
+import { HttpErrorResponse } from "@angular/common/http";
+import { LoginService } from "../../services/login.service";
 
 @Component({
   selector: 'app-login-form',
@@ -14,7 +16,7 @@ export class LoginFormComponent implements OnInit {
   @Output() toggleLogin = new Subject<boolean>();
   loginForm: FormGroup;
   loginSubmitted = false;
-  loginError = false;
+  private loginService = inject(LoginService);
 
   constructor(private router: Router, private fb: FormBuilder, private userService: UserService) {
   }
@@ -23,7 +25,7 @@ export class LoginFormComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      remember: [false]
+      remember: [true]
     })
   }
 
@@ -34,11 +36,16 @@ export class LoginFormComponent implements OnInit {
       if (this.loginForm.valid) {
         this.userService.getUser(this.loginForm.getRawValue())
           .pipe(
-            catchError(err => {
-              this.loginError = true;
-              console.log(err)
-              // return of(false)
-              throw new Error("Bad login")
+            catchError((err: HttpErrorResponse) => {
+              this.loginSubmitted = false;
+              if (err.status === 401) {
+                this.loginForm.setErrors({wrongCredentials: true})
+                throw new Error("Incorrect username or password")
+              }
+              if (err.status === 400) {
+                throw new Error(err.error.message)
+              }
+              return of(err)
             })
           )
           .subscribe((res) => {
@@ -50,7 +57,8 @@ export class LoginFormComponent implements OnInit {
               role: user.role,
               token: res.token
             });
-            localStorage.setItem('token', res.token);
+            this.userService.setUserToken(res.token);
+            if (!this.loginForm.get('remember')?.value) this.loginService.userRemembered = false;
             this.router.navigate(['/']);
           });
       }
