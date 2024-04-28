@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { apiUrl } from "../../../../environments/apiurl";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+  private httpClient = inject(HttpClient);
   private _resetEmail: string;
   private _userRemembered = true;
 
@@ -21,6 +24,10 @@ export class LoginService {
 
   public get userRemembered() {
     return this._userRemembered;
+  }
+
+  public setNewPassword(data: {token: string, password: string, passwordConfirm: string}) {
+    return this.httpClient.post(`${apiUrl}auth/newPasswordReset`, data);
   }
 
   constructor() { }

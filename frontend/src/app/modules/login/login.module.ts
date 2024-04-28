@@ -9,6 +9,9 @@ import { ForgotPasswordFormComponent } from "./components/forgot-password-form/f
 import { SharedModule } from "../../shared/shared.module";
 import { ForgotPasswordConfirmComponent } from './components/forgot-password-confirm/forgot-password-confirm.component';
 import { NewPasswordPageComponent } from './pages/new-password-page/new-password-page.component';
+import { NewPasswordFormComponent } from './components/new-password-form/new-password-form.component';
+import { LoginCardComponent } from './components/login-card/login-card.component';
+import { NewPasswordConfirmComponent } from './components/new-password-confirm/new-password-confirm.component';
 
 
 @NgModule({
@@ -18,7 +21,10 @@ import { NewPasswordPageComponent } from './pages/new-password-page/new-password
     LoginFormComponent,
     ForgotPasswordFormComponent,
     ForgotPasswordConfirmComponent,
-    NewPasswordPageComponent
+    NewPasswordPageComponent,
+    NewPasswordFormComponent,
+    LoginCardComponent,
+    NewPasswordConfirmComponent
   ],
   imports: [
     CommonModule,

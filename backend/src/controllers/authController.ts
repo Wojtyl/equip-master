@@ -1,15 +1,18 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 
 const {promisify} = require("util");
-import jwt from "jsonwebtoken";
-import {catchAsync} from "../utils/catchAsync";
-import {AppError} from "../utils/appError";
-import {User} from "../schemas/userModel";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { catchAsync } from "../utils/catchAsync";
+import { AppError } from "../utils/appError";
+import { User } from "../schemas/userModel";
+import { EmailService } from "../services/EmailService";
 
 const signToken = (id) =>
     jwt.sign({id: id}, process.env.JWT_SECRET as string, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
+
+const email = new EmailService();
 
 const createSignToken = (user, statusCode, res) => {
   user.password = undefined;
@@ -140,7 +143,11 @@ const resetPassword = catchAsync(async (req: Request, res: Response, next) => {
     const token = jwt.sign({id: user._id}, process.env.JWT_RESET_PASSWORD_SECRET as string, {
       expiresIn: process.env.JWT_RESET_PASSWORD_EXPIRES_IN
     });
-    await user.updateOne({resetToken: token}, {new: true})
+
+    await user.updateOne({resetToken: token}, {new: true});
+
+    await email.sendMail(user, "Reset password link", token);
+
     res.status(200)
         .json({status: "success", email: req.body.email});
   } catch (e) {
@@ -149,4 +156,33 @@ const resetPassword = catchAsync(async (req: Request, res: Response, next) => {
   }
 });
 
-export {isLoggedIn, auth, signup, login, resetPassword};
+const setNewPassword = catchAsync(async (req: Request, res: Response, next) => {
+  // @ts-ignore
+  const {password, passwordConfirm, token} = {...req.body};
+
+  if (!token) {
+    console.log(token)
+    throw new AppError("You have not provided any token", 400);
+  }
+
+  let decodedToken: JwtPayload;
+  try {
+    decodedToken = jwt.verify(token, process.env.JWT_RESET_PASSWORD_SECRET as string, {}) as JwtPayload
+  } catch (e) {
+    throw new AppError("You provided wrong token!", 403)
+  }
+
+  const user = await User.findById(decodedToken.id).orFail(() => new AppError("There is no user with given ID", 404));
+
+  if (user.resetToken !== token) throw new AppError("Token is not valid or has been already used", 403);
+
+  user.password = password;
+  user.passwordConfirm = passwordConfirm;
+  user.resetToken = null;
+  await user.save();
+
+  res.status(200).json({passwordConfirm, password, token});
+})
+
+
+export { isLoggedIn, auth, signup, login, resetPassword, setNewPassword };

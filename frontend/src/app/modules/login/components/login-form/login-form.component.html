@@ -4,7 +4,7 @@
       <h1 class="text-5xl font-semibold leading-normal">{{ mainTitle }}</h1>
       <h3 class="text-sm font-normal">Login to get access to all functionalities</h3>
     </div>
-    <form class="flex flex-col mb-10" [formGroup]="loginForm" (ngSubmit)="login()">
+    <form class="flex flex-col" [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="flex flex-col mb-4">
         <label for="email">Email</label>
         <input class="bg-zinc-100 px-4 py-2 rounded-lg text-sm"
@@ -31,16 +31,16 @@
         </div>
         <p class="cursor-pointer text-sm" (click)="toggleLogin.next(true)">Forgot password</p>
       </div>
+      <button
+        class="bg-black login-button relative rounded-lg text-white w-full h-[3rem] flex items-center justify-center p-2 mt-8 mb-3 disabled:bg-gray-700"
+        [disabled]="loginSubmitted" type="submit">
+        @if (loginSubmitted) {
+          <app-svg-icon icon="loading_icon" iconClass="loading-spinner h-full" [scale]="0.3" fill="#fff"
+                        stroke="#fff"></app-svg-icon>
+        } @else {
+          <span>Sign in</span>
+        }
+      </button>
     </form>
-    <button
-      class="bg-black login-button relative rounded-lg text-white w-full h-[3rem] flex items-center justify-center p-2 mb-3"
-      [disabled]="loginSubmitted" (click)="login()">
-      @if (loginSubmitted) {
-        <app-svg-icon icon="loading_icon" iconClass="loading-spinner h-full" [scale]="0.3" fill="#fff"
-                      stroke="#fff"></app-svg-icon>
-      } @else {
-        <span>Sign in</span>
-      }
-    </button>
   </div>
 </div>

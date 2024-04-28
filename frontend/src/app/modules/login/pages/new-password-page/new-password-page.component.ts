@@ -1,17 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import { UserService } from "../../../../core/auth/user.service";
+import { ActivatedRoute } from "@angular/router";
+import { trigger } from "@angular/animations";
+import { fadeInOutAnimation } from "src/app/core/animations/animation";
 
 @Component({
   selector: 'app-new-password-page',
   templateUrl: './new-password-page.component.html',
-  styleUrl: './new-password-page.component.scss'
+  styleUrl: './new-password-page.component.scss',
+  animations: [
+    trigger('fadeInOut', fadeInOutAnimation())
+  ]
 })
 export class NewPasswordPageComponent implements OnInit {
-  private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private userService = inject(UserService);
   private token: string;
+  protected passwordReset = false;
 
   ngOnInit() {
     this.token = this.route.snapshot.queryParams['token'];
