@@ -3,9 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { apiUrl } from "../../../environments/apiurl";
 import { Observable } from "rxjs";
 import { ListResponse } from "../models/list-response";
-import { IBoxDetails } from "src/app/modules/delivery/models/box-model";
-import { IDeliveryDetails } from "src/app/modules/delivery/models/delivery-details-model";
-import { BoxProductForm } from "../../modules/delivery/pages/box-details/box-details.component";
+import { IBoxDetails } from "src/app/modules/core/delivery/models/box-model";
+import { IDeliveryDetails } from "src/app/modules/core/delivery/models/delivery-details-model";
+import { BoxProductForm } from "../../modules/core/delivery/pages/box-details/box-details.component";
 
 @Injectable({
   providedIn: 'root'

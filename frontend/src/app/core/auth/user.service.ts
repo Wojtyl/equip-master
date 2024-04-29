@@ -1,35 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { apiUrl } from 'src/environments/apiurl';
-import { BehaviorSubject } from 'rxjs';
-import { User } from '../../shared/models/userModel';
+import {BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
+
+const tokenName = 'token'
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient, private router: Router) {
-    if (localStorage.getItem('token')) {
-      this.user.next({ token: localStorage.getItem('token') });
-    }
-  }
-
+  token: string;
   user: BehaviorSubject<any> = new BehaviorSubject(undefined);
-
   isExpired: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  token: string;
+  constructor(private http: HttpClient, private router: Router) {
+    if (localStorage.getItem(tokenName)) {
+      this.user.next({ token: localStorage.getItem(tokenName) });
+    }
+  }
 
   isLoggedIn() {
     return this.http.get<any>(`${apiUrl}auth/isloggedin`);
   }
 
-  getUser(email: string, password: string) {
-    return this.http.post<any>(`${apiUrl}auth/login`, {
-      email,
-      password,
-    });
+  getUser(data :{ email: string, password: string }) {
+    return this.http.post<any>(`${apiUrl}auth/login`, data);
   }
 
   getUserRole() {
@@ -42,7 +38,7 @@ export class UserService {
 
   logout() {
     this.user.next(undefined);
-    localStorage.removeItem('token');
+    this.removeUserToken();
   }
 
   expiredNotification() {
@@ -54,5 +50,21 @@ export class UserService {
 
   refreshUserAuthToken() {
     return;
+  }
+
+  resetPassword(email: string) {
+    return this.http.post(`${apiUrl}auth/resetPassword`, { email });
+  }
+
+  public getUserToken() {
+    return localStorage.getItem(tokenName);
+  }
+
+  public setUserToken(token: string) {
+    return localStorage.setItem(tokenName, token);
+  }
+
+  public removeUserToken() {
+    localStorage.removeItem(tokenName);
   }
 }

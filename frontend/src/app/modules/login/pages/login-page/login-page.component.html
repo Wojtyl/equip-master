@@ -1,0 +1,11 @@
+<app-login-card>
+    @if (isLogin && !passwordReseted) {
+      <app-login-form [mainTitle]="'LOGIN'" (toggleLogin)="isLogin = !isLogin" @fadeInOut></app-login-form>
+    } @else if (passwordReseted) {
+      <app-forgot-password-confirm (back)="passwordReseted = false"></app-forgot-password-confirm>
+    } @else {
+      <app-forgot-password-form (toggleLogin)="isLogin = !isLogin"
+                                (passwordReseted)="onPasswordReseted()"
+                                @fadeInOut></app-forgot-password-form>
+    }
+</app-login-card>
