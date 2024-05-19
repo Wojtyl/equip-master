@@ -1,7 +1,7 @@
 import { ISupplier } from "../../suppliers/models/supplier-model"
 import { IBoxPreview } from "./box-model";
 
-export interface IDeliveryDetails {
+export interface IDelivery {
   _id: string,
   date: Date,
   deliveryBoxes: IBoxPreview[];
@@ -12,7 +12,11 @@ export interface IDeliveryDetails {
   closed: boolean,
   reopened: boolean,
   supplier: ISupplier,
-  createdBy: string,
+  createdBy: {
+    _id: string;
+    name: string;
+    email: string;
+  },
   status: string,
   description: string,
   statuses: {
@@ -20,5 +24,6 @@ export interface IDeliveryDetails {
     status: string,
     date: Date
     message: string
+    _id: string;
   }[]
 }

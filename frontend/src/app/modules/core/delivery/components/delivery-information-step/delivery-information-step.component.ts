@@ -6,7 +6,7 @@ import { Supplier } from "../../../../../shared/models/supplierModel";
 import { DeliveryService } from "../../delivery-service.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { StepperService } from "../../../../../shared/services/stepper.service";
-import { IDeliveryDetails } from "../../models/delivery-details-model";
+import { IDelivery } from "../../models/delivery-model";
 
 @Component({
   selector: 'app-delivery-information-step',
@@ -26,9 +26,9 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
 
   private deliveryId: string;
   public suppliers: Supplier[];
-  public supplierInvoices: {invoiceNumber: string, _id: string}[];
-  private invoicesMap: { [key: string]: {invoiceNumber: string, _id: string}[] } = {};
-  private delivery: IDeliveryDetails;
+  public supplierInvoices: { invoiceNumber: string, _id: string }[];
+  private invoicesMap: { [key: string]: { invoiceNumber: string, _id: string }[] } = {};
+  private delivery: IDelivery;
 
   ngOnInit() {
     this.deliveryId = this.route.snapshot.params['id'];
@@ -53,13 +53,15 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
     })
 
     this.subscriptions.add(this.deliveryInformationFormGroup.get('supplier')?.valueChanges.pipe(
-      tap(() => {this.deliveryInformationFormGroup.get('invoice')?.reset()}),
+        tap(() => {
+          this.deliveryInformationFormGroup.get('invoice')?.reset()
+        }),
         mergeMap((supplierId) => {
           if (!this.invoicesMap[supplierId]) {
             return this.supplierService.getSupplierInvoices(supplierId).pipe(
               tap(response => {
                 this.invoicesMap[supplierId] = this.supplierInvoices = response.items;
-                if (this.deliveryId && this.delivery.supplier === supplierId) {
+                if (this.deliveryId && this.delivery.supplier._id === supplierId) {
                   this.invoicesMap[supplierId].push({
                     invoiceNumber: this.delivery.invoice.invoiceNumber,
                     _id: this.delivery.invoice._id,
@@ -75,7 +77,7 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
       ).subscribe()
     )
 
-    if (this.deliveryId) this.deliveryInformationFormGroup.get('supplier')?.patchValue(this.delivery.supplier);
+    if (this.deliveryId) this.deliveryInformationFormGroup.get('supplier')?.patchValue(this.delivery.supplier._id);
   }
 
   ngOnDestroy() {
@@ -86,19 +88,19 @@ export class DeliveryInformationStepComponent implements OnInit, OnDestroy {
     return iif(() => !!this.deliveryId,
       this.deliveryService.getDelivery(this.deliveryId)
         .pipe(map(response => response.items)),
-      of({} as IDeliveryDetails))
+      of({} as IDelivery))
   }
 
   createDeliveryAndNavigate() {
     const data = this.deliveryInformationFormGroup.getRawValue();
     if (this.deliveryId) {
       this.deliveryService.updateDelivery(data, this.deliveryId).subscribe(() => {
-        this.router.navigate([ 'counting'], {relativeTo: this.route})
+        this.router.navigate(['counting'], {relativeTo: this.route})
       })
     } else {
       this.deliveryService.addDelivery(data).subscribe(data => {
         const delivery = data.items;
-        this.router.navigate([ delivery._id, 'counting'], {relativeTo: this.route})
+        this.router.navigate([delivery._id, 'counting'], {relativeTo: this.route})
       })
     }
   }

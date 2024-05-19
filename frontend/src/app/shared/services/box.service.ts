@@ -4,7 +4,7 @@ import { apiUrl } from "../../../environments/apiurl";
 import { Observable } from "rxjs";
 import { ListResponse } from "../models/list-response";
 import { IBoxDetails } from "src/app/modules/core/delivery/models/box-model";
-import { IDeliveryDetails } from "src/app/modules/core/delivery/models/delivery-details-model";
+import { IDelivery } from "src/app/modules/core/delivery/models/delivery-model";
 import { BoxProductForm } from "../../modules/core/delivery/pages/box-details/box-details.component";
 
 @Injectable({
@@ -29,7 +29,7 @@ export class BoxService {
   }
 
   deleteBox(boxId: string) {
-    return this.http.delete<ListResponse<IDeliveryDetails>>(`${apiUrl}boxes/${boxId}`)
+    return this.http.delete<ListResponse<IDelivery>>(`${apiUrl}boxes/${boxId}`)
   }
 
   closeBox(boxId: string) {

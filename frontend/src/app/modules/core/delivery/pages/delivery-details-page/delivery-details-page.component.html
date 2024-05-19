@@ -1,1 +1,60 @@
-<p>delivery-details-page works!</p>
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/invoices"
+                    [triggerable]="true"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Edytuj fakturę</h1>
+        <p class="text-gray-500 line-clamp-3">W tym miejscu zobaczysz szczegóły faktury</p>
+      </div>
+    </div>
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <div *ngIf="isLoading">
+        <p-skeleton styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="8rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="15rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="6rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="10rem" height="4rem"></p-skeleton>
+      </div>
+      <section *ngIf="deliveryDetails" [ngClass]="{'hidden': isLoading}" id="invoice-form">
+        <h3 class="font-semibold">Dostawa</h3>
+        <p>Status: {{ deliveryDetails.status }}</p>
+        <p>Stworzone przez: {{ deliveryDetails.createdBy.name }}</p>
+        <p>Data: {{ deliveryDetails.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
+        <p>Opis: {{ deliveryDetails.description }}</p>
+        <br>
+        <h3 class="font-semibold">Faktura</h3>
+        <p>Numer: {{ deliveryDetails.invoice.invoiceNumber }}</p>
+        <p>Data: {{ deliveryDetails.invoice.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
+        <p>Kwota: {{ deliveryDetails.invoice.nettoPrice }} {{deliveryDetails.invoice.currency}}</p>
+        <br>
+        <h3 class="font-semibold">Uczestnicy dostawy</h3>
+        @for (user of deliveryDetails.usersList; track user._id) {
+          <p>{{user.name}} <span class="font-light text-sm">{{user.email}}</span></p>
+        }
+        <br>
+        <h3 class="font-semibold">Produkty</h3>
+        <br>
+        <h3 class="font-semibold">Pudła</h3>
+        @for (box of deliveryDetails.deliveryBoxes; track box._id) {
+          <p>Pudło {{box.boxNumber}} Przedmiotów: {{box.productsQuantity}} Utworzył: {{box.createdBy.name}} Data: {{box.createdAt | date:'dd.MM.yyy HH:mm:ss'}}</p>
+        }
+        <br>
+        <h3 class="font-semibold">Status log</h3>
+        @for (status of deliveryDetails.statuses; track status._id) {
+          <p><span class="font-semibold">{{status.status}} </span><span>{{status.message}} </span> <span>{{status.date | date:'dd.MM.yyy HH:mm:ss'}}</span></p>
+        }
+      </section>
+    </div>
+  </div>
+</div>
