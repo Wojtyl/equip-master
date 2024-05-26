@@ -1,16 +1,24 @@
-import { Invoice } from "../schemas/invoiceModel";
+import { IInvoice, Invoice } from "../schemas/invoiceModel";
 import { Types } from "mongoose";
+import { AppError } from "../utils/appError";
 
 export class InvoiceService {
 
     //NOTE: This is good method to get products with quantity and size for comparison with box delivery
     //(to check if sum of products on invoice is equal with products on delivery)
-    public async getInvoiceByNumber(inveoiceNumber: string) {
+    public async getInvoiceByNumber(invoiceNumber: string): Promise<IInvoice> {
         return Invoice.find({
             invoiceNumber: {
-                $eq: inveoiceNumber
+                $eq: invoiceNumber
             }
-        });
+        }).populate('supplier', '_id name')
+            .orFail(new AppError('Invoice not found', 404))
+            .then(data => data[0]);
+    }
+
+    public async checkIfInvoiceNumberExists(invoiceNumber: string) {
+        const invoice = await Invoice.find({invoiceNumber: { $eq: invoiceNumber }});
+        return invoice.length > 0;
     }
 
     async getInvoiceProductsWithQuantityByDelivery(invoiceId: string) {

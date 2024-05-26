@@ -12,12 +12,10 @@ export class ValidationController {
     private invoiceService = new InvoiceService();
 
     public validateUniqueInvoiceNumber = () => catchAsync(async (req: URequest, res: Response) => {
-        console.log(req.body.invoiceNumber)
-        const invoice  = await this.invoiceService.getInvoiceByNumber(req.body.invoiceNumber);
-        const unique = !(invoice?.length > 0);
+        const isInvoiceUnique  = await this.invoiceService.checkIfInvoiceNumberExists(req.body.invoiceNumber);
 
         res.status(200).json({
-            unique
+            unique: !isInvoiceUnique
         })
     })
 
