@@ -20,7 +20,9 @@ export class DeliveryDetailsPageComponent implements OnInit {
     this.deliveryService.getDeliveryDetails(id)
       .subscribe(data => {
         this.deliveryDetails = data.items;
-      })
+      }
+    )
   }
 
+  protected readonly Math = Math;
 }

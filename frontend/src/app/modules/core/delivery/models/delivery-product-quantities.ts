@@ -1,12 +1,12 @@
-export interface DeliverySummary {
+export interface DeliveryProductQuantities {
   productIndex: string;
   productName: string;
-  id: string;
+  productId: string;
   isExtraProduct: boolean;
-  sizes: ProductSizes[];
+  sizes: DeliveryProductSizes[];
 }
 
-export interface ProductSizes {
+export interface DeliveryProductSizes {
   size: string;
   deliveryCount: number;
   differenceCount: number;

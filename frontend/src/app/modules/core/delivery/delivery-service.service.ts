@@ -5,7 +5,7 @@ import { apiUrl } from 'src/environments/apiurl';
 import { IDelivery } from './models/delivery-model'
 import { Observable } from 'rxjs';
 import { IDeliveryList } from './models/delivery-list-model';
-import { DeliverySummary } from "./models/delivery-summary";
+import { DeliveryProductQuantities } from "./models/delivery-product-quantities";
 import { DeliveryDetails } from "./models/delivery-details";
 
 @Injectable({
@@ -24,7 +24,7 @@ export class DeliveryService {
   }
 
   getDeliverySummary(deliveryId: string) {
-    return this.http.get<ListResponse<DeliverySummary[]>>(`${apiUrl}deliveries/${deliveryId}/summary`);
+    return this.http.get<ListResponse<DeliveryProductQuantities[]>>(`${apiUrl}deliveries/${deliveryId}/summary`);
   }
 
   deleteDelivery(id: string) {

@@ -7,10 +7,42 @@ import { URequest } from "../interfaces/user-request";
 import { AppError } from "../utils/appError";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
 import { IDeliveryWithProducts } from "../models/delivery-with-products-model";
-import { ProductsQuantityMap } from "../controllers/deliveryController";
+import { IProductBox } from "../interfaces/product-box";
+import { InvoiceService } from "./invoiceService";
+
+export interface ProductQuantity {
+  productName: string;
+  productId: string;
+  productIndex: string;
+  isExtraProduct: boolean;
+  quantities: {
+    [size: string]: {
+      quantity: number,
+      isExtraSize: boolean
+    };
+  }
+}
+
+export interface ProductsQuantityMap {
+  [productId: string]: ProductQuantity;
+}
+
+interface Summary {
+  productIndex: string;
+  productName: string;
+  productId: string;
+  isExtraProduct: boolean;
+  sizes: {
+    size: string;
+    deliveryCount: number;
+    differenceCount: number;
+    isExtraSize: boolean;
+  }[]
+}
 
 export class DeliveryService {
   private roleService: RoleService = new RoleService();
+  private invoiceService = new InvoiceService();
 
   async findDeliveryByIdOrThrow(id: string | Types.ObjectId, options?) {
     return Delivery.findById(id).orFail(new AppError('Delivery with that ID not found!', 404));
@@ -372,6 +404,60 @@ export class DeliveryService {
   private returnDeliveryOrThrow(data: any[]) {
     if (data[0] === undefined || data[0] === null) throw new AppError("Delivery with that ID doesn't exist", 404);
     return data[0];
+  }
+
+
+
+mapToProductList(productList: IProductBox[]) {
+  return productList.reduce((acc, item) => {
+    const selectedElement = acc[item.productId];
+    const selectedElementQuantities = selectedElement?.quantities?.[item.size]?.quantity;
+    return {
+      ...acc,
+      [item.productId]: {
+        ...selectedElement,
+        productName: item.name,
+        productIndex: item.productIndex,
+        quantities: {
+          ...selectedElement?.quantities,
+          [item.size]: { quantity: selectedElementQuantities ? item.quantity + selectedElementQuantities : item.quantity }
+        }
+      }
+    }
+  }, {} as ProductsQuantityMap)
+}
+
+  public async getDeiveryProductsDifferencesMap(deliveryId: string) {
+    const deliveryDetails = await this.getDeliveryAllBoxesWithProductDetails(deliveryId);
+    const invoiceDetails = await this.invoiceService.getInvoiceProductsWithQuantityByDelivery(deliveryDetails.invoice)
+    const productList = deliveryDetails
+        .boxDetails.reduce((acc, products) => {
+          return [...acc, ...products.products]
+        }, [] as IProductBox[])
+
+    const deliveryProductsMap = this.mapToProductList(productList);
+    const invoiceProductsMap = this.mapToProductList(invoiceDetails.products);
+
+    const differenceMap = this.compareDeliveryWithInvoice(deliveryProductsMap, invoiceProductsMap);
+
+    const summary: Summary[] = Object.keys(differenceMap).map(productId => {
+      const sizes = Object.keys(differenceMap[productId].quantities).map(size => {
+        return {
+          size,
+          deliveryCount: deliveryProductsMap[productId]?.quantities[size]?.quantity ?? 0,
+          differenceCount: differenceMap[productId].quantities[size].quantity,
+          isExtraSize: differenceMap[productId].quantities[size].isExtraSize
+        }
+      })
+      return {
+        productId: productId,
+        isExtraProduct: differenceMap[productId]?.isExtraProduct ?? false,
+        productIndex: differenceMap[productId].productIndex,
+        productName: differenceMap[productId].productName,
+        sizes
+      }
+    })
+    return summary;
   }
 }
 

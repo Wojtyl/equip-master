@@ -47,7 +47,7 @@
         @for(product of deliveryDetails.productQuantities; track product.productId) {
           <h4 class="font-medium">{{product.productName}}</h4>
           @for (size of product.sizes; track size.size) {
-            <p>Rozmiar: {{size.size}}  Ilość w dostawie: {{size.deliveryCount}}   Ilość na fakturze: {{size.deliveryCount - size.differenceCount  R^}}</p>
+            <p>Rozmiar: {{size.size}}  Ilość w dostawie: {{size.deliveryCount}}   Ilość na fakturze: {{size.deliveryCount - size.differenceCount}}  Różnica: {{size.differenceCount === 0 ? '' : size.differenceCount > 0 ? 'nadwyżka' : 'brak'}} {{Math.abs(size.differenceCount)}}</p>
           }
         }
         <br>

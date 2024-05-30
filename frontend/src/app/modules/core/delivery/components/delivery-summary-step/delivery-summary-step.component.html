@@ -27,7 +27,7 @@
       </tr>
       </thead>
       <tbody>
-        @for (product of deliverySummary; track product.id; let i = $index) {
+        @for (product of deliverySummary; track product.productId; let i = $index) {
           <tr
             [class.highlight]="product.isExtraProduct">
             <td class="w-1">
