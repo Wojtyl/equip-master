@@ -1,5 +1,6 @@
 import { Invoice } from "../../invoices/models/invoice-model";
 import { IDelivery } from "./delivery-model";
+import { DeliveryProductQuantities } from "./delivery-product-quantities";
 
 export interface DeliveryDetails extends IDelivery {
   invoice: Invoice;
@@ -7,5 +8,6 @@ export interface DeliveryDetails extends IDelivery {
     _id: string;
     name: string;
     email: string;
-  }[]
+  }[];
+  productQuantities: DeliveryProductQuantities[]
 }

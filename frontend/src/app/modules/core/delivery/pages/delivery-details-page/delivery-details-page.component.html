@@ -36,23 +36,31 @@
         <h3 class="font-semibold">Faktura</h3>
         <p>Numer: {{ deliveryDetails.invoice.invoiceNumber }}</p>
         <p>Data: {{ deliveryDetails.invoice.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
-        <p>Kwota: {{ deliveryDetails.invoice.nettoPrice }} {{deliveryDetails.invoice.currency}}</p>
+        <p>Kwota: {{ deliveryDetails.invoice.nettoPrice }} {{ deliveryDetails.invoice.currency }}</p>
         <br>
         <h3 class="font-semibold">Uczestnicy dostawy</h3>
         @for (user of deliveryDetails.usersList; track user._id) {
-          <p>{{user.name}} <span class="font-light text-sm">{{user.email}}</span></p>
+          <p>{{ user.name }} <span class="font-light text-sm">{{ user.email }}</span></p>
         }
         <br>
         <h3 class="font-semibold">Produkty</h3>
+        @for(product of deliveryDetails.productQuantities; track product.productId) {
+          <h4 class="font-medium">{{product.productName}}</h4>
+          @for (size of product.sizes; track size.size) {
+            <p>Rozmiar: {{size.size}}  Ilość w dostawie: {{size.deliveryCount}}   Ilość na fakturze: {{size.deliveryCount - size.differenceCount  R^}}</p>
+          }
+        }
         <br>
         <h3 class="font-semibold">Pudła</h3>
         @for (box of deliveryDetails.deliveryBoxes; track box._id) {
-          <p>Pudło {{box.boxNumber}} Przedmiotów: {{box.productsQuantity}} Utworzył: {{box.createdBy.name}} Data: {{box.createdAt | date:'dd.MM.yyy HH:mm:ss'}}</p>
+          <p>Pudło {{ box.boxNumber }} Przedmiotów: {{ box.productsQuantity }} Utworzył: {{ box.createdBy.name }}
+            Data: {{ box.createdAt | date:'dd.MM.yyy HH:mm:ss' }}</p>
         }
         <br>
         <h3 class="font-semibold">Status log</h3>
         @for (status of deliveryDetails.statuses; track status._id) {
-          <p><span class="font-semibold">{{status.status}} </span><span>{{status.message}} </span> <span>{{status.date | date:'dd.MM.yyy HH:mm:ss'}}</span></p>
+          <p><span class="font-semibold">{{ status.status }} </span><span>{{ status.message }} </span>
+            <span>{{ status.date | date:'dd.MM.yyy HH:mm:ss' }}</span></p>
         }
       </section>
     </div>
