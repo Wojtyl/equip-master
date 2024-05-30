@@ -10,8 +10,8 @@
                     stroke="#000">Back
       </app-svg-icon>
       <div class="flex flex-col justify-center items-center">
-        <h1 class="font-bold text-5xl leading-snug">Edytuj fakturę</h1>
-        <p class="text-gray-500 line-clamp-3">W tym miejscu zobaczysz szczegóły faktury</p>
+        <h1 class="font-bold text-5xl leading-snug">Szczegóły dostawy</h1>
+        <p class="text-gray-500 line-clamp-3">W tym miejscu zobaczysz szczegóły dostawy</p>
       </div>
     </div>
     <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
@@ -45,7 +45,7 @@
         <br>
         <h3 class="font-semibold">Produkty</h3>
         @for(product of deliveryDetails.productQuantities; track product.productId) {
-          <h4 class="font-medium">{{product.productName}}</h4>
+          <h4 class="font-medium mt-4 mb-1">{{product.productName}}</h4>
           @for (size of product.sizes; track size.size) {
             <p>Rozmiar: {{size.size}}  Ilość w dostawie: {{size.deliveryCount}}   Ilość na fakturze: {{size.deliveryCount - size.differenceCount}}  Różnica: {{size.differenceCount === 0 ? '' : size.differenceCount > 0 ? 'nadwyżka' : 'brak'}} {{Math.abs(size.differenceCount)}}</p>
           }

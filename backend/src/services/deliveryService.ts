@@ -84,13 +84,46 @@ export class DeliveryService {
               $unwind: '$createdBy'
             },
             {
+              $lookup: {
+                from: 'products',
+                localField: 'products.productId',
+                foreignField: '_id',
+                as: 'productsDetails',
+                pipeline: [{
+                  $addFields: {
+                    productId: '$_id'
+                  }
+                }, {
+                  $project: {
+                    _id: 0,
+                    productId: 1,
+                    name: 1,
+                    productIndex: 1
+                  }
+                }]
+              }
+            },
+            {
               $addFields: {
-                productsQuantity: {$size: "$products"}
+                products: {
+                  $map: {
+                    input: '$products',
+                    as: 'prod',
+                    in: {
+                      quantity: '$$prod.quantity',
+                      size: '$$prod.size',
+                      _id: '$$prod._id',
+                      productId: this.getProductField('productId'),
+                      name: this.getProductField('name'),
+                      productIndex: this.getProductField('productIndex')
+                    }
+                  }
+                }
               }
             },
             {
               $project: {
-                'products': 0,
+                'productsDetails': 0,
                 'deliveryId': 0
               }
             }
