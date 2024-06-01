@@ -1,0 +1,24 @@
+.panel {
+  @apply flex gap-10 mb-8 border-b-1 border-b-black w-full;
+  height: 2.4rem;
+
+  p {
+    cursor: pointer;
+
+    &.active-button {
+      @apply border-b-2 text-violet-500 relative;
+
+      &::after {
+        content: "";
+        display: block;
+        height: 4px;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        transform: translateY(100%);
+        position: absolute;
+        @apply bg-violet-500
+      }
+    }
+  }
+}

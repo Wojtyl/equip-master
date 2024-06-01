@@ -50,7 +50,7 @@
               <tr>
                 <td>{{ box.boxNumber }}</td>
                 <td>{{ box.createdAt | date:'dd.MM.yyyy hh:mm' }}</td>
-                <td>{{ box.productsQuantity }}</td>
+                <td>{{ box.products.length }}</td>
                 <td>{{ box.createdBy.name }}</td>
                 <td>
                   @switch (box.closed) {

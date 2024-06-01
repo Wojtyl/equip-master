@@ -1,10 +1,10 @@
 import { ISupplier } from "../../suppliers/models/supplier-model"
-import { IBoxPreview } from "./box-model";
+import { IBoxDetails } from "./box-model";
 
 export interface IDelivery {
   _id: string,
   date: Date,
-  deliveryBoxes: IBoxPreview[];
+  deliveryBoxes: IBoxDetails[];
   invoice: {
     _id: string,
     invoiceNumber: string
