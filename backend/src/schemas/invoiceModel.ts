@@ -1,7 +1,7 @@
-import mongoose, { Schema, Types } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 import { IProductInvoice } from "../interfaces/product-invoice";
 
-interface IInvoice {
+export interface IInvoice {
   deliveryId: Types.ObjectId,
   invoiceNumber: string,
   date: Number,
@@ -11,7 +11,7 @@ interface IInvoice {
   currency: String
 }
 
-const invoiceSchema = new mongoose.Schema<IInvoice>({
+const invoiceSchema = new Schema<IInvoice>({
   deliveryId: {
     type: Schema.Types.ObjectId,
   },
@@ -61,6 +61,6 @@ const invoiceSchema = new mongoose.Schema<IInvoice>({
   }
 });
 
-const Invoice = mongoose.model("Invoice", invoiceSchema);
+const Invoice = model<IInvoice>("Invoice", invoiceSchema);
 
 export { Invoice };

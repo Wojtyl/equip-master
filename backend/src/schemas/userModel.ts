@@ -2,13 +2,14 @@ import mongoose, { Model } from "mongoose";
 import bcrypt from "bcryptjs/dist/bcrypt";
 import { Roles } from "../enums/roles-enum";
 
-interface IUser {
+export interface IUser {
   name: string;
   email: string;
   password: string;
   passwordConfirm?: string;
   role: string;
   signupDate: Date;
+  resetToken: String | null;
 }
 
 interface IUserMethods {
@@ -60,6 +61,10 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     type: Date,
     default: new Date(),
   },
+  resetToken: {
+    type: String,
+    default: ''
+  }
 });
 
 userSchema.index({ email: 1 }, { unique: true });

@@ -1,0 +1,110 @@
+<div class="container mx-auto px-10 my-8">
+  <span class="text-blue-600 cursor-pointer" [routerLink]="['..']">Krok wstecz</span>
+  <section [class]="'h-full'" id="header">
+    <div class="flex">
+      <div *ngIf="delivery">
+        <h1 class="font-medium my-2">Pudła w dostawie</h1>
+        <h4 class="font-light text-zinc-700">Faktura: <span class="font-normal text-zinc-900 cursor-pointer" [routerLink]="['/invoices', delivery.invoice._id, 'details']">{{ delivery.invoice.invoiceNumber }}</span></h4>
+        <h4 class="font-light text-zinc-700">Opis: <span class="font-normal text-md text-zinc-900">{{ delivery.description }}</span></h4>
+      </div>
+    </div>
+  </section>
+  <section id="filters" class="w-full flex justify-between h-[2.5rem] my-4">
+    <div class="w-[20rem] h-full">
+      <input class="w-[20rem] h-[2.5rem] px-2 border-1 border-zinc-300">
+    </div>
+    <div class="flex gap-2 justify-center">
+      @if (!isLoading && !delivery.closed) {
+<!--        TODO: Idea to think what is better: instead of seperate page for each box in this step add expand button for each row to see products in box and add new. Separate page can be good for later Box list page-->
+        <button class="w-[10rem] h-full border-2 border-zinc-900 " (click)="addBox()">
+          <span class="align-middle font-light text-2xl">+</span>
+          <span>  Dodaj pudło</span>
+        </button>
+        <button class="w-[10rem] h-full text-white text-center bg-zinc-900" (click)="finishDelivery()">Zamknij
+          dostawę
+        </button>
+      } @else {
+        <button class="w-[10rem] h-full border-2 border-zinc-900 " (click)="reopenDelivery()">Otwórz ponownie</button>
+        <button class="w-[10rem] h-full text-white text-center bg-zinc-900" [routerLink]="['..','summary']">
+          Podsumowanie
+        </button>
+      }
+    </div>
+  </section>
+  <section id="table">
+    @if (!isLoading) {
+      <table class="box-table">
+        <thead>
+        <tr>
+          <th>Numer</th>
+          <th>Data stworzenia</th>
+          <th>Liczba produktów</th>
+          <th>Stworzone przez</th>
+          <th>Policzone</th>
+          <th class="w-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+          @if (!isUpdating && delivery.deliveryBoxes.length > 0) {
+            @for (box of delivery.deliveryBoxes; track box._id) {
+              <tr>
+                <td>{{ box.boxNumber }}</td>
+                <td>{{ box.createdAt | date:'dd.MM.yyyy hh:mm' }}</td>
+                <td>{{ box.products.length }}</td>
+                <td>{{ box.createdBy.name }}</td>
+                <td>
+                  @switch (box.closed) {
+                    @case (true) {
+                      <span class="box-status_closed">Tak</span>
+                    }
+                    @case (false) {
+                      <span class="box-status_opened">Nie</span>
+                    }
+                  }
+                </td>
+                <td class="">
+                  <div class="flex items-center gap-2">
+                    <app-svg-icon icon="delete_icon" iconClass="align-middle"
+                                  [triggerable]="true"
+                                  (click)="deleteBox(box._id)"></app-svg-icon>
+                    <app-svg-icon icon="expand_icon" iconClass="align-middle" strokeWidth="1" [scale]="1.2"
+                                  [triggerable]="true"
+                                  (click)="openBox(box._id)"></app-svg-icon>
+                  </div>
+                </td>
+              </tr>
+            }
+          } @else if (!isUpdating && delivery.deliveryBoxes.length === 0) {
+            <tr class="table-empty-row">
+              <td class="table-empty-row" colspan="10">Nie ma pudeł</td>
+            </tr>
+          } @else if (isUpdating) {
+            <tr>
+              <td colspan="10">
+                <div>
+                  <p-skeleton styleClass="mb-2"></p-skeleton>
+                  <p-skeleton width="20rem" styleClass="mb-2"></p-skeleton>
+                  <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
+                  <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+                  <p-skeleton width="28rem" styleClass="mb-2"></p-skeleton>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div>
+        <p-skeleton styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="20rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="28rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="15rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="15rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="6rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="20rem" height="4rem"></p-skeleton>
+      </div>
+    }
+  </section>
+</div>
