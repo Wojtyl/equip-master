@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { IDeliveryDetails } from "../../models/delivery-details-model";
+import { IDelivery } from "../../models/delivery-model";
 import { Subscription, take } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DeliveryService } from "../../delivery-service.service";
@@ -13,7 +13,7 @@ import { StepperService } from "../../../../../shared/services/stepper.service";
 })
 export class DeliveryCountingStepComponent implements OnInit, OnDestroy {
   deliveryId: string;
-  delivery: IDeliveryDetails;
+  delivery: IDelivery;
   isLoading = true;
   isUpdating = false;
   subscriptions = new Subscription()

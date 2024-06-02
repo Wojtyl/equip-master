@@ -7,6 +7,10 @@ export interface IDeliveryDetails {
   date: Date,
   deliveryBoxes: IBoxPreview[];
   invoiceNumber: string,
+  invoice: {
+    _id: string,
+    invoiceNumber: string
+  }
   closed: boolean,
   reopened: boolean,
   supplier: ISupplier,

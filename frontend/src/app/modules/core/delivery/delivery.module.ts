@@ -12,6 +12,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
     pages.DeliveryPageComponent,
     pages.BoxDetailsComponent,
     pages.DeliveryCreationPageComponent,
+    pages.DeliveryDetailsPageComponent,
     components.BoxAddProductFormComponent,
     components.DeliveryInformationStepComponent,
     components.DeliveryCountingStepComponent,

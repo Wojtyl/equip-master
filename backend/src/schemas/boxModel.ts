@@ -14,7 +14,8 @@ export interface BoxSchema {
 
 interface BoxProductSchema {
     productId: Types.ObjectId;
-    quantity: number
+    quantity: number;
+    addedBy: Types.ObjectId;
     size: string;
 }
 
@@ -53,6 +54,10 @@ const boxSchema = new Schema<BoxSchema>(
                     productId: {
                         type: Schema.Types.ObjectId,
                         ref: 'Product'
+                    },
+                    addedBy: {
+                      type: Schema.Types.ObjectId,
+                      ref: "User"
                     },
                     quantity: {
                         type: Number

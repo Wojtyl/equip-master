@@ -34,6 +34,10 @@ const routes: Routes = [
     ]
   },
   {
+    path: ':id/details',
+    component: pages.DeliveryDetailsPageComponent
+  },
+  {
     path: 'box/:id',
     component: pages.BoxDetailsComponent
   },

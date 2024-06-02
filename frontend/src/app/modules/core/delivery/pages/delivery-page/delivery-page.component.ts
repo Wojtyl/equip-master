@@ -32,15 +32,19 @@ export class DeliveryPageComponent implements OnInit {
   selectedId: string;
 
   ngOnInit(): void {
-    this.items = [{
-      label: 'Edytuj',
-      command: () =>  this.onContinue(this.selectedId)
-    },{
-      label: 'Usuń',
-      command: () =>  this.onDelete(this.selectedId)
-    }]
     this.deliveryService.getAllDeliveries().subscribe(response => {
       this.deliveries = response.items;
+
+      this.items = [{
+        label: 'Edytuj',
+        command: () =>  this.onContinue(this.selectedId)
+      },{
+        label: 'Usuń',
+        command: () =>  this.onDelete(this.selectedId)
+      }, {
+        label: 'Szczegóły',
+        command: () => this.onDetails(this.selectedId)
+      }]
     })
     this.initForm();
     this.supplierService.getAllSuppliers().subscribe((response) => {
@@ -77,6 +81,10 @@ export class DeliveryPageComponent implements OnInit {
 
   onContinue(id: string) {
     this.router.navigate([`/delivery/create/${id}/counting`]);
+  }
+
+  onDetails(id: string) {
+    this.router.navigate([`delivery/${id}/details`])
   }
 
   onDelete(id: string):void {

@@ -6,7 +6,7 @@ interface IBox {
     type: String
   },
   createdBy: {
-    _id: string,
+    _id: mongoose.Types.ObjectId,
     email: string,
     name: string
   },

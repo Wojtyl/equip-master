@@ -26,7 +26,7 @@ import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MenuModule } from 'primeng/menu';
 import { StepsModule } from 'primeng/steps';
-
+import { AccordionModule } from 'primeng/accordion';
 //Component imports
 import * as components from './components';
 
@@ -45,6 +45,7 @@ import * as form from './forms';
   ],
   imports: [
     AutoCompleteModule,
+    AccordionModule,
     ButtonModule,
     CalendarModule,
     ChipsModule,
@@ -72,6 +73,7 @@ import * as form from './forms';
   ],
   exports: [
     AutoCompleteModule,
+    AccordionModule,
     ButtonModule,
     CalendarModule,
     ChipsModule,

@@ -1,5 +1,5 @@
-import { IDeliveryDetails } from "./delivery-details-model";
+import { IDelivery } from "./delivery-model";
 
-export interface IDeliveryList extends IDeliveryDetails {
+export interface IDeliveryList extends IDelivery {
 
 }

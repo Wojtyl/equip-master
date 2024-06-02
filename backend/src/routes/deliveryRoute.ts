@@ -10,7 +10,7 @@ deliveryRouter
 
 deliveryRouter
   .route("/:id")
-  .get(authController.auth, deliveryController.getDeliveryDetails())
+  .get(authController.auth, deliveryController.getDeliveryBoxes())
   .patch(authController.auth, deliveryController.updateDelivery())
   .delete(authController.auth, deliveryController.deleteDelivery())
 
@@ -25,5 +25,8 @@ deliveryRouter
 deliveryRouter
     .route("/:id/summary")
     .get(authController.auth, deliveryController.getDeliverySummary())
+
+deliveryRouter.route('/:id/details')
+    .get(authController.auth, deliveryController.getDeliveryDetails())
 
 export { deliveryRouter };

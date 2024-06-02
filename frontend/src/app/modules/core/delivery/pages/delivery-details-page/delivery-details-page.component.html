@@ -1,0 +1,150 @@
+<div class="flex flex-col justify-center items-center">
+  <div class="w-full px-16 py-6">
+    <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
+      <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
+                    routerLink="/delivery"
+                    [triggerable]="true"
+                    icon="arrow_back_icon"
+                    [scale]="0.7"
+                    fill="#000" strokeWidth="0"
+                    stroke="#000">Back
+      </app-svg-icon>
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="font-bold text-5xl leading-snug">Szczegóły dostawy</h1>
+        <p class="text-gray-500 line-clamp-3">W tym miejscu zobaczysz szczegóły dostawy</p>
+      </div>
+    </div>
+    <!--    <section>-->
+    <!--      <div class="panel">-->
+    <!--        <p class="active-button">Overview</p>-->
+    <!--        <p>Pudła</p>-->
+    <!--        <p>Przedmioty</p>-->
+    <!--      </div>-->
+    <!--    </section>-->
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+      <div *ngIf="isLoading">
+        <p-skeleton styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="8rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="15rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton height="2rem" width="6rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton width="10rem" height="4rem"></p-skeleton>
+      </div>
+      <section *ngIf="deliveryDetails" [ngClass]="{'hidden': isLoading}" id="invoice-form">
+        <div class="flex flex-column content-between w-full gap-12">
+          <div class="flex-1">
+            <div>
+              <h3 class="font-semibold mb-2">Dostawa</h3>
+              <div class="flex">
+                <div class="flex-grow-[1]">
+                  <p class="text-gray-500 font-light">Status:</p>
+                  <p class="text-gray-500 font-light">Stworzone przez:</p>
+                  <p class="text-gray-500 font-light">Data rozpoczęcia:</p>
+                </div>
+                <div class="flex-grow-[2]">
+                  <p>{{ deliveryDetails.status }}</p>
+                  <p>{{ deliveryDetails.createdBy.name }}</p>
+                  <p>{{ deliveryDetails.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
+                </div>
+              </div>
+              <div>
+                <p class="text-gray-500 font-light">Opis: </p>
+                <p class="px-4 py-2 mt-2 rounded-md border-1 border-black text-sm">{{ deliveryDetails.description }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-semibold mb-2">Faktura</h3>
+            <div class="flex">
+              <div class="flex-grow-[1]">
+                <p class="text-gray-500 font-light">Dostawca: </p>
+                <p class="text-gray-500 font-light">Numer: </p>
+                <p class="text-gray-500 font-light">Data: </p>
+                <p class="text-gray-500 font-light">Kwota: </p>
+              </div>
+              <div class="flex-grow-[2]">
+                <p>{{ deliveryDetails.invoice.supplier.name }}</p>
+                <p>{{ deliveryDetails.invoice.invoiceNumber }}</p>
+                <p>{{ deliveryDetails.invoice.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
+                <p>{{ deliveryDetails.invoice.nettoPrice }} {{ deliveryDetails.invoice.currency }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <h3 class="font-semibold mb-4">Produkty</h3>
+        <div>
+          <p-accordion [activeIndex]="0">
+            @for (product of deliveryDetails.productQuantities; track product.productId; let i = $index) {
+              <p-accordionTab [header]="product.productName">
+                <table class="box-table mb-4">
+                  <thead>
+                  <tr>
+                    <th>Rozmiar</th>
+                    <th>W dostawie</th>
+                    <th>Na fakturze</th>
+                    <th>Różnica</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @for (size of product.sizes; track size.size) {
+                      <tr>
+                        <td>{{ size.size }}</td>
+                        <td>{{ size.deliveryCount }}</td>
+                        <td>{{ size.deliveryCount - size.differenceCount }}</td>
+                        <td>{{ size.differenceCount === 0 ? '' : size.differenceCount > 0 ? 'nadwyżka' : 'brak' }} {{ Math.abs(size.differenceCount) }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </p-accordionTab>
+            }
+          </p-accordion>
+        </div>
+        <br>
+        <h3 class="font-semibold mb-4">Pudła</h3>
+        <p-accordion [activeIndex]="0">
+          @for (box of deliveryDetails.deliveryBoxes; track box._id) {
+            <p-accordionTab [header]="box.boxNumber.toString()">
+              <table class="box-table mb-4">
+                <thead>
+                <tr>
+                  <th>Nazwa</th>
+                  <th>Rozmiar</th>
+                  <th>Ilość</th>
+                  <th>Dodane przez</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (product of box.products; track product._id) {
+                    <tr>
+                      <td>{{ product.name }}</td>
+                      <td>{{ product.size }}</td>
+                      <td>{{ product.quantity }}</td>
+                      <td>{{product?.addedBy?.name}}</td>
+<!--                      <td>{{ size.differenceCount === 0 ? '' : size.differenceCount > 0 ? 'nadwyżka' : 'brak' }} {{ Math.abs(size.differenceCount) }}</td>-->
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </p-accordionTab>
+          }
+        </p-accordion>
+        <br>
+        <h3 class="font-semibold mb-4">Status log</h3>
+        @for (status of deliveryDetails.statuses; track status._id) {
+          <p><span class="font-semibold">{{ status.status }} </span><span>{{ status.message }} </span>
+            <span>{{ status.date | date:'dd.MM.yyy HH:mm:ss' }}</span></p>
+        }
+        <br>
+        <h3 class="font-semibold mb-4">Uczestnicy dostawy</h3>
+        @for (user of deliveryDetails.usersList; track user._id) {
+          <p>{{ user.name }} <span class="font-light text-sm">{{ user.email }}</span></p>
+        }
+      </section>
+    </div>
+  </div>
+</div>
