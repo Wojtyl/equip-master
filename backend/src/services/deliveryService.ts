@@ -55,81 +55,114 @@ export class DeliveryService {
           $eq: new Types.ObjectId(deliveryId)
         }
       }
-    },
-      {
-        $lookup: {
-          from: 'boxes',
-          localField: '_id',
-          foreignField: 'deliveryId',
-          as: 'deliveryBoxes',
-          pipeline: [
-            {
-              $lookup: {
-                from: 'users',
-                localField: 'createdBy',
-                foreignField: '_id',
-                as: 'createdBy',
-                pipeline: [
-                  {
-                    $project: {
-                      _id: 1,
-                      email: 1,
-                      name: 1
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              $unwind: '$createdBy'
-            },
-            {
-              $lookup: {
-                from: 'products',
-                localField: 'products.productId',
-                foreignField: '_id',
-                as: 'productsDetails',
-                pipeline: [{
-                  $addFields: {
-                    productId: '$_id'
-                  }
-                }, {
+    }, {
+      $lookup: {
+        from: 'boxes',
+        localField: '_id',
+        foreignField: 'deliveryId',
+        as: 'deliveryBoxes',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'createdBy',
+              foreignField: '_id',
+              as: 'createdBy',
+              pipeline: [
+                {
                   $project: {
-                    _id: 0,
-                    productId: 1,
-                    name: 1,
-                    productIndex: 1
+                    _id: 1,
+                    email: 1,
+                    name: 1
                   }
-                }]
+                }
+              ]
+            }
+          },
+          {
+            $unwind: '$createdBy'
+          },
+          {
+            $lookup: {
+              from: 'products',
+              localField: 'products.productId',
+              foreignField: '_id',
+              as: 'productsDetails',
+              pipeline: [{
+                $addFields: {
+                  productId: '$_id',
+                }
+              }, {
+                $project: {
+                  _id: 0,
+                  productId: 1,
+                  name: 1,
+                  productIndex: 1,
+                  addedBy: 1
+                }
               }
-            },
-            {
-              $addFields: {
-                products: {
-                  $map: {
-                    input: '$products',
-                    as: 'prod',
-                    in: {
-                      quantity: '$$prod.quantity',
-                      size: '$$prod.size',
-                      _id: '$$prod._id',
-                      productId: this.getProductField('productId'),
-                      name: this.getProductField('name'),
-                      productIndex: this.getProductField('productIndex')
-                    }
+              ]
+            }
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'products.addedBy',
+              foreignField: '_id',
+              as: 'addedBy',
+              pipeline: [
+                {
+                  $project: {
+                    name: 1,
+                    email: 1,
+                    role: 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $addFields: {
+              products: {
+                $map: {
+                  input: '$products',
+                  as: 'prod',
+                  in: {
+                    quantity: '$$prod.quantity',
+                    size: '$$prod.size',
+                    _id: '$$prod._id',
+                    addedBy: {
+                      $arrayElemAt: [
+                        {
+                          $filter: {
+                            input: '$addedBy',
+                            as: 'addedBy',
+                            cond: {
+                              $eq: ['$$prod.addedBy', '$$addedBy._id']
+                            }
+                          }
+                        },
+                        0
+                      ]
+                    },
+                    productId: this.getProductField('productId'),
+                    name: this.getProductField('name'),
+                    productIndex: this.getProductField('productIndex')
                   }
                 }
               }
-            },
-            {
-              $project: {
-                'productsDetails': 0,
-                'deliveryId': 0
-              }
             }
-          ]
-        }
-      },
+          },
+          {
+            $project: {
+              'productsDetails': 0,
+              'addedBy': 0,
+              'deliveryId': 0
+            }
+          }
+        ]
+      }
+    },
       {
         $lookup: {
           from: 'invoices',
@@ -182,6 +215,52 @@ export class DeliveryService {
           ]
         }
       },
+      //TODO: statuses field changedBy population
+
+      // {
+      //   $lookup: {
+      //     from: 'users',
+      //     localField: 'statuses.changedBy',
+      //     foreignField: '_id',
+      //     as: 'statusChangedBy',
+      //     pipeline: [
+      //       {
+      //         $addFields: {
+      //           statuses: {
+      //             $map: {
+      //               input: '$statuses',
+      //               as: 'stat',
+      //               in: {
+      //                 test: 1,
+      //                 changedBy: {
+      //                   $arrayElemAt: [
+      //                     {
+      //                       $filter: {
+      //                         input: '$statusChangedBy',
+      //                         as: 'statusChangedBy',
+      //                         cond: {
+      //                           $eq: ['$$stat.changedBy', '$$statusChangedBy._id']
+      //                         }
+      //                       }
+      //                     },
+      //                     0
+      //                   ]
+      //                 }
+      //               }
+      //             }
+      //           }
+      //           }
+      //       },
+      //       {
+      //         $project: {
+      //           email: 1,
+      //           name: 1,
+      //           _id: 1
+      //         }
+      //       }
+      //     ]
+      //   }
+      // },
       {
         $unwind: '$invoice'
       },
@@ -206,12 +285,12 @@ export class DeliveryService {
   }
 
   public async getDeliveryUsersList(deliveryId: string) {
-    const { deliveryBoxes} = await this.getDeliveryBoxes(deliveryId);
+    const {deliveryBoxes} = await this.getDeliveryBoxes(deliveryId);
     const usersList: { _id: mongoose.Types.ObjectId | string, name: string, email: string }[] = [];
 
     console.log(deliveryBoxes)
     deliveryBoxes.forEach(box => {
-      console.log('box:' , box.createdBy._id)
+      console.log('box:', box.createdBy._id)
       if (!usersList.find(user => user._id.toString() === box.createdBy._id.toString())) {
         console.log('user')
         usersList.push(box.createdBy)
@@ -440,25 +519,24 @@ export class DeliveryService {
   }
 
 
-
-mapToProductList(productList: IProductBox[]) {
-  return productList.reduce((acc, item) => {
-    const selectedElement = acc[item.productId];
-    const selectedElementQuantities = selectedElement?.quantities?.[item.size]?.quantity;
-    return {
-      ...acc,
-      [item.productId]: {
-        ...selectedElement,
-        productName: item.name,
-        productIndex: item.productIndex,
-        quantities: {
-          ...selectedElement?.quantities,
-          [item.size]: { quantity: selectedElementQuantities ? item.quantity + selectedElementQuantities : item.quantity }
+  mapToProductList(productList: IProductBox[]) {
+    return productList.reduce((acc, item) => {
+      const selectedElement = acc[item.productId];
+      const selectedElementQuantities = selectedElement?.quantities?.[item.size]?.quantity;
+      return {
+        ...acc,
+        [item.productId]: {
+          ...selectedElement,
+          productName: item.name,
+          productIndex: item.productIndex,
+          quantities: {
+            ...selectedElement?.quantities,
+            [item.size]: {quantity: selectedElementQuantities ? item.quantity + selectedElementQuantities : item.quantity}
+          }
         }
       }
-    }
-  }, {} as ProductsQuantityMap)
-}
+    }, {} as ProductsQuantityMap)
+  }
 
   public async getDeiveryProductsDifferencesMap(deliveryId: string) {
     const deliveryDetails = await this.getDeliveryAllBoxesWithProductDetails(deliveryId);

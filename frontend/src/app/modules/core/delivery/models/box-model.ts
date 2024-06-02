@@ -20,6 +20,12 @@ export interface IBoxPreview extends IBox {
 
 export interface IBoxDetails extends IBox {
   products: {
+    addedBy: {
+      name: string;
+      email: string;
+      role: string;
+      _id: string;
+    },
     productId: string,
     productIndex: string,
     name: string,

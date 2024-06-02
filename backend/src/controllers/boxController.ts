@@ -30,7 +30,7 @@ export class BoxController {
         const box: HydratedDocument<BoxSchema> = await boxService.findBoxByIdOrThrow(req.params.id);
         const delivery = await deliveryService.findDeliveryByIdOrThrow(box.deliveryId);
         if (delivery.closed) throw new AppError('You can\'t add products to box when delivery is already closed', 405);
-        await box.updateOne({ $push: { products: req.body } }, { new: true })
+        await box.updateOne({ $push: { products: {...req.body, addedBy: req.user.id } } }, { new: true })
         const product = await Product.findById(req.body.productId)
             .orFail(new AppError('Product with that ID does not exists', 404));
         const updateMessage = `Added ${req.body.quantity}x ${product.name} ${req.body.size ? `in size ${req.body.size}` : ''}`
