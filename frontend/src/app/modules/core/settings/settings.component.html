@@ -1,0 +1,11 @@
+<div class="flex">
+  <div class="w-[12rem] h-screen border-e-1 border-e-gray-200 flex flex-col">
+    <h4 class="mx-auto inline-block self-center">Ustawienia</h4>
+    <div class="flex flex-col">
+      <a [routerLink]="['profile']">Edytuj Profil</a>
+      <a [routerLink]="['account-settings']">Ustawienia konta</a>
+      <a [routerLink]="['users']">Użytkownicy</a>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { SharedModule } from "./shared/shared.module";
 
 import { UserInterceptorService } from './core/interceptors/user-interceptor.service';
-import { GeneralModule } from "./core/general.module";
 
 @NgModule({
   declarations: [
@@ -18,11 +17,11 @@ import { GeneralModule } from "./core/general.module";
     BrowserModule,
     BrowserAnimationsModule,
     SharedModule,
-    HttpClientModule,
-    // GeneralModule,
+    HttpClientModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true }],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: UserInterceptorService, multi: true}],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule {}
+export class AppModule {
+}

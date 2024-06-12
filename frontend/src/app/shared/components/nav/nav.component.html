@@ -27,7 +27,14 @@
       </a>
     </div>
 
-    <a class="" routerLink="/auth/login" (click)="logout()">Log out</a>
+    <div class="flex justify-between items-center gap-4">
+      <div class="profile-button flex-shrink-0 cursor-pointer relative">
+        <div class="profile-dropdown">
+          <a [href]="['/settings/profile']">Ustawienia</a>
+          <a class="inline-block" routerLink="/auth/login" (click)="logout()">Wyloguj się</a>
+        </div>
+      </div>
+    </div>
   </nav>
 </header>
 

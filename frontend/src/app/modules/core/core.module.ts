@@ -1,19 +1,19 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {CoreRoutingModule} from './core-routing.module';
-import {CoreComponent} from './core.component';
-import {GeneralModule} from "../../core/general.module";
-import {NavComponent} from "../../shared/components/nav/nav.component";
+import { CoreRoutingModule } from './core-routing.module';
+import { CoreComponent } from './core.component';
+import { NavComponent } from "../../shared/components/nav/nav.component";
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
   declarations: [
     CoreComponent,
     NavComponent,
+    SettingsComponent,
   ],
   imports: [
-    // GeneralModule,
     CommonModule,
     CoreRoutingModule
   ]

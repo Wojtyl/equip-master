@@ -12,3 +12,21 @@
 a {
   @apply text-gray-500 text-sm w-28 py-2 px-4 w-full rounded-xl;
 }
+
+.profile-button {
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  background-color: #62C418;
+  border-radius: 50%;
+}
+
+.profile-dropdown {
+  position: absolute;
+  border: 1px solid red;
+  border-radius: 6px;
+  width: 8rem;
+  bottom: 100%;
+  margin-bottom: 0.8rem;
+  background-color: #62C418;
+}
