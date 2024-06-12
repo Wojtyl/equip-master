@@ -5,6 +5,7 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { AccountSettingsPageComponent } from './pages/account-settings-page/account-settings-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { SharedModule } from "../../../shared/shared.module";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
   ],
   imports: [
     CommonModule,
-    SettingsRoutingModule
+    SettingsRoutingModule,
+    SharedModule
   ]
 })
 export class SettingsModule {

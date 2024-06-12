@@ -1,1 +1,13 @@
-<p>account-page works!</p>
+<div class="overflow-scroll py-8 px-16 flex gap-8 flex-col">
+  <div>
+    <h4>Zmień hasło</h4>
+    <p class="text-secondary mb-2">Ustaw nowe hasło do twojego konta</p>
+    <hr>
+    <form [formGroup]="editPasswordForm" class="w-[25rem]  flex flex-col gap-4 mt-4">
+      <app-input-field label="Stare hasło" controlName="oldPassword" name="oldPassword"></app-input-field>
+      <app-input-field label="Nowe hasło" controlName="newPassword" name="newPassword"></app-input-field>
+      <app-input-field label="Powtórz nowe hasło" controlName="newPasswordRepeat" name="newPassword"></app-input-field>
+      <button class="btn w-[8rem]">Zmień hasło</button>
+    </form>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { Roles } from "../enums/roles-enum";
 
 export interface IUser {
   name: string;
+  surname: string;
   email: string;
   password: string;
   passwordConfirm?: string;
@@ -26,20 +27,23 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     type: String,
     required: [true, "Please enter your name"],
   },
+  surname: {
+    type: String,
+    required: [true, "Please enter your surname"]
+  },
   email: {
     type: String,
     required: [true, "Please enter an email address"],
     validate: {
       validator: function (val) {
-        const x = val.includes("@");
-        return x;
+        return val.includes("@");
       },
       message: "Please enter a valid email address",
     },
   },
   password: {
     type: String,
-    minlength: [5, "za krotkie haslo"],
+    minlength: [5, "Password is too short"],
     required: [true, "Please enter your password"],
   },
   passwordConfirm: {
