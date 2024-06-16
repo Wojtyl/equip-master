@@ -18,7 +18,11 @@ export class ProfileService {
   }
 
   updateProfileImage(imageFormData: FormData) {
-    return this.http.patch(`${apiUrl}users`, imageFormData)
+    return this.http.patch(`${apiUrl}profile/image`, imageFormData)
+  }
+
+  deleteProfileImage() {
+    return this.http.delete(`${apiUrl}profile/image`)
   }
 
   changePassword() {

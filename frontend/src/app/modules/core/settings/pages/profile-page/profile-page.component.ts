@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ProfileService } from "../../services/profile.service";
 import { Profile } from "../../models/Profile";
@@ -10,16 +10,20 @@ import { ProfileForm } from "../../models/profile-form";
   styleUrl: './profile-page.component.scss'
 })
 export class ProfilePageComponent implements OnInit {
+
+  @ViewChild('imageInput') public imageInput: ElementRef<HTMLInputElement>;
   private fb = inject(FormBuilder);
   private profileService = inject(ProfileService);
-  private profile: Profile;
+  protected profile: Profile;
   public isUpdating = false;
+  public imagePreviewUrl: string | null;
 
   editProfileForm: FormGroup;
 
   ngOnInit() {
     this.profileService.getProfileDetails().subscribe(profile => {
       this.profile = profile.items;
+      this.imagePreviewUrl = profile.items.image;
       this.initForm();
     })
   }
@@ -49,5 +53,32 @@ export class ProfilePageComponent implements OnInit {
         }
       })
     }
+  }
+
+  onFileAdded() {
+    const fileReader = new FileReader();
+    const file = this.imageInput.nativeElement.files![0];
+
+    fileReader.onload = (e) => {
+      this.imagePreviewUrl = e.target!.result as string;
+      this.profile.image = e.target!.result as string;
+    }
+    fileReader.readAsDataURL(file)
+
+    const formData = new FormData()
+    formData.append('image', file)
+
+    this.profileService.updateProfileImage(formData).subscribe()
+  }
+
+  removeProfileImage() {
+    this.profileService.deleteProfileImage().subscribe({
+      next: () => {
+        this.profile.image = null;
+        this.imagePreviewUrl = null;
+      },
+      error: () => {
+      }
+    })
   }
 }

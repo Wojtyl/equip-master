@@ -8,7 +8,7 @@ export class ProfileService {
 
   public async getProfileDetails(userId: Types.ObjectId) {
     return User.findById(userId)
-        .select(['email', 'name', 'surname', '-_id', 'phoneNumber', 'birthday']).orFail(new AppError("There is no user with that ID", 404));
+        .select(['email', 'name', 'surname', '-_id', 'phoneNumber', 'birthday', 'image']).orFail(new AppError("There is no user with that ID", 404));
   }
 
   public async updateProfileById(userId: Types.ObjectId, profile: any ) {

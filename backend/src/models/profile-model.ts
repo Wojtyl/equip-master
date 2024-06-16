@@ -4,6 +4,7 @@ export class ProfileDTO {
   public email: string;
   public phoneNumber: string;
   public birthday: Date | null
+  public image: string;
 
   constructor() {
     this.name = '';
@@ -11,5 +12,6 @@ export class ProfileDTO {
     this.email = '';
     this.phoneNumber = '';
     this.birthday = null;
+    this.image = '';
   }
 }

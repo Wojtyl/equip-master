@@ -9,24 +9,24 @@
   text-decoration: none;
 }
 
-a {
-  @apply text-gray-500 text-sm w-28 py-2 px-4 w-full rounded-xl;
-}
-
 .profile-button {
   display: block;
   height: 2rem;
   width: 2rem;
-  background-color: #62C418;
+  object-fit: cover;
   border-radius: 50%;
 }
 
 .profile-dropdown {
   position: absolute;
-  border: 1px solid red;
+  border: 1px solid black;
+  background-color: #fafafa;
   border-radius: 6px;
   width: 8rem;
   bottom: 100%;
   margin-bottom: 0.8rem;
-  background-color: #62C418;
+
+  a {
+    @apply py-1.5 px-4;
+  }
 }

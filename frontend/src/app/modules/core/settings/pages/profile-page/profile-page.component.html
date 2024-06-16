@@ -5,9 +5,14 @@
     <hr>
     <div class="flex mt-4">
       <div class="w-32 h-32 flex gap-8 items-center">
-        <img class="border-4 border-black rounded-full" src="assets/profile.jpg">
-        <p class="cursor-pointer text-red-700">Usuń</p>
-        <p class="cursor-pointer text-blue-600">Zmień</p>
+        <img class="border-4 border-black rounded-full aspect-square object-cover" [src]="!!imagePreviewUrl ? imagePreviewUrl : 'assets/profile.jpg'" alt="profile image">
+        @if (!!profile?.image) {
+          <p class="cursor-pointer text-blue-600" (click)="imageInput.click()">Zmień</p>
+          <p class="cursor-pointer text-red-700" (click)="removeProfileImage()">Usuń</p>
+        } @else {
+          <p class="cursor-pointer text-blue-600" (click)="imageInput.click()">Dodaj</p>
+        }
+        <input #imageInput type="file" accept=".jpg,.jpeg,.png" (change)="onFileAdded()" class="hidden">
       </div>
     </div>
   </div>  <div>

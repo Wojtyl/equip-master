@@ -8,6 +8,7 @@ export interface IUser {
   birthday: Date;
   phoneNumber: string;
   email: string;
+  image: string;
   password: string;
   passwordConfirm?: string;
   role: string;
@@ -61,6 +62,9 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
   phoneNumber: {
     type: String,
     default: ''
+  },
+  image: {
+    type: String
   },
   birthday: {
     type: Date

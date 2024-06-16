@@ -4,4 +4,5 @@ export interface Profile {
   email: string;
   phoneNumber: string;
   birthday: string | null
+  image: string | null;
 }

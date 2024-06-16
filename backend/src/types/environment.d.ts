@@ -15,6 +15,7 @@ declare global {
             JWT_RESET_PASSWORD_EXPIRES_IN: string;
             APP_URL: string;
             PRODUCT_IMAGE_BUCKET: string;
+            PROFILE_IMAGE_BUCKET: string;
             EMAIL_USERNAME: string;
             EMAIL_PASSWORD: string;
             EMAIL_SERVICE: string;
