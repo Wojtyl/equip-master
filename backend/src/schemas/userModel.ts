@@ -5,6 +5,8 @@ import { Roles } from "../enums/roles-enum";
 export interface IUser {
   name: string;
   surname: string;
+  birthday: Date;
+  phoneNumber: string;
   email: string;
   password: string;
   passwordConfirm?: string;
@@ -55,6 +57,13 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
       },
       message: "Passwords are not the same",
     },
+  },
+  phoneNumber: {
+    type: String,
+    default: ''
+  },
+  birthday: {
+    type: Date
   },
   role: {
     type: String,

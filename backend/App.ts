@@ -18,6 +18,7 @@ import { colorRouter } from "./src/routes/colorRoute";
 import { roleRouter } from "./src/routes/roleRoute";
 import { errorController } from "./src/controllers/errorController";
 import { validationRouter } from "./src/routes/validationRouter";
+import { profileRouter } from "./src/routes/profileRoute";
 
 dotenv.config({ path: "./.env" });
 
@@ -53,6 +54,7 @@ class ServerApp {
     app.use("/api/v1/boxes", boxRouter);
     app.use("/api/v1/roles", roleRouter);
     app.use("/api/v1/validation", validationRouter)
+    app.use("/api/v1/profile", profileRouter)
 
     app.use(errorController);
   }

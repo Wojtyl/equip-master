@@ -14,18 +14,21 @@
     <h4>Szczegóły</h4>
     <p class="text-secondary mb-2">Zmień informacje o twoim profilu</p>
     <hr>
-    <div class="flex mt-4">
-      <form [formGroup]="editProfileForm" class="w-[25rem] flex flex-col gap-4">
+    <div class="flex mt-4" *ngIf="editProfileForm">
+      <form [formGroup]="editProfileForm" class="w-[25rem] flex flex-col gap-4" (ngSubmit)="submitForm()">
         <app-input-field label="Imie" controlName="name" name="name"></app-input-field>
         <app-input-field label="Nazwisko" controlName="surname" name="surname"></app-input-field>
         <app-input-field label="Email" controlName="email" name="email"></app-input-field>
-        <app-input-field label="Telefon" controlName="phone" name="phone"></app-input-field>
+        <app-input-field label="Telefon" controlName="phoneNumber" name="phone"></app-input-field>
         <div class="flex flex-col w-auto">
-          <label class="input-label" for="birthdate">Data urodzenia</label>
-          <p-calendar id="birthdate" class="w-full" dateFormat="dd-mm-yy" formControlName="birthdate"
+          <label class="input-label" for="birthday">Data urodzenia</label>
+          <p-calendar id="birthdate" class="w-full" dateFormat="dd-mm-yy" formControlName="birthday"
                       [showIcon]="true"></p-calendar>
         </div>
-        <button class="btn w-[8rem]">Zapisz</button>
+        <button type="submit" [disabled]="isUpdating" class="btn w-[8rem]">
+          <span *ngIf="!isUpdating">Zapisz</span>
+          <span *ngIf="isUpdating">Zapisywanie...</span>
+        </button>
       </form>
     </div>
   </div>
