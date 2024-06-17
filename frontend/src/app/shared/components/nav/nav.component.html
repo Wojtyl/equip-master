@@ -31,7 +31,7 @@
       <div class="flex justify-between items-center gap-4">
         <div class="flex-shrink-0 cursor-pointer relative">
           <div class="flex gap-4 align-middle" (click)="dropdownOpened = !dropdownOpened">
-            <img [src]="profile.image" alt="profile image" class="profile-button"/>
+            <img [src]="profile.image ?? fallbackUrl" alt="profile image" class="profile-button"/>
             <p>{{ profile.name }}</p>
           </div>
           <div *ngIf="dropdownOpened" class="profile-dropdown overflow-hidden shadow-md">

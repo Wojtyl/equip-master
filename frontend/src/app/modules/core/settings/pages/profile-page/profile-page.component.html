@@ -5,7 +5,7 @@
     <hr>
     <div class="flex mt-4">
       <div class="w-32 h-32 flex gap-8 items-center">
-        <img class="border-4 border-black rounded-full aspect-square object-cover" [src]="!!imagePreviewUrl ? imagePreviewUrl : 'assets/profile.jpg'" alt="profile image">
+        <img class="border-2 border-black rounded-full aspect-square object-cover" [src]="!!imagePreviewUrl ? imagePreviewUrl : fallbackUrl" alt="profile image">
         @if (!!profile?.image) {
           <p class="cursor-pointer text-blue-600" (click)="imageInput.click()">Zmień</p>
           <p class="cursor-pointer text-red-700" (click)="removeProfileImage()">Usuń</p>

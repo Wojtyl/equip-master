@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { ProfileService } from "../../services/profile.service";
 import { Profile } from "../../models/Profile";
 import { ProfileForm } from "../../models/profile-form";
+import { environment } from "../../../../../../environments/environment";
 
 @Component({
   selector: 'app-profile-page',
@@ -17,7 +18,7 @@ export class ProfilePageComponent implements OnInit {
   protected profile: Profile;
   public isUpdating = false;
   public imagePreviewUrl: string | null;
-
+  public fallbackUrl = environment.profileFallbackUrl
   editProfileForm: FormGroup;
 
   ngOnInit() {
@@ -62,6 +63,7 @@ export class ProfilePageComponent implements OnInit {
     fileReader.onload = (e) => {
       this.imagePreviewUrl = e.target!.result as string;
       this.profile.image = e.target!.result as string;
+      this.profileService.profileChanged$.next(e.target!.result as string);
     }
     fileReader.readAsDataURL(file)
 
@@ -76,6 +78,7 @@ export class ProfilePageComponent implements OnInit {
       next: () => {
         this.profile.image = null;
         this.imagePreviewUrl = null;
+        this.profileService.profileChanged$.next(null)
       },
       error: () => {
       }

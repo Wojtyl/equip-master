@@ -4,13 +4,15 @@ import { HttpClient } from "@angular/common/http";
 import { apiUrl } from "src/environments/apiurl";
 import { Profile } from "../models/Profile";
 import { ListResponse } from "../../../../shared/models/list-response";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
+  public profileChanged$ = new Subject<string | null>()
   constructor() { }
 
   updateProfile(profileForm: ProfileForm) {
