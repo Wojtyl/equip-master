@@ -3,9 +3,9 @@
 
     <h4 class="text-3xl font-semibold  inline-block  px-4 py-6">Ustawienia</h4>
     <div class="flex px-4 gap-8 mb-4">
-      <a [routerLink]="['profile']" [routerLinkActive]="'active-setting'">Edytuj profil</a>
-      <a [routerLink]="['account-settings']" [routerLinkActive]="'active-setting'">Ustawienia konta</a>
-      <a [routerLink]="['users']" [routerLinkActive]="'active-setting'">Użytkownicy</a>
+      <a [routerLink]="['profile']" [routerLinkActive]="'active-setting-tab'">Edytuj profil</a>
+      <a [routerLink]="['account-settings']" [routerLinkActive]="'active-setting-tab'">Ustawienia konta</a>
+      <a [routerLink]="['users']" [routerLinkActive]="'active-setting-tab'">Użytkownicy</a>
     </div>
     <div class="border-t-2 overflow-scroll">
       <router-outlet></router-outlet>
