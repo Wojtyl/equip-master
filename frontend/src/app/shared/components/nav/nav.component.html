@@ -32,11 +32,11 @@
         <div class="flex-shrink-0 cursor-pointer relative">
           <div class="flex gap-4 align-middle" (click)="dropdownOpened = !dropdownOpened">
             <img [src]="profile.image ?? fallbackUrl" alt="profile image" class="profile-button"/>
-            <p>{{ profile.name }}</p>
+            <p class="text-neutral-700">{{ profile.name }}</p>
           </div>
-          <div *ngIf="dropdownOpened" class="profile-dropdown overflow-hidden shadow-md">
-            <a [href]="['/settings/profile']" class="inline-block w-full hover:bg-gray-100 text-sm">Ustawienia</a>
-            <a routerLink="/auth/login" class="inline-block w-full hover:bg-gray-100 text-sm" (click)="logout()">Wyloguj
+          <div *ngIf="dropdownOpened" class="profile-dropdown border-1 border-gray-400 overflow-hidden shadow-md">
+            <a [href]="['/settings/profile']" class="inline-block w-full hover:bg-gray-100 text-sm text-neutral-600">Ustawienia</a>
+            <a routerLink="/auth/login" class="inline-block w-full hover:bg-gray-100 text-sm text-neutral-600" (click)="logout()">Wyloguj
               się</a>
           </div>
         </div>
