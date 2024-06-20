@@ -5,6 +5,7 @@ import { apiUrl } from "src/environments/apiurl";
 import { Profile } from "../models/Profile";
 import { ListResponse } from "../../../../shared/models/list-response";
 import { Subject } from "rxjs";
+import { ResetPasswordForm } from "../models/reset-password-form";
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,8 @@ export class ProfileService {
     return this.http.delete(`${apiUrl}profile/image`)
   }
 
-  changePassword() {
-
+  changePassword(body: ResetPasswordForm) {
+    return this.http.patch(`${apiUrl}profile/changePassword`, body)
   }
 
   getProfileDetails() {

@@ -3,11 +3,13 @@
     <h4>Zmień hasło</h4>
     <p class="text-secondary mb-2">Ustaw nowe hasło do twojego konta</p>
     <hr>
-    <form [formGroup]="editPasswordForm" class="w-[25rem]  flex flex-col gap-4 mt-4">
+    <form [formGroup]="editPasswordForm" class="w-[25rem]  flex flex-col gap-4 mt-4" (ngSubmit)="submit()">
       <app-input-field label="Stare hasło" controlName="oldPassword" name="oldPassword"></app-input-field>
       <app-input-field label="Nowe hasło" controlName="newPassword" name="newPassword"></app-input-field>
-      <app-input-field label="Powtórz nowe hasło" controlName="newPasswordRepeat" name="newPassword"></app-input-field>
-      <button class="btn w-[8rem]">Zmień hasło</button>
+      <app-input-field label="Powtórz nowe hasło" controlName="newPasswordRepeat" name="newPasswordRepeat"></app-input-field>
+      <p *ngIf="updateError" class="text-red-700 font-light text-sm">{{updateError}}</p>
+      <p *ngIf="passwordResetConfirm" class="text-green-600 font-light text-sm">Hasło zresetowane prawidłowo!</p>
+      <button class="btn w-[8rem]" type="submit" [disabled]="!editPasswordForm.valid || updateError">Zmień hasło</button>
     </form>
   </div>
 </div>

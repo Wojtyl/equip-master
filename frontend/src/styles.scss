@@ -122,6 +122,10 @@ input:focus-visible {
     @apply bg-blue-600;
     transition: all 0.2s ease-in-out;
   }
+
+  &:disabled {
+    @apply bg-blue-300;
+  }
 }
 
 h1 {

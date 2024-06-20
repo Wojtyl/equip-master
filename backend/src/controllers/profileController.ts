@@ -9,6 +9,8 @@ import { UserService } from "../services/UserService";
 import * as fs from "node:fs";
 import path from "node:path";
 import { AppError } from "../utils/appError";
+import { ResetPasswordForm } from "../models/reset-password-form";
+import bcrypt from 'bcryptjs';
 
 export class ProfileController {
   constructor() {
@@ -72,6 +74,33 @@ export class ProfileController {
       res.status(200).json({
         status: 'success',
         items: user
+      });
+    });
+  }
+
+  changePassword() {
+    return catchAsync(async (req: URequest, res: Response) => {
+      const resetPasswordForm = req.body as ResetPasswordForm;
+
+      const user = await this.userService.findUserByIdOrThrow(req.user.id);
+      const match = await bcrypt.compare(resetPasswordForm.oldPassword, user.password);
+
+      if (!match) {
+        throw new AppError("You provided wrong old password!", 403)
+      }
+
+      if (resetPasswordForm.newPassword !== resetPasswordForm.newPasswordRepeat) {
+        throw new AppError( "New password does not match!", 403)
+      }
+
+      if (resetPasswordForm.newPassword === resetPasswordForm.oldPassword) {
+        throw new AppError("Passwords are the same!", 403);
+      }
+
+      await this.userService.findUserByIdAndUpdate(req.user.id, {password: resetPasswordForm.newPassword});
+
+      res.status(201).json({
+        status: 'success'
       });
     });
   }

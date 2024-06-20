@@ -28,4 +28,7 @@ profileRouter.route("/image")
     .patch(authController.auth, upload.single('image'), profileController.updateProfileImage())
     .delete(authController.auth, profileController.removeProfileImage())
 
+profileRouter.route("/changePassword")
+    .patch(authController.auth, profileController.changePassword())
+
 export { profileRouter };
