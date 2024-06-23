@@ -6,6 +6,7 @@ import { Profile } from "../models/Profile";
 import { ListResponse } from "../../../../shared/models/list-response";
 import { Subject } from "rxjs";
 import { ResetPasswordForm } from "../models/reset-password-form";
+import { User } from "../models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class ProfileService {
 
   updateProfile(profileForm: ProfileForm) {
     return this.http.patch<ProfileForm>(`${apiUrl}profile`, profileForm)
+  }
+
+  updateProfileById(profileId: string, profileForm: ProfileForm) {
+    return this.http.patch<ListResponse<User>>(`${apiUrl}profile/${profileId}`, profileForm)
   }
 
   updateProfileImage(imageFormData: FormData) {
@@ -34,5 +39,9 @@ export class ProfileService {
 
   getProfileDetails() {
     return this.http.get<ListResponse<Profile>>(`${apiUrl}profile`);
+  }
+
+  addProfile(data: ProfileForm) {
+    return this.http.post<ListResponse<User>>(`${apiUrl}profile`, data);
   }
 }

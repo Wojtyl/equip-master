@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { apiUrl } from 'src/environments/apiurl';
 import {BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
+import { ListResponse } from "../../shared/models/list-response";
+import { User } from "../../modules/core/settings/models/User";
 
 const tokenName = 'token'
 
@@ -66,5 +68,9 @@ export class UserService {
 
   public removeUserToken() {
     localStorage.removeItem(tokenName);
+  }
+
+  public getAllUsers() {
+    return this.http.get<ListResponse<User[]>>(`${apiUrl}users`);
   }
 }

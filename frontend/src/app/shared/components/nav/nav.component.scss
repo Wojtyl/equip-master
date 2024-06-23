@@ -2,7 +2,7 @@
 
 .router-link-active {
   text-decoration: none;
-  @apply bg-[#F0EFEF] text-black
+  @apply bg-[#F0EFEF] text-black;
 }
 
 .router-link-active:visited {
@@ -24,8 +24,12 @@
   width: 8rem;
   bottom: 100%;
   margin-bottom: 0.8rem;
+}
 
-  a {
-    @apply py-1.5 px-4;
-  }
+a {
+  @apply py-1.5 px-4 rounded-xl border-transparent border-2;
+}
+
+a:hover {
+  @apply border-[#F0EFEF] border-2;
 }

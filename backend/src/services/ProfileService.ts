@@ -13,6 +13,6 @@ export class ProfileService {
 
   public async updateProfileById(userId: Types.ObjectId, profile: any ) {
     if (!!profile.birthday) profile.birthday = new Date(profile.birthday);
-    return User.findByIdAndUpdate(userId, profile);
+    return User.findByIdAndUpdate(userId, profile, { runValidators: true, new: true });
   }
 }

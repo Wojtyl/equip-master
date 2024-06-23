@@ -11,6 +11,7 @@ import path from "node:path";
 import { AppError } from "../utils/appError";
 import { ResetPasswordForm } from "../models/reset-password-form";
 import bcrypt from 'bcryptjs';
+import { User } from "../schemas/userModel";
 
 export class ProfileController {
   constructor() {
@@ -22,7 +23,8 @@ export class ProfileController {
 
   public getProfileDetails() {
     return catchAsync(async (req: URequest, res: Response) => {
-      const userData = await this.profileService.getProfileDetails(req.user.id as Types.ObjectId);
+      const id = req.params.id;
+      const userData = await this.profileService.getProfileDetails(id ? new Types.ObjectId(id) : req?.user?.id);
 
       const profile = new ProfileDTO();
       profile.name = userData.name ?? null;
@@ -39,12 +41,29 @@ export class ProfileController {
     })
   }
 
+  public createProfile() {
+    return catchAsync(async (req: URequest, res: Response) => {
+      const data = req.body;
+
+      const user = await User.create(data);
+
+      res.status(201).json({
+        status: 'success',
+        items: user
+      })
+    })
+  }
+
   public updateProfile() {
     return catchAsync(async (req: URequest, res: Response) => {
+      const id = req.params.id;
 
-      await this.profileService.updateProfileById(req.user.id as Types.ObjectId, req.body);
+      const profile = await this.profileService.updateProfileById((id ? new Types.ObjectId(id) : req.user.id) as Types.ObjectId, req.body);
 
-      res.status(201).json({});
+      res.status(201).json({
+        status: 'success',
+        items: profile
+      });
     })
   }
 

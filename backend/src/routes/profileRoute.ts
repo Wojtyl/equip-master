@@ -22,11 +22,17 @@ const profileController = new ProfileController();
 profileRouter
     .route("/")
     .get(authController.auth, profileController.getProfileDetails())
+    .post(authController.auth, profileController.createProfile())
     .patch(authController.auth, profileController.updateProfile())
 
 profileRouter.route("/image")
     .patch(authController.auth, upload.single('image'), profileController.updateProfileImage())
     .delete(authController.auth, profileController.removeProfileImage())
+
+profileRouter
+    .route("/:id")
+    .get(authController.auth, profileController.getProfileDetails())
+    .patch(authController.auth, profileController.updateProfile())
 
 profileRouter.route("/changePassword")
     .patch(authController.auth, profileController.changePassword())

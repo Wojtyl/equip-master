@@ -1,1 +1,22 @@
-<p>users-page works!</p>
+<div class="overflow-scroll py-8 px-16 flex gap-8 flex-col">
+  <div>
+    <div class="flex justify-between">
+      <div>
+        <h4>Użytkownicy</h4>
+        <p class="text-secondary mb-2">Lista wszystkich użytkowników</p>
+      </div>
+      <div>
+        <button class="btn" (click)="openAddUserForm()">Dodaj użytkownika</button>
+      </div>
+    </div>
+    <hr>
+    <app-users-list [users]="users"></app-users-list>
+  </div>
+</div>
+<p-sidebar [(visible)]="addingUser" position="right" [styleClass]="'w-[30rem]'">
+  <ng-template pTemplate="headless">
+    <div class="p-6">
+      <app-user-form (createdUser)="onUserCreated($event)"></app-user-form>
+    </div>
+  </ng-template>
+</p-sidebar>
