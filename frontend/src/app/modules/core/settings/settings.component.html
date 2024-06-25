@@ -1,11 +1,12 @@
 <div class="flex flex-col">
-  <div class="h-screen border-e-1 border-e-gray-200 flex  flex-col">
-
-    <h4 class="text-3xl font-semibold  inline-block  px-4 py-6">Ustawienia</h4>
-    <div class="flex px-4 gap-8 mb-4">
-      <a [routerLink]="['profile']" [routerLinkActive]="'active-setting-tab'">Edytuj profil</a>
-      <a [routerLink]="['account-settings']" [routerLinkActive]="'active-setting-tab'">Ustawienia konta</a>
-      <a [routerLink]="['users']" [routerLinkActive]="'active-setting-tab'">Użytkownicy</a>
+  <div class="h-screen border-e-1 border-e-gray-200 flex flex-col">
+    <div class="bg-white">
+      <h4 class="text-3xl font-semibold  inline-block  px-4 py-6">Ustawienia</h4>
+      <div class="flex px-4 gap-8 mb-4">
+        <a [routerLink]="['profile']" [routerLinkActive]="'active-setting-tab'">Edytuj profil</a>
+        <a [routerLink]="['account-settings']" [routerLinkActive]="'active-setting-tab'">Ustawienia konta</a>
+        <a [routerLink]="['users']" [routerLinkActive]="'active-setting-tab'">Użytkownicy</a>
+      </div>
     </div>
     <div class="border-t-2 overflow-scroll">
       <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 <div class="flex flex-col justify-center items-center">
-  <div class="w-full px-16 py-6">
+  <div class="w-full px-16 py-6 details-page">
     <div class="flex justify-center items-center w-full mt-8 mb-[4rem] relative">
       <app-svg-icon class="absolute left-0 hover:-translate-y-0.5 transition-all"
                     routerLink="/invoices"
@@ -14,7 +14,7 @@
         <p class="text-gray-500 line-clamp-3">W tym miejscu zobaczysz szczegóły faktury</p>
       </div>
     </div>
-    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center">
+    <div class="form-section-container rounded-lg p-[3rem] h-fit flex flex-col justify-center bg-white">
       <div *ngIf="isLoading">
         <p-skeleton styleClass="mb-2"></p-skeleton>
         <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>

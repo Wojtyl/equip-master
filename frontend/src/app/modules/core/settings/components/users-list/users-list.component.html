@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         @for (user of users; track user._id) {
-          <tr class="row-clickable" (click)="openUserEdit(user)">
+          <tr class="row-clickable border-b-1 border-b-gray-300" (click)="openUserEdit(user)">
             <td>
               <img [src]="user.image ?? environment.profileFallbackUrl" alt="Profile image"
                    class="h-fit w-8 rounded-full object-cover aspect-square">

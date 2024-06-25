@@ -22,7 +22,5 @@ const userController = new UserController();
 usersRouter
     .route("/")
     .get(authController.auth, userController.getAllUsers())
-    .patch(authController.auth, userController.updateUser())
-    .delete(authController.auth, userController.deleteUser())
 
 export { usersRouter };

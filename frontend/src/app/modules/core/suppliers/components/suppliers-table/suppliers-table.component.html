@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     @for (supplier of suppliers; track supplier._id; let i = $index) {
-      <tr>
+      <tr class="border-b-1 border-b-gray-300">
         <td>{{supplier.name}}</td>
         <td>{{supplier.taxIdNum}}</td>
         <td>{{supplier.email}}</td>
@@ -22,7 +22,7 @@
         </td>
       </tr>
     } @empty {
-      <tr>
+      <tr >
         <td colspan="7">
           <div class="w-full p-8 text-center">
             <app-svg-icon icon="user_icon" strokeWidth="1.5" [scale]="5"></app-svg-icon>
