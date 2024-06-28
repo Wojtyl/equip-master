@@ -7,6 +7,13 @@
       @apply bg-zinc-100;
     }
   }
+
+    tbody {
+      tr.row-clickable:hover {
+        background-color: rgba(243, 243, 243, 0.48);
+        cursor: pointer;
+      }
+    }
 }
 
 .box-table {

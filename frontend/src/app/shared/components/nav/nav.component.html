@@ -1,8 +1,8 @@
 <header
   class="flex flex-col items-center h-screen w-48 py-10 px-5 border-r-1 border-gray-200"
 >
-  <div class="mb-12">
-    <h1>LOGO</h1>
+  <div class="mb-8">
+    <img src="assets/logo-name.png" alt="Logo" class="px-4">
   </div>
   <nav class="flex flex-col justify-between w-full h-full">
     <div class="flex flex-col gap-3">
@@ -27,7 +27,21 @@
       </a>
     </div>
 
-    <a class="" routerLink="/auth/login" (click)="logout()">Log out</a>
+    @if (profile) {
+      <div class="flex justify-between items-center gap-4">
+        <div class="flex-shrink-0 cursor-pointer relative">
+          <div class="flex gap-4 align-middle" (click)="dropdownOpened = !dropdownOpened">
+            <img [src]="profile.image ?? fallbackUrl" alt="profile image" class="profile-button"/>
+            <p class="text-neutral-700">{{ profile.name }}</p>
+          </div>
+          <div *ngIf="dropdownOpened" class="profile-dropdown border-1 border-gray-400 overflow-hidden shadow-md">
+            <a [href]="['/settings/profile']" class="inline-block w-full hover:bg-gray-100 text-sm text-neutral-600">Ustawienia</a>
+            <a routerLink="/auth/login" class="inline-block w-full hover:bg-gray-100 text-sm text-neutral-600" (click)="logout()">Wyloguj
+              się</a>
+          </div>
+        </div>
+      </div>
+    }
   </nav>
 </header>
 

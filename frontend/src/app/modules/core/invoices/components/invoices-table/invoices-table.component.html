@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     @for (invoice of invoices; let i = $index; track invoice._id) {
-    <tr>
+    <tr class="border-b-1 border-b-gray-300">
       <td>{{invoice.invoiceNumber}}</td>
       <td>{{invoice.date | date:'dd/MM/yyyy'}}</td>
       <td>{{invoice.supplier.name}}</td>

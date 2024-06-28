@@ -27,6 +27,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MenuModule } from 'primeng/menu';
 import { StepsModule } from 'primeng/steps';
 import { AccordionModule } from 'primeng/accordion';
+import { SidebarModule } from 'primeng/sidebar';
+
 //Component imports
 import * as components from './components';
 
@@ -69,6 +71,7 @@ import * as form from './forms';
     ReactiveFormsModule,
     SkeletonModule,
     StepsModule,
+    SidebarModule,
     TooltipModule
   ],
   exports: [
@@ -97,6 +100,7 @@ import * as form from './forms';
     ReactiveFormsModule,
     SkeletonModule,
     StepsModule,
+    SidebarModule,
     TooltipModule,
     components.MultiselectDropdownComponent,
     components.SvgIconComponent,

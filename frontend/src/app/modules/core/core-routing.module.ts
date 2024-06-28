@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {UserGuard} from "../../core/auth/user.guard";
-import {RoleGuard} from "../../core/guards/role-guard";
-import {HomeComponent} from "./home/home.component";
-import {CoreComponent} from "./core.component";
+import { UserGuard } from "../../core/auth/user.guard";
+import { RoleGuard } from "../../core/guards/role-guard";
+import { HomeComponent } from "./home/home.component";
+import { CoreComponent } from "./core.component";
 
 const routes: Routes = [
   {
@@ -34,6 +34,10 @@ const routes: Routes = [
         canActivate: [UserGuard],
       },
       {
+        path: 'settings',
+        loadChildren: () => import('src/app/modules/core/settings/settings.module').then(m => m.SettingsModule),
+      },
+      {
         path: 'delivery',
         loadChildren: () => import('src/app/modules/core/delivery/delivery.module').then(m => m.DeliveryModule),
         canActivate: [UserGuard],
@@ -50,4 +54,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CoreRoutingModule { }
+export class CoreRoutingModule {
+}
