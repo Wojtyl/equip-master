@@ -2,13 +2,34 @@
 
 .router-link-active {
   text-decoration: none;
-  @apply bg-[#F0EFEF] text-black
+  @apply bg-[#F0EFEF] text-black;
 }
 
 .router-link-active:visited {
   text-decoration: none;
 }
 
+.profile-button {
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-dropdown {
+  position: absolute;
+  background-color: #fafafa;
+  border-radius: 6px;
+  width: 8rem;
+  bottom: 100%;
+  margin-bottom: 0.8rem;
+}
+
 a {
-  @apply text-gray-500 text-sm w-28 py-2 px-4 w-full rounded-xl;
+  @apply py-1.5 px-4 rounded-xl border-transparent border-2;
+}
+
+a:hover {
+  @apply border-[#F0EFEF] border-2;
 }

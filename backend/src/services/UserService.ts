@@ -15,6 +15,12 @@ export class UserService {
         }).orFail(this.throwUserNotFound());
     }
 
+    public async getAllUsers() {
+        return User.find()
+            .select('-resetToken -signupDate -birthday -__v -password')
+            .orFail(() => new AppError("An Error happened while fetching all users", 500));
+    }
+
     private throwUserNotFound() {
         return new AppError("User not found", 404);
     }

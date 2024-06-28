@@ -1,0 +1,41 @@
+<div>
+  @if (user) {
+    <div class="flex py-4 gap-4">
+      <img [src]="user.image ?? environment.profileFallbackUrl" alt="Profile image"
+           class="w-24 h-24 rounded-full object-cover">
+      <div class="flex justify-center flex-col">
+        <p class="text-xl font-bold">{{ user.name }} {{ user.surname }}</p>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+  } @else {
+    <h3 class="py-4">Dodaj użytkownika</h3>
+  }
+  <hr>
+  <form [formGroup]="userForm" class="mt-8" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-4">
+      <app-input-field [name]="'email'" label="Email" [controlName]="'email'"></app-input-field>
+      @if (!user) {
+        <app-input-field [name]="'password'" label="Hasło" [controlName]="'password'" type="password"></app-input-field>
+        <app-input-field [name]="'passwordConfirm'" label="Potwierdź hasło" type="password"
+                         [controlName]="'passwordConfirm'"></app-input-field>
+      }
+      <app-input-field [name]="'name'" label="Imię" [controlName]="'name'"></app-input-field>
+      <app-input-field [name]="'surname'" label="Nazwisko" [controlName]="'surname'"></app-input-field>
+      <div class="flex flex-col col-span-2 w-auto">
+        <label class="input-label" for="supplier">Rola</label>
+        <p-dropdown
+          id="role"
+          formControlName="role"
+          [options]="roles"
+          optionLabel="name"
+          optionValue="role"
+          [filter]="false"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="w-100 flex items-end justify-end mt-8">
+      <button class="btn text-2xl" type="submit">Zapisz</button>
+    </div>
+  </form>
+</div>

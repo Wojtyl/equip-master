@@ -18,6 +18,8 @@ import { colorRouter } from "./src/routes/colorRoute";
 import { roleRouter } from "./src/routes/roleRoute";
 import { errorController } from "./src/controllers/errorController";
 import { validationRouter } from "./src/routes/validationRouter";
+import { profileRouter } from "./src/routes/profileRoute";
+import { usersRouter } from "./src/routes/userRoute";
 
 dotenv.config({ path: "./.env" });
 
@@ -42,6 +44,7 @@ class ServerApp {
     }
 
     app.use("/images/product", e.static(`${__dirname}/public/images/products`))
+    app.use("/images/profile", e.static(`${__dirname}/public/images/profile`))
 
     app.use("/api/v1/auth", authRouter);
     app.use("/api/v1/suppliers", supplierRouter);
@@ -52,7 +55,9 @@ class ServerApp {
     app.use("/api/v1/colors", colorRouter);
     app.use("/api/v1/boxes", boxRouter);
     app.use("/api/v1/roles", roleRouter);
-    app.use("/api/v1/validation", validationRouter)
+    app.use("/api/v1/validation", validationRouter);
+    app.use("/api/v1/profile", profileRouter);
+    app.use("/api/v1/users", usersRouter);
 
     app.use(errorController);
   }

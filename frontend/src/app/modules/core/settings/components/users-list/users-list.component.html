@@ -1,0 +1,36 @@
+@if (users) {
+  <div class="mt-4">
+    <table class="table-list">
+      <thead>
+      <tr>
+        <td></td>
+        <td>E-Mail</td>
+        <td>Imie</td>
+        <td>Nazwisko</td>
+        <td>Rola</td>
+      </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user._id) {
+          <tr class="row-clickable border-b-1 border-b-gray-300" (click)="openUserEdit(user)">
+            <td>
+              <img [src]="user.image ?? environment.profileFallbackUrl" alt="Profile image"
+                   class="h-fit w-8 rounded-full object-cover aspect-square">
+            </td>
+            <td><span>{{ user.email }}</span></td>
+            <td><span>{{ user.name }}</span></td>
+            <td><span>{{ user.surname }}</span></td>
+            <td><span>{{ user.role }}</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <p-sidebar [visible]="!!editingUser" position="right" [styleClass]="'w-[30rem]'" (onHide)="editingUser = null">
+    <ng-template pTemplate="headless">
+      <div class="p-6">
+        <app-user-form [user]="editingUser!" (updatedUser)="onUserUpdated($event)"></app-user-form>
+      </div>
+    </ng-template>
+  </p-sidebar>
+}

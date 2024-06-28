@@ -1,0 +1,45 @@
+<div class="overflow-scroll p-8">
+  <div class="bg-white form-section-container rounded-lg p-6 h-fit flex gap-8 flex-col">
+    <div>
+      <h4>Zdjęcie profilowe</h4>
+      <p class="text-secondary mb-2">To zdjęcie będzie wyświetlane przy Twoim profilu</p>
+      <hr>
+      <div class="flex mt-4">
+        <div class="w-32 h-32 flex gap-8 items-center">
+          <img class="border-2 border-black rounded-full aspect-square object-cover"
+               [src]="!!imagePreviewUrl ? imagePreviewUrl : fallbackUrl" alt="profile image">
+          @if (!!profile?.image) {
+            <p class="cursor-pointer text-blue-600" (click)="imageInput.click()">Zmień</p>
+            <p class="cursor-pointer text-red-700" (click)="removeProfileImage()">Usuń</p>
+          } @else {
+            <p class="cursor-pointer text-blue-600" (click)="imageInput.click()">Dodaj</p>
+          }
+          <input #imageInput type="file" accept=".jpg,.jpeg,.png" (change)="onFileAdded()" class="hidden">
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4>Szczegóły</h4>
+      <p class="text-secondary mb-2">Zmień informacje o twoim profilu</p>
+      <hr>
+      <div class="flex mt-4" *ngIf="editProfileForm">
+        <form [formGroup]="editProfileForm" class="w-[25rem] flex flex-col gap-4" (ngSubmit)="submitForm()">
+          <app-input-field label="Imie" controlName="name" name="name"></app-input-field>
+          <app-input-field label="Nazwisko" controlName="surname" name="surname"></app-input-field>
+          <app-input-field label="Email" controlName="email" name="email"></app-input-field>
+          <app-input-field label="Telefon" controlName="phoneNumber" name="phone"></app-input-field>
+          <div class="flex flex-col w-auto">
+            <label class="input-label" for="birthday">Data urodzenia</label>
+            <p-calendar id="birthdate" class="w-full" dateFormat="dd-mm-yy" formControlName="birthday"
+                        [showIcon]="true"></p-calendar>
+          </div>
+          <button type="submit" [disabled]="isUpdating" class="btn w-[8rem]">
+            <span *ngIf="!isUpdating">Zapisz</span>
+            <span *ngIf="isUpdating">Zapisywanie...</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
