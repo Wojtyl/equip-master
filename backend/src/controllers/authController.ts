@@ -124,6 +124,7 @@ const isLoggedIn = async (req, res, next) => {
           name: user!.name,
           email: user!.email,
           role: user!.role,
+          image: user!.image,
           token,
         },
       },

@@ -4,8 +4,9 @@ import { catchAsync } from "../utils/catchAsync";
 import { URequest } from "../interfaces/user-request";
 import { NextFunction, Request, Response } from "express";
 import { DeliveryService } from "../services/deliveryService";
-import { IProductBox } from "../interfaces/product-box";
 import { InvoiceService } from "../services/invoiceService";
+import { DeliveryComment } from "../models/delivery-comment";
+
 
 export const getDelivery = generalController.getOne(Delivery);
 
@@ -113,6 +114,30 @@ export const reopenDelivery = () => catchAsync(async (req: URequest, res: Respon
         items: data
     })
 })
+
+
+export const addCommentToDelivery = () => catchAsync(async (req: URequest, res: Response) => {
+    const comment: DeliveryComment = req.body;
+    comment.user = req.user.id;
+
+    const newComments = await deliveryService.addComment(req.params.id, comment);
+
+    res.status(201).json({
+        status: 'success',
+        items: newComments
+    })
+
+})
+
+export const deleteDeliveryComment = () => catchAsync(async (req: URequest, res: Response) => {
+    await deliveryService.deleteComment(req.params.id, req.params.commentId);
+
+    res.status(204).json({
+        status: 'success'
+    })
+
+})
+
 export const createDelivery = createDeliveryService();
 
 export const getAllDeliveries = getAll();
