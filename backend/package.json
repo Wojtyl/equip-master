@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Wojtyl/MKS-dostawa#readme",
   "dependencies": {
+    "@typegoose/typegoose": "^12.5.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
