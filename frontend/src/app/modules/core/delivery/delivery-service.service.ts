@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { IDeliveryList } from './models/delivery-list-model';
 import { DeliveryProductQuantities } from "./models/delivery-product-quantities";
 import { DeliveryDetails } from "./models/delivery-details";
+import { DeliveryComment } from "./models/delivery-comment";
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +50,13 @@ export class DeliveryService {
 
   getDeliveryDetails(deliveryId: string) {
     return this.http.get<ListResponse<DeliveryDetails>>(`${apiUrl}deliveries/${deliveryId}/details`);
+  }
+
+  addComment(deliveryId: string, comment: { comment: string }) {
+    return this.http.post<ListResponse<DeliveryComment>>(`${apiUrl}deliveries/${deliveryId}/comments`, comment);
+  }
+
+  deleteComment(deliveryId: string, commentId: string) {
+    return this.http.delete(`${apiUrl}deliveries/${deliveryId}/comments/${commentId}`);
   }
 }

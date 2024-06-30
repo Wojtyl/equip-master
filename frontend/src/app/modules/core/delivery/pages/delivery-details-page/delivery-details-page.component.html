@@ -34,7 +34,7 @@
         <p-skeleton width="10rem" height="4rem"></p-skeleton>
       </div>
       <section *ngIf="deliveryDetails" [ngClass]="{'hidden': isLoading}" id="invoice-form">
-        <div class="flex flex-column content-between w-full gap-12">
+        <div class="flex flex-column content-between w-full gap-12 mb-4">
           <div class="flex-1">
             <div>
               <h3 class="font-semibold mb-2">Dostawa</h3>
@@ -47,7 +47,7 @@
                 <div class="flex-grow-[2]">
                   <p>{{ deliveryDetails.status }}</p>
                   <p>{{ deliveryDetails.createdBy.name }}</p>
-                  <p>{{ deliveryDetails.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
+                  <p>{{ deliveryDetails.date | date:'dd.MM.yyy' }}</p>
                 </div>
               </div>
               <div>
@@ -68,12 +68,29 @@
               <div class="flex-grow-[2]">
                 <p>{{ deliveryDetails.invoice.supplier.name }}</p>
                 <p>{{ deliveryDetails.invoice.invoiceNumber }}</p>
-                <p>{{ deliveryDetails.invoice.date | date:'dd.MM.yyy HH:mm:ss' }}</p>
+                <p>{{ deliveryDetails.invoice.date | date:'dd.MM.yyy' }}</p>
                 <p>{{ deliveryDetails.invoice.nettoPrice }} {{ deliveryDetails.invoice.currency }}</p>
               </div>
             </div>
           </div>
         </div>
+        <br>
+        <h3 class="font-semibold mb-4">Uczestnicy dostawy</h3>
+        @for (user of deliveryDetails.usersList; track user._id) {
+          <div class="mb-4">
+            <div class="flex align-middle gap-2">
+              <div>
+                <img [src]=" user.image ?? environment.profileFallbackUrl" alt="Profile image"
+                     class="w-10 h-10 rounded-full object-cover">
+              </div>
+              <div class="flex flex-col justify-center mb-2">
+                <p class="h-fit">{{ user.name }}
+                </p>
+                <p class="text-sm font-light text-secondary">{{user.email}}</p>
+              </div>
+            </div>
+          </div>
+        }
         <br>
         <h3 class="font-semibold mb-4">Produkty</h3>
         <div>
@@ -124,8 +141,7 @@
                       <td>{{ product.name }}</td>
                       <td>{{ product.size }}</td>
                       <td>{{ product.quantity }}</td>
-                      <td>{{product?.addedBy?.name}}</td>
-<!--                      <td>{{ size.differenceCount === 0 ? '' : size.differenceCount > 0 ? 'nadwyżka' : 'brak' }} {{ Math.abs(size.differenceCount) }}</td>-->
+                      <td>{{ product?.addedBy?.name }}</td>
                     </tr>
                   }
                 </tbody>
@@ -135,15 +151,47 @@
         </p-accordion>
         <br>
         <h3 class="font-semibold mb-4">Status log</h3>
-        @for (status of deliveryDetails.statuses; track status._id) {
-          <p><span class="font-semibold">{{ status.status }} </span><span>{{ status.message }} </span>
-            <span>{{ status.date | date:'dd.MM.yyy HH:mm:ss' }}</span></p>
-        }
+          <table class="box-table mb-4">
+            <thead>
+            <tr>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Opis</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (status of deliveryDetails.statuses; track status._id) {
+                <tr>
+                  <td>{{ status.status }}</td>
+                  <td>{{ status.date | date:'dd.MM.yyy HH:mm:ss' }}</td>
+                  <td>{{ status.message }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         <br>
-        <h3 class="font-semibold mb-4">Uczestnicy dostawy</h3>
-        @for (user of deliveryDetails.usersList; track user._id) {
-          <p>{{ user.name }} <span class="font-light text-sm">{{ user.email }}</span></p>
+        <h3 class="font-semibold mb-4">Komentarze</h3>
+        @for (comment of deliveryDetails.comments; track comment._id) {
+          <div class="mb-6">
+            <div class="flex align-middle gap-2 relative">
+              <div>
+                <img [src]="comment.user.image ?? environment.profileFallbackUrl" alt="Profile image"
+                     class="w-10 h-10 rounded-full object-cover">
+              </div>
+              <div class="flex flex-col justify-center mb-2">
+                <p class="h-fit">{{ comment.user.name }}
+                </p>
+                <p class="text-sm font-light text-secondary">{{comment.date | date:'dd.MM.yyyy HH:mm'}}</p>
+              </div>
+              <app-svg-icon *ngIf="isCommentOwner(comment.user._id)" class="absolute top-0 right-[1rem]" icon="delete_icon" [triggerable]="true" (click)="deleteComment(comment._id)"></app-svg-icon>
+            </div>
+            <p class="ms-12 font-light text-sm">{{comment.comment}}</p>
+          </div>
         }
+        <form class="flex flex-col" *ngIf="commentForm" [formGroup]="commentForm" (ngSubmit)="onAddComment()">
+          <textarea class="p-inputtext p-component p-element w-full ng-pristine" formControlName="comment"></textarea>
+          <p-button type="submit" [disabled]="!commentForm.get('comment')?.value" class="mt-4">Dodaj</p-button>
+        </form>
       </section>
     </div>
   </div>

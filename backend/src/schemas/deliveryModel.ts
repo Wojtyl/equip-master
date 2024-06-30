@@ -1,6 +1,27 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
+// import { DeliveryComment } from "../models/delivery-comment";
 
+//
+// interface Delivery {
+//   comments: DeliveryComment[];
+//   date: Date;
+//   boxOnDelivery: string[];
+//   invoice: any;
+//   closed: boolean;
+//   reopened: boolean,
+//   supplier: any;
+//   createdBy: any;
+//   status: string;
+//   statuses:  { changedBy: any,  status: string,   date: Date };
+//   comment: DeliveryComment[];
+//   description: string;
+// }
+
+// export interface DeliveryDocument extends Delivery, Document {}
+
+
+// const deliverySchema = new mongoose.Schema<DeliveryDocument>({
 const deliverySchema = new mongoose.Schema({
   date: {
     type: Date,
@@ -59,6 +80,20 @@ const deliverySchema = new mongoose.Schema({
       type: String,
     }
   }],
+  comments: [{
+    user: {
+      type: mongoose.Types.ObjectId,
+      required: [true, 'You must provide comment owner']
+    },
+    date: {
+      type: Date,
+      default: Date.now()
+    },
+    comment: {
+      type: String,
+      required: [true, 'You must provide comment']
+    }
+  }],
   description: {
     type: String,
   },
@@ -74,4 +109,5 @@ deliverySchema.pre(/^find/, function (next) {
   next();
 });
 
+// export const Delivery = mongoose.model<DeliveryDocument>("Delivery", deliverySchema);
 export const Delivery = mongoose.model("Delivery", deliverySchema);

@@ -9,6 +9,8 @@ import { DeliveryStatus } from "../enums/delivery-status-enum";
 import { IDeliveryWithProducts } from "../models/delivery-with-products-model";
 import { IProductBox } from "../interfaces/product-box";
 import { InvoiceService } from "./invoiceService";
+import { DeliveryComment } from "../models/delivery-comment";
+import { User } from "../schemas/userModel";
 
 export interface ProductQuantity {
   productName: string;
@@ -73,7 +75,8 @@ export class DeliveryService {
                   $project: {
                     _id: 1,
                     email: 1,
-                    name: 1
+                    name: 1,
+                    image: 1
                   }
                 }
               ]
@@ -192,10 +195,59 @@ export class DeliveryService {
               $project: {
                 name: 1,
                 email: 1,
+                image: 1,
                 _id: 1
               }
             }
           ]
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'comments.user',
+          foreignField: '_id',
+          as: 'commentAddedBy',
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                email: 1,
+                image: 1,
+                _id: 1
+              }
+            },
+
+          ]
+        }
+      },
+      {
+        $addFields: {
+          comments: {
+            $map: {
+              input: '$comments',
+              as: 'com',
+              in: {
+                comment: '$$com.comment',
+                date: '$$com.date',
+                _id: '$$com._id',
+                user: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: '$commentAddedBy',
+                        as: 'comAddBy',
+                        cond: {
+                          $eq: ['$$com.user', '$$comAddBy._id']
+                        }
+                      }
+                    },
+                    0
+                  ]
+                }
+              }
+            }
+          }
         }
       },
       {
@@ -272,7 +324,8 @@ export class DeliveryService {
       },
       {
         $project: {
-          boxOnDelivery: 0
+          boxOnDelivery: 0,
+          commentAddedBy: 0
         }
       },
       {
@@ -286,14 +339,14 @@ export class DeliveryService {
 
   public async getDeliveryUsersList(deliveryId: string) {
     const {deliveryBoxes} = await this.getDeliveryBoxes(deliveryId);
-    const usersList: { _id: mongoose.Types.ObjectId | string, name: string, email: string }[] = [];
+    const usersList: { _id: mongoose.Types.ObjectId | string, name: string, email: string, image?: string }[] = [];
 
     console.log(deliveryBoxes)
     deliveryBoxes.forEach(box => {
       console.log('box:', box.createdBy._id)
       if (!usersList.find(user => user._id.toString() === box.createdBy._id.toString())) {
         console.log('user')
-        usersList.push(box.createdBy)
+        usersList.push({...box.createdBy})
       }
     });
 
@@ -569,6 +622,25 @@ export class DeliveryService {
       }
     })
     return summary;
+  }
+
+  async addComment(deliveryId: string, comment: DeliveryComment) {
+    const delivery = await this.findDeliveryByIdOrThrow(deliveryId);
+    delivery.comments.push(comment);
+    const newDelivery = await delivery.save();
+    const newComment = newDelivery.comments.at(-1)._doc;
+    const user = await User.findById(comment.user).select('name _id email image')
+    newComment.user = user;
+    return newComment;
+  }
+
+  async deleteComment(deliveryId: string, commentId: string) {
+    const delivery = await this.findDeliveryByIdOrThrow(deliveryId);
+    const idx = delivery.comments.findIndex(com => com._id === commentId);
+    if (idx) {
+      delivery.comments.splice(idx, 1);
+      delivery.save();
+    }
   }
 }
 
