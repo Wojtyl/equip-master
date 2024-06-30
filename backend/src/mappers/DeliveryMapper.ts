@@ -8,6 +8,8 @@ export class DeliveryMapper {
     upcomingDeliveryDTO.status = deliveryDetails?.status ?? null;
     upcomingDeliveryDTO.date = deliveryDetails?.date ?? null;
     upcomingDeliveryDTO.supplier = deliveryDetails.supplier?.name ?? null;
+    upcomingDeliveryDTO.invoiceNumber = deliveryDetails.invoice?.invoiceNumber ?? null;
+    upcomingDeliveryDTO._id = deliveryDetails?._id?.toString() ?? null;
 
     return upcomingDeliveryDTO;
   }
