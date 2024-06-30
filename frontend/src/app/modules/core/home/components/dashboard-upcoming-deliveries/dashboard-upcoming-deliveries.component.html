@@ -1,3 +1,28 @@
-@for (delivery of upcomingDeliveries; track delivery._id) {
-  <p>{{delivery.supplier}} {{delivery.date}}</p>
-}
+<div class="bg-white rounded-2xl shadow p-6">
+  <p class="text-2xl mb-4">Nadchodzące dostawy</p>
+  <table class="dashboard-table w-full">
+    <thead>
+    <tr>
+      <td>Numer faktury</td>
+      <td>Dostawca</td>
+      <td>Status</td>
+      <td>Data</td>
+    </tr>
+    </thead>
+    <tbody>
+      @for (delivery of upcomingDeliveries; track delivery._id) {
+        <tr>
+          <td>{{delivery.invoiceNumber}}</td>
+          <td>{{delivery.supplier}}</td>
+          <td>{{delivery.status}}</td>
+          <td>{{delivery.date | date}}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="20" class="text-center p-4"><span>Brak nadchodzących dostaw</span></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+</div>
