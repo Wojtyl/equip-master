@@ -1,6 +1,7 @@
 import { Delivery } from "../schemas/deliveryModel";
 import { DeliveryDetails } from "../models/DeliveryDetails";
 import { HydratedDocument } from "mongoose";
+import { DeliveryGraphDTO } from "../dto/DeliveryGraphDTO";
 
 export class DashboardService {
   async getUpcomingDeliveries() {
@@ -37,21 +38,33 @@ export class DashboardService {
     earlierDate.setUTCMilliseconds(0);
     earlierDate.setUTCMonth(newMonth);
     earlierDate.setUTCFullYear(newYear);
-
     currentDate.setUTCHours(23);
     currentDate.setUTCMinutes(59);
     currentDate.setUTCSeconds(59);
     currentDate.setUTCMilliseconds(999);
 
-    console.log(earlierDate, currentDate)
+    const allDeliveries: DeliveryGraphDTO[] = [];
 
-    const deliveries: HydratedDocument<DeliveryDetails[]> = await Delivery.find({date: {$gte: earlierDate, $lte: currentDate}})
-        .populate('supplier')
-        .populate('createdBy')
-        .populate('invoice')
-        .populate('boxOnDelivery')
-        .lean();
+    while (earlierDate <= currentDate) {
+      const searchMonth = earlierDate.getUTCMonth();
+      const searchYear = earlierDate.getUTCFullYear();
 
-    return deliveries;
+      const endOfMonth = new Date(Date.UTC(searchYear, searchMonth + 1, 0, 23, 59, 59, 999));
+
+      const deliveries: HydratedDocument<DeliveryDetails[]> = await Delivery.find({
+            date: { $gte: earlierDate, $lte: endOfMonth }
+          })
+          .populate('supplier')
+          .populate('createdBy')
+          .populate('invoice')
+          .populate('boxOnDelivery')
+          .lean();
+
+      allDeliveries.push({ month: searchMonth, year: searchYear, deliveries });
+
+      earlierDate.setUTCMonth(searchMonth + 1);
+    }
+
+    return allDeliveries;
   }
 }

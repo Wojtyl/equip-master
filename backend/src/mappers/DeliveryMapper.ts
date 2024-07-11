@@ -14,18 +14,4 @@ export class DeliveryMapper {
 
     return upcomingDeliveryDTO;
   }
-
-  public deliveryDetailsToDeliveryGraphDTOS(deliveryDetails: DeliveryDetails[]) {
-    const graphDTO =  deliveryDetails.reduce((dto, delivery) => {
-      const idx = (dto.findIndex(graph => graph.label === delivery.date.getMonth()));
-      if (idx === -1) {
-        dto.push({_ids: [delivery._id.toString()], label: delivery.date.getMonth(), date: delivery.date, count: 1} as DeliveryGraphDTO)
-      } else {
-        dto[idx] = {...dto[idx], count: ++dto[idx].count, _ids: [...dto[idx]._ids, delivery._id.toString()]}
-      }
-      return dto
-    }, [] as DeliveryGraphDTO[]);
-
-    return graphDTO;
-  }
 }

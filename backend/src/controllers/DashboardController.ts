@@ -28,14 +28,12 @@ export class DashboardController {
 
   getDeliveriesGraphData() {
     return catchAsync(async (req: URequest, res: Response) => {
-      const lastMonthsNumber = req.query.lastMonths ?? 7;
+      const lastMonthsNumber = req.query.lastMonths ?? 6;
       const lastMonthDeliveries = await this.dashboardService.getLastMonthDeliveries(+lastMonthsNumber)
-
-      const deliveryGraphDTO = this.deliveriesMapper.deliveryDetailsToDeliveryGraphDTOS(lastMonthDeliveries)
 
       res.status(200).json({
         status: 'success',
-        items: deliveryGraphDTO
+        items: lastMonthDeliveries
       })
     })
   }

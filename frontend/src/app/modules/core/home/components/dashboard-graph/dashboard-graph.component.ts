@@ -16,21 +16,18 @@ export class DashboardGraphComponent implements OnInit {
   }
 
   createChart(data: DeliveryGraphDTO[]): void {
-    data = data.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
     const ctx = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d')!;
     const chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: data.map(dto => new Date(0, dto.label).toLocaleString('default', { month: 'long' })),
-        // labels,
+        labels: data.map(dto => `${new Date(0, dto.month).toLocaleString('default', { month: 'long' })} ${dto.year}`),
         datasets: [{
           label: 'Liczba dostaw',
-          data: data.map(dto => dto.count),
+          data: data.map(dto => dto.deliveries.length),
           borderColor: 'rgb(75,157,192)',
           borderWidth: 1,
-          fill: false,
-          tension: 0.2
+          fill: true
         }]
       },
       options: {

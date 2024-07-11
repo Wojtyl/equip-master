@@ -1,6 +1,7 @@
+import { DeliveryDetails } from "../../delivery/models/delivery-details";
+
 export interface DeliveryGraphDTO {
-  _ids: string[];
-  count: number;
-  label: number;
-  date: Date;
+  month: number;
+  year: number;
+  deliveries: DeliveryDetails[];
 }
