@@ -1,10 +1,9 @@
-<h1 class="text-3xl font-bold underline text-alterbridge">
-  Hello {{ user?.name }}
-</h1>
-<br />
-
-<div class="p-6">
-<app-dashboard-upcoming-deliveries [upcomingDeliveries]="upcomingDeliveries"></app-dashboard-upcoming-deliveries>
+<div class="h-screen">
+  <div class="p-6 flex flex-col max-h-full">
+    <div class="flex h-[35rem] flex-grow">
+      <app-dashboard-graph class="flex-grow flex-shrink" *ngIf="deliveriesGraphData" [graphDTOs]="deliveriesGraphData"></app-dashboard-graph>
+    </div>
+    <app-dashboard-upcoming-deliveries [upcomingDeliveries]="upcomingDeliveries"></app-dashboard-upcoming-deliveries>
+  </div>
 </div>
-
 

@@ -11,7 +11,8 @@ import { HomeComponent } from "./home.component";
 @NgModule({
   declarations: [
     HomeComponent,
-    components.DashboardUpcomingDeliveriesComponent
+    components.DashboardUpcomingDeliveriesComponent,
+    components.DashboardGraphComponent
   ],
   imports: [
     CommonModule,

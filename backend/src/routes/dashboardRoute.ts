@@ -8,4 +8,7 @@ const dashboardController = new DashboardController();
 dashboardRouter.route("/upcomingDeliveries")
     .get(authController.auth, dashboardController.getUpcomingDeliveries())
 
+dashboardRouter.route("/deliveriesGraph")
+    .get(authController.auth, dashboardController.getDeliveriesGraphData())
+
 export { dashboardRouter };

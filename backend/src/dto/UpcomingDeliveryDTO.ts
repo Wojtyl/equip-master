@@ -3,5 +3,6 @@ export class UpcomingDeliveryDTO {
   supplier: string | undefined;
   status: string | undefined;
   invoiceNumber: string | undefined;
+  totalDeliveryCount: number | undefined;
   _id: string | undefined;
 }
