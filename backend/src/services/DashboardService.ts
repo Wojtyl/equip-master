@@ -67,4 +67,33 @@ export class DashboardService {
 
     return allDeliveries;
   }
+
+  async getTopSuppliers() {
+    return Delivery.aggregate<{ _id: string; supplier: { _id: string; name: string; }; }>([
+      {
+        $lookup: {
+          from: 'suppliers',
+          localField: 'supplier',
+          foreignField: '_id',
+          as: 'supplier',
+          pipeline: [
+            {
+              $project: {
+                "name": 1,
+                "_id": 1
+              }
+            }
+          ]
+        }
+      },
+      {
+        $project: {
+          "supplier": 1
+        }
+      },
+      {
+        $unwind: '$supplier'
+      }
+    ]);
+  }
 }

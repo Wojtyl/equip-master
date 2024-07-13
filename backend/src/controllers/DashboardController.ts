@@ -4,6 +4,7 @@ import { NextFunction, Response } from "express";
 import { DashboardService } from "../services/DashboardService";
 import { DeliveryMapper } from "../mappers/DeliveryMapper";
 import { UpcomingDeliveryDTO } from "../dto/UpcomingDeliveryDTO";
+import { TopSupplierDTO } from "../dto/TopSupplierDTO";
 
 export class DashboardController {
 
@@ -36,5 +37,29 @@ export class DashboardController {
         items: lastMonthDeliveries
       })
     })
+  }
+
+  getTopSippliers() {
+    return catchAsync(async (req: URequest, res: Response) => {
+      const allDeliverySuppliers = await this.dashboardService.getTopSuppliers();
+
+      let topSuppliers: TopSupplierDTO[] = [];
+
+      allDeliverySuppliers.forEach(supp => {
+        const suppIdx = topSuppliers.findIndex(top => top._id.toString() === supp.supplier._id.toString());
+        if (suppIdx === -1) {
+          topSuppliers.push({_id: supp.supplier._id.toString(), name: supp.supplier.name, count: 1 })
+        } else {
+          topSuppliers[suppIdx].count++;
+        }
+      })
+
+      topSuppliers.sort((a,b) => b.count - a.count)
+
+      res.status(200).json({
+        status: 'success',
+        items: topSuppliers
+      })
+    });
   }
 }

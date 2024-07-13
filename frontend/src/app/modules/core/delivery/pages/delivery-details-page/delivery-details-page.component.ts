@@ -3,8 +3,8 @@ import { DeliveryService } from "../../delivery-service.service";
 import { DeliveryDetails } from "../../models/delivery-details";
 import { ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { UserService } from "../../../../../core/auth/user.service";
-import { environment } from "../../../../../../environments/environment";
+import { UserService } from "src/app/core/auth/user.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: 'app-delivery-details-page',

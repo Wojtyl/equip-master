@@ -4,6 +4,7 @@ import { apiUrl } from "../../../../../environments/apiurl";
 import { ListResponse } from "../../../../shared/models/list-response";
 import { UpcomingDelivery } from "../models/UpcomingDelivery";
 import { DeliveryGraphDTO } from "../models/DeliveryGraphDTO";
+import { TopSupplierDTO } from "../models/TopSupplierDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,11 @@ export class DashboardService {
     return this.http.get<ListResponse<UpcomingDelivery[]>>(`${apiUrl}dashboard/upcomingDeliveries`);
   }
 
-  getDeliveryGraph() {
+  public getDeliveryGraph() {
     return this.http.get<ListResponse<DeliveryGraphDTO[]>>(`${apiUrl}dashboard/deliveriesGraph`)
+  }
+
+  public getTopSellers() {
+    return this.http.get<ListResponse<TopSupplierDTO[]>>(`${apiUrl}dashboard/topSuppliers`)
   }
 }

@@ -6,13 +6,15 @@ import * as components from './components/index';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from "../../../shared/shared.module";
 import { HomeComponent } from "./home.component";
+import { DashboardTopSellersComponent } from './components/dashboard-top-sellers/dashboard-top-sellers.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     components.DashboardUpcomingDeliveriesComponent,
-    components.DashboardGraphComponent
+    components.DashboardGraphComponent,
+    DashboardTopSellersComponent
   ],
   imports: [
     CommonModule,

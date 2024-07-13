@@ -26,6 +26,7 @@ export class DashboardGraphComponent implements OnInit {
           label: 'Liczba dostaw',
           data: data.map(dto => dto.deliveries.length),
           borderColor: 'rgb(75,157,192)',
+          // backgroundColor: 'rgb(75,157,192)',
           borderWidth: 1,
           fill: true
         }]

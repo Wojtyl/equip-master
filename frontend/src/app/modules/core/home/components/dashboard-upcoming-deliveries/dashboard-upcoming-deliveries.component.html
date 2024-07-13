@@ -1,5 +1,5 @@
 <div class="bg-white rounded-2xl shadow p-6">
-  <p class="text-2xl mb-4">Nadchodzące dostawy</p>
+  <p class="text-xl font-medium mb-4">Nadchodzące dostawy</p>
   <table class="dashboard-table w-full">
     <thead>
     <tr>
@@ -14,7 +14,7 @@
         <tr>
           <td>{{delivery.invoiceNumber}}</td>
           <td>{{delivery.supplier}}</td>
-          <td>{{delivery.status}}</td>
+          <td> <span [ngClass]="delivery.status !== 'REOPENED' ? 'box-status_closed' : 'box-status_opened'"  class="box-status_closed">{{delivery.status}}</span></td>
           <td>{{delivery.date | date}}</td>
         </tr>
       } @empty {
