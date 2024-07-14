@@ -7,13 +7,6 @@
       @apply bg-zinc-100;
     }
   }
-
-    tbody {
-      tr.row-clickable:hover {
-        background-color: rgba(243, 243, 243, 0.48);
-        cursor: pointer;
-      }
-    }
 }
 
 .box-table {
@@ -46,6 +39,13 @@
 
 .box-status_opened {
   @apply text-yellow-600 bg-yellow-100
+}
+
+tbody {
+  tr.row-clickable:hover {
+    background-color: rgba(243, 243, 243, 0.48);
+    cursor: pointer;
+  }
 }
 
 $secondary-color: #9b9b9b;
