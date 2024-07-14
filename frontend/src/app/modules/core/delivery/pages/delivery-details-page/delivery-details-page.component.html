@@ -80,7 +80,7 @@
           <div class="mb-4">
             <div class="flex align-middle gap-2">
               <div>
-                <img [src]=" user.image ?? environment.profileFallbackUrl" alt="Profile image"
+                <img [src]=" user?.image ?? environment.profileFallbackUrl" alt="Profile image"
                      class="w-10 h-10 rounded-full object-cover">
               </div>
               <div class="flex flex-col justify-center mb-2">
@@ -175,7 +175,7 @@
           <div class="mb-6">
             <div class="flex align-middle gap-2 relative">
               <div>
-                <img [src]="comment.user.image ?? environment.profileFallbackUrl" alt="Profile image"
+                <img [src]="comment?.user?.image ?? environment.profileFallbackUrl" alt="Profile image"
                      class="w-10 h-10 rounded-full object-cover">
               </div>
               <div class="flex flex-col justify-center mb-2">

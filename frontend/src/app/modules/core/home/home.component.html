@@ -1,14 +1,24 @@
-<h1 class="text-3xl font-bold underline text-alterbridge">
-  Hello {{ user?.name }}
-</h1>
-<div *ngIf="suppliers.length > 0" class="flex-1">
-  <h2>suppliers</h2>
-  <div *ngFor="let supplier of suppliers">
-    <p>{{ supplier.name }}</p>
+<div>
+  <div class="p-6 flex flex-col max-h-full gap-4">
+    <div class="bg-white p-6 rounded-2xl shadow">
+      <h1 class="text-2xl font-semibold">Witaj {{ user.name }}</h1>
+    </div>
+    <div class="flex flex-grow gap-4 h-[25rem]">
+      <div class="flex-1">
+        <app-dashboard-graph *ngIf="deliveriesGraphData"
+                             [graphDTOs]="deliveriesGraphData"></app-dashboard-graph>
+      </div>
+      <div class="flex basis-[20rem] flex-shrink-0 flex-col gap-4">
+        <div class="flex-1 overflow-scroll rounded-2xl shadow">
+          <app-dashboard-top-sellers class="h-full" *ngIf="topSuppliers"
+                                     [topSuppliers]="topSuppliers"></app-dashboard-top-sellers>
+        </div>
+        <div class="flex-1 overflow-scroll rounded-2xl shadow">
+          <app-dashboard-top-products *ngIf="topProducts" [topProducts]="topProducts"></app-dashboard-top-products>
+        </div>
+      </div>
+    </div>
+    <app-dashboard-upcoming-deliveries [upcomingDeliveries]="upcomingDeliveries"></app-dashboard-upcoming-deliveries>
   </div>
 </div>
-<br />
 
-<button
-  class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-alterbridge hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
-  routerLink="/auth/login">Login page</button>

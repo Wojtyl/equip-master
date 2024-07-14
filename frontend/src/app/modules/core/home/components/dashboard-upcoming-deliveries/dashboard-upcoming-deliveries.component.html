@@ -1,0 +1,28 @@
+<div class="bg-white rounded-2xl shadow p-6">
+  <p class="text-xl font-medium mb-4">Bieżące i przyszłe dostawy</p>
+  <table class="dashboard-table w-full">
+    <thead>
+    <tr>
+      <td>Numer faktury</td>
+      <td>Dostawca</td>
+      <td>Status</td>
+      <td>Data</td>
+    </tr>
+    </thead>
+    <tbody>
+      @for (delivery of upcomingDeliveries; track delivery._id) {
+        <tr class="row-clickable" (click)="navigateToDelivery(delivery._id)">
+          <td class="font-medium">{{delivery.invoiceNumber}}</td>
+          <td>{{delivery.supplier}}</td>
+          <td> <span [ngClass]="delivery.status !== 'REOPENED' ? 'box-status_closed' : 'box-status_opened'"  class="box-status_closed">{{delivery.status}}</span></td>
+          <td>{{delivery.date | date}}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="20" class="text-center p-4"><span>Brak nadchodzących dostaw</span></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+</div>

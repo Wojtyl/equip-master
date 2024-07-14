@@ -3,8 +3,6 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import multer from "multer";
-import { uploadFile } from "./src/utils/multerConfig"
 
 // Routes
 import { supplierRouter } from "./src/routes/supplierRoute";
@@ -20,6 +18,7 @@ import { errorController } from "./src/controllers/errorController";
 import { validationRouter } from "./src/routes/validationRouter";
 import { profileRouter } from "./src/routes/profileRoute";
 import { usersRouter } from "./src/routes/userRoute";
+import { dashboardRouter } from "./src/routes/dashboardRoute";
 
 dotenv.config({ path: "./.env" });
 
@@ -58,6 +57,7 @@ class ServerApp {
     app.use("/api/v1/validation", validationRouter);
     app.use("/api/v1/profile", profileRouter);
     app.use("/api/v1/users", usersRouter);
+    app.use("/api/v1/dashboard", dashboardRouter);
 
     app.use(errorController);
   }

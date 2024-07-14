@@ -1,31 +1,10 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose from "mongoose";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
-// import { DeliveryComment } from "../models/delivery-comment";
 
-//
-// interface Delivery {
-//   comments: DeliveryComment[];
-//   date: Date;
-//   boxOnDelivery: string[];
-//   invoice: any;
-//   closed: boolean;
-//   reopened: boolean,
-//   supplier: any;
-//   createdBy: any;
-//   status: string;
-//   statuses:  { changedBy: any,  status: string,   date: Date };
-//   comment: DeliveryComment[];
-//   description: string;
-// }
-
-// export interface DeliveryDocument extends Delivery, Document {}
-
-
-// const deliverySchema = new mongoose.Schema<DeliveryDocument>({
 const deliverySchema = new mongoose.Schema({
   date: {
     type: Date,
-    default: new Date(),
+    default: Date.now(),
   },
   //TODO: Probably to get rid of this field - make more atomic approach and refer to boxes from box deliveryId
   boxOnDelivery: [
@@ -101,13 +80,4 @@ const deliverySchema = new mongoose.Schema({
   versionKey: false
 });
 
-deliverySchema.pre(/^find/, function (next) {
-  //this.populate({
-  //  path: "supplier",
-  //  select: "-_id -address -addedAt -__v",
-  //});
-  next();
-});
-
-// export const Delivery = mongoose.model<DeliveryDocument>("Delivery", deliverySchema);
 export const Delivery = mongoose.model("Delivery", deliverySchema);
