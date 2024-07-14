@@ -14,4 +14,7 @@ dashboardRouter.route("/deliveriesGraph")
 dashboardRouter.route("/topSuppliers")
     .get(authController.auth, dashboardController.getTopSippliers())
 
+dashboardRouter.route("/topProducts")
+    .get(authController.auth, dashboardController.getTopProducts())
+
 export { dashboardRouter };

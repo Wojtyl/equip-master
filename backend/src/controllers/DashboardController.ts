@@ -62,4 +62,17 @@ export class DashboardController {
       })
     });
   }
+
+  getTopProducts() {
+    return catchAsync(async (req: URequest, res: Response) => {
+      const topProducts = await this.dashboardService.getTopProducts();
+
+      topProducts.sort((a, b) => b.count - a.count);
+
+      res.status(200).json({
+        status: 'success',
+        items: topProducts
+      })
+    });
+  }
 }

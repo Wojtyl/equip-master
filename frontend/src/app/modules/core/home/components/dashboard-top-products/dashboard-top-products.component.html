@@ -1,0 +1,8 @@
+<div class="bg-white h-full p-6 flex flex-col ">
+  <h1 class="text-xl font-medium mb-4">Top produkty</h1>
+  <div class="overflow-y-scroll">
+    @for (product of topProducts; let i = $index; track product.productId) {
+      <p>{{ i + 1 }}. {{ product.productName }}</p>
+    }
+  </div>
+</div>

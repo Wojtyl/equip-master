@@ -6,6 +6,7 @@ import { UpcomingDelivery } from "./models/UpcomingDelivery";
 import { forkJoin, tap } from "rxjs";
 import { DeliveryGraphDTO } from "./models/DeliveryGraphDTO";
 import { TopSupplierDTO } from "./models/TopSupplierDTO";
+import { TopProductDTO } from "./models/TopProductDTO";
 
 @Component({
   selector: 'app-home',
@@ -20,18 +21,21 @@ export class HomeComponent implements OnInit {
   protected upcomingDeliveries: UpcomingDelivery[];
   protected deliveriesGraphData: DeliveryGraphDTO[];
   protected topSuppliers: TopSupplierDTO[];
+  protected topProducts: TopProductDTO[];
 
   ngOnInit(): void {
     this.userService.user.subscribe((user) => (this.user = user));
     forkJoin([
       this.dashboardService.getUpcomingDeliveries(),
       this.dashboardService.getDeliveryGraph(),
-      this.dashboardService.getTopSellers()
+      this.dashboardService.getTopSellers(),
+      this.dashboardService.getTopProducts()
     ]).pipe(
-      tap(([upcomingDeliveries, graph, topSuppliers]) => {
+      tap(([upcomingDeliveries, graph, topSuppliers, topProducts]) => {
         this.upcomingDeliveries = upcomingDeliveries.items;
         this.deliveriesGraphData = graph.items;
         this.topSuppliers = topSuppliers.items;
+        this.topProducts = topProducts.items;
       })
     ).subscribe()
   }

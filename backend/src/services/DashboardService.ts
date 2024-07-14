@@ -2,6 +2,8 @@ import { Delivery } from "../schemas/deliveryModel";
 import { DeliveryDetails } from "../models/DeliveryDetails";
 import { HydratedDocument } from "mongoose";
 import { DeliveryGraphDTO } from "../dto/DeliveryGraphDTO";
+import { IProduct, Product } from "../schemas/productModel";
+import { TopProductDTO } from "../dto/TopProductDTO";
 
 export class DashboardService {
   async getUpcomingDeliveries() {
@@ -95,5 +97,31 @@ export class DashboardService {
         $unwind: '$supplier'
       }
     ]);
+  }
+
+  async getTopProducts() {
+    const deliveries: HydratedDocument<DeliveryDetails[]> = await Delivery.find({status: {$eq: 'FINISHED'}})
+        .populate('boxOnDelivery', 'products -_id')
+        .select(['_id', 'boxOnDelivery'])
+        .lean();
+
+    let top: TopProductDTO[] = [];
+
+    const products: HydratedDocument<IProduct[]> = await Product.find().lean()
+
+    deliveries.forEach(delivery => {
+      delivery.boxOnDelivery.forEach(box => {
+        box.products.forEach(product => {
+          const productIdx = top.findIndex(prod => prod.productId.toString() === product.productId.toString())
+          if (productIdx === -1) {
+            top.push({productId: product.productId.toString(), count: product.quantity, productName: products.find(p => p._id.toString() === product.productId.toString())?.name!})
+          } else {
+            top[productIdx].count += product.quantity;
+          }
+        })
+      })
+    })
+
+    return top;
   }
 }

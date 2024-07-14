@@ -7,6 +7,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from "../../../shared/shared.module";
 import { HomeComponent } from "./home.component";
 import { DashboardTopSellersComponent } from './components/dashboard-top-sellers/dashboard-top-sellers.component';
+import { DashboardTopProductsComponent } from './components/dashboard-top-products/dashboard-top-products.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { DashboardTopSellersComponent } from './components/dashboard-top-sellers
     HomeComponent,
     components.DashboardUpcomingDeliveriesComponent,
     components.DashboardGraphComponent,
-    DashboardTopSellersComponent
+    DashboardTopSellersComponent,
+    DashboardTopProductsComponent
   ],
   imports: [
     CommonModule,
