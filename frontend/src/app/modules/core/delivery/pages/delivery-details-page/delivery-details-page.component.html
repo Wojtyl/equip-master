@@ -141,7 +141,7 @@
                       <td>{{ product.name }}</td>
                       <td>{{ product.size }}</td>
                       <td>{{ product.quantity }}</td>
-                      <td>{{ product?.addedBy?.name }}</td>
+                      <td>{{ box.createdBy.name}}</td>
                     </tr>
                   }
                 </tbody>
@@ -150,7 +150,7 @@
           }
         </p-accordion>
         <br>
-        <h3 class="font-semibold mb-4">Status log</h3>
+        <h3 class="font-semibold mb-4">Historia statusów</h3>
           <table class="box-table mb-4">
             <thead>
             <tr>

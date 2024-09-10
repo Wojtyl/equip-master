@@ -28,7 +28,7 @@ export class SupplierDetailsPageComponent implements OnInit {
   onSubmit() {
     if (this.formData) {
       this.supplierService.updateSupplier(this.formData, this.supplierId).subscribe(() => {
-        window.alert('Supplier updated successfully');
+        window.alert('Dostawca został zapisany pomyślnie!');
       });
     }
   }

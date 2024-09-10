@@ -17,7 +17,7 @@ export class SupplierAddPageComponent implements OnInit {
 
   onSubmit() {
     this.supplierService.addSupplier(this.formData).subscribe(() => {
-      window.alert('Supplier created successfully')
+      window.alert('Dostawca został dodany!')
       this.router.navigate(['/suppliers'])
     });
   }

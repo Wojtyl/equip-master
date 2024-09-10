@@ -175,7 +175,7 @@ const setNewPassword = catchAsync(async (req: Request, res: Response, next) => {
 
   const user = await User.findById(decodedToken.id).orFail(() => new AppError("There is no user with given ID", 404));
 
-  if (user.resetToken !== token) throw new AppError("Token is not valid or has been already used", 403);
+  if (user.resetToken !== token) throw new AppError("Token nie jest ważny lub został już użyty", 403);
 
   user.password = password;
   user.passwordConfirm = passwordConfirm;

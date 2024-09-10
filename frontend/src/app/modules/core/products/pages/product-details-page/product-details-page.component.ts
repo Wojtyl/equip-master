@@ -38,7 +38,7 @@ export class ProductDetailsPageComponent implements OnInit {
     }
 
     this.productService.updateProduct(this.productId, formData).subscribe(response => {
-      window.alert("Product " + response.items.name +" was updated");
+      window.alert("Produkt " + response.items.name +" został zapisany pomyślnie!");
     });
   }
 }

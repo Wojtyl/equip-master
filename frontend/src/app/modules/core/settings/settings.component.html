@@ -5,7 +5,7 @@
       <div class="flex px-4 gap-8 mb-4">
         <a [routerLink]="['profile']" [routerLinkActive]="'active-setting-tab'">Edytuj profil</a>
         <a [routerLink]="['account-settings']" [routerLinkActive]="'active-setting-tab'">Ustawienia konta</a>
-        <a [routerLink]="['users']" [routerLinkActive]="'active-setting-tab'">Użytkownicy</a>
+        <a *appHasRole="[Roles.Manager, Roles.Admin]" [routerLink]="['users']" [routerLinkActive]="'active-setting-tab'">Użytkownicy</a>
       </div>
     </div>
     <div class="border-t-2 overflow-scroll">

@@ -10,7 +10,7 @@ import { StepperService } from "../../../../../shared/services/stepper.service";
   styleUrl: './delivery-summary-step.component.scss'
 })
 export class DeliverySummaryStepComponent implements OnInit {
-  private deliveryId: string;
+  protected deliveryId: string;
   private stepperService = inject(StepperService);
   protected deliverySummary: DeliveryProductQuantities[];
   protected openedDetailsRow: number | null;

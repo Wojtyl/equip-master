@@ -13,9 +13,10 @@
     <div class="w-[20rem] h-full">
       <input class="w-[20rem] h-[2.5rem] px-2 border-1 border-zinc-300">
     </div>
+    <button [routerLink]="['/delivery', deliveryId, 'details']" class="w-[10rem] h-full text-white text-center bg-zinc-900">Zakończ</button>
   </section>
 
-  <section id="table">
+  <section id="table" class="form-section-container p-6 rounded-lg">
     <table class="box-table">
       <thead>
       <tr>

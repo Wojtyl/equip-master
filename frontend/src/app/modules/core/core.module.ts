@@ -5,6 +5,8 @@ import { CoreRoutingModule } from './core-routing.module';
 import { CoreComponent } from './core.component';
 import { NavComponent } from "../../shared/components/nav/nav.component";
 import { SettingsComponent } from './settings/settings.component';
+import { HasRoleDirective } from "../../shared/directives/has-role.directive";
+import { SettingsModule } from "./settings/settings.module";
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { SettingsComponent } from './settings/settings.component';
   ],
   imports: [
     CommonModule,
-    CoreRoutingModule
+    CoreRoutingModule,
+    HasRoleDirective,
+    SettingsModule,
   ]
 })
 export class CoreModule {

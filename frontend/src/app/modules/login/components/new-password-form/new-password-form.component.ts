@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { getQueryParam } from "src/app/core/utils/get-query-param";
 import { LoginService } from "src/app/modules/login/services/login.service";
 import { Subject } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-new-password-form',
@@ -11,9 +12,11 @@ import { Subject } from "rxjs";
 })
 export class NewPasswordFormComponent implements OnInit {
   @Output() public passwordReset = new Subject<boolean>();
+
   protected token = getQueryParam('token');
   private loginService = inject(LoginService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   protected newPasswordForm: FormGroup;
   protected errorMessage: string;
@@ -50,5 +53,9 @@ export class NewPasswordFormComponent implements OnInit {
           )
       }
     }, 700)
+  }
+
+  backToLogin() {
+    this.router.navigate(['/login'])
   }
 }

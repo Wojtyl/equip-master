@@ -56,6 +56,6 @@ export class ProductAddPageComponent implements OnInit {
     if (this.uploadFile) formData.append('image', this.uploadFile);
     if (this.productFormData) formData.append('product', JSON.stringify(this.productFormData));
 
-    this.productService.addProduct(formData).subscribe(() => window.alert('Product created successfully'));
+    this.productService.addProduct(formData).subscribe(() => window.alert('Produkt został dodany!'));
   }
 }
