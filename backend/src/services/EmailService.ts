@@ -27,15 +27,16 @@ export class EmailService {
       },
     })
 
-    const email = {
+    const email: Mailgen.Content = {
       body: {
+        greeting: "Witaj",
         name: user.name,
-        intro: 'Reset password',
+        intro: 'Zresetuj hasło',
         action: {
-          instructions: 'Please click the button below to reset password to your account',
+          instructions: 'Wciśnij przycisk poniżej aby zresetować hasło',
           button: {
             color: '#33b5e5',
-            text: 'Reset password',
+            text: 'Zresetuj hasło',
             link: `${process.env.CLIENT_URL}/auth/reset-password?token=${token}`,
           },
         },

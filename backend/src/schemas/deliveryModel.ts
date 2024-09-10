@@ -1,10 +1,10 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { DeliveryStatus } from "../enums/delivery-status-enum";
 
 const deliverySchema = new mongoose.Schema({
   date: {
     type: Date,
-    default: new Date(),
+    default: Date.now(),
   },
   //TODO: Probably to get rid of this field - make more atomic approach and refer to boxes from box deliveryId
   boxOnDelivery: [
@@ -59,19 +59,25 @@ const deliverySchema = new mongoose.Schema({
       type: String,
     }
   }],
+  comments: [{
+    user: {
+      type: mongoose.Types.ObjectId,
+      required: [true, 'You must provide comment owner']
+    },
+    date: {
+      type: Date,
+      default: Date.now()
+    },
+    comment: {
+      type: String,
+      required: [true, 'You must provide comment']
+    }
+  }],
   description: {
     type: String,
   },
 }, {
   versionKey: false
-});
-
-deliverySchema.pre(/^find/, function (next) {
-  //this.populate({
-  //  path: "supplier",
-  //  select: "-_id -address -addedAt -__v",
-  //});
-  next();
 });
 
 export const Delivery = mongoose.model("Delivery", deliverySchema);

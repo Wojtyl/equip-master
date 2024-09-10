@@ -23,7 +23,7 @@ export class InvoiceAddPageComponent implements OnInit {
   onSubmit() {
     if (this.invoiceFormData) {
       this.invoiceService.createInvoice(this.invoiceFormData).subscribe(() => {
-        window.alert('Created!');
+        window.alert('Faktura została dodana!');
         this.router.navigate(['/invoices'])
       });
     }

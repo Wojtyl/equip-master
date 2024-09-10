@@ -1,0 +1,8 @@
+<div class="bg-white h-full p-6 flex flex-col ">
+  <h1 class="text-xl font-medium mb-4">Top dostawcy</h1>
+  <div class="overflow-y-scroll">
+    @for (supplier of topSuppliers; let i = $index; track supplier._id) {
+      <p>{{ i + 1 }}. {{ supplier.name }}</p>
+    }
+  </div>
+</div>

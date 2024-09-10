@@ -1,37 +1,42 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../../core/auth/user.service';
-import { HttpClient } from '@angular/common/http';
-import { apiUrl } from 'src/environments/apiurl';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { User } from "../../../shared/models/userModel";
+import { DashboardService } from "./services/dashboard.service";
+import { UpcomingDelivery } from "./models/UpcomingDelivery";
+import { forkJoin, tap } from "rxjs";
+import { DeliveryGraphDTO } from "./models/DeliveryGraphDTO";
+import { TopSupplierDTO } from "./models/TopSupplierDTO";
+import { TopProductDTO } from "./models/TopProductDTO";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  //TODO: Recent delivery-page to quickly navigate to last one
-  //TODO: Delivery graph
-  suppliers: any[] = [];
+export class HomeComponent implements OnInit {
+  private userService = inject(UserService)
+  private dashboardService = inject(DashboardService)
 
-  user: any;
-
-  invoiceForm: FormGroup;
-
-  constructor(private userService: UserService, private http: HttpClient, private formBuilder: FormBuilder) {}
+  protected user: User;
+  protected upcomingDeliveries: UpcomingDelivery[];
+  protected deliveriesGraphData: DeliveryGraphDTO[];
+  protected topSuppliers: TopSupplierDTO[];
+  protected topProducts: TopProductDTO[];
 
   ngOnInit(): void {
-    this.getSuppliers();
     this.userService.user.subscribe((user) => (this.user = user));
-  }
-
-  getSuppliers() {
-    this.http.get<any>(`${apiUrl}suppliers`).subscribe((sup) => {
-        this.suppliers = sup.items;
-      }
-    );
-  }
-
-  ngOnDestroy() {
+    forkJoin([
+      this.dashboardService.getUpcomingDeliveries(),
+      this.dashboardService.getDeliveryGraph(),
+      this.dashboardService.getTopSellers(),
+      this.dashboardService.getTopProducts()
+    ]).pipe(
+      tap(([upcomingDeliveries, graph, topSuppliers, topProducts]) => {
+        this.upcomingDeliveries = upcomingDeliveries.items;
+        this.deliveriesGraphData = graph.items;
+        this.topSuppliers = topSuppliers.items;
+        this.topProducts = topProducts.items;
+      })
+    ).subscribe()
   }
 }

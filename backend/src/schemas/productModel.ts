@@ -6,6 +6,7 @@ interface attributes {
 }
 
 export interface IProduct {
+  _id: mongoose.Types.ObjectId;
   name: string;
   productIndex: string;
   attributes: attributes;

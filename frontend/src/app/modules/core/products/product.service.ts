@@ -27,10 +27,6 @@ export class ProductService {
     return this.http.patch<ListResponse<Product>>(`${apiUrl}products/${productId}`, formData)
   }
 
-  getProductBySupplier(id: string) {
-    return this.http.get<unknown>(`${apiUrl}products/bySupplier/${id}`);
-  }
-
   getDeliveryProductsByBox(boxId: string) {
     return this.http.get<ListResponse<Product[]>>(`${apiUrl}products/byBox/${boxId}`);
   }

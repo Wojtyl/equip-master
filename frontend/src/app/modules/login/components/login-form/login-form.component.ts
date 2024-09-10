@@ -55,6 +55,7 @@ export class LoginFormComponent implements OnInit {
               name: user.name,
               email: user.email,
               role: user.role,
+              image: user.image,
               token: res.token
             });
             this.userService.setUserToken(res.token);

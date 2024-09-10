@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Roles } from "../../../shared/enums/user-role-enum";
 
 @Component({
   selector: 'app-settings',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class SettingsComponent {
 
+  protected readonly Roles = Roles;
 }
