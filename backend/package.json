@@ -1,6 +1,6 @@
 {
   "name": "dostawa-mks",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Program managign supply coming to shop",
   "main": "App.js",
   "scripts": {
