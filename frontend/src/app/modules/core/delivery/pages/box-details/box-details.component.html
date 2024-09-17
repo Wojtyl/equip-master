@@ -97,8 +97,10 @@
             <td>{{ product.size }}</td>
             <td>{{ product.quantity }}</td>
             <td class="flex justify-center">
-              <app-svg-icon icon="edit_icon" [triggerable]="true" (click)="editProduct(i)"></app-svg-icon>
-              <app-svg-icon icon="delete_icon" [triggerable]="true" (click)="removeProduct(product._id)"></app-svg-icon>
+              @if (!boxDetails.closed) {
+                <app-svg-icon icon="edit_icon" [triggerable]="true" (click)="editProduct(i)"></app-svg-icon>
+                <app-svg-icon icon="delete_icon" [triggerable]="true" (click)="removeProduct(product._id)"></app-svg-icon>
+              }
             </td>
           }
         </tr>
