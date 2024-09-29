@@ -5,10 +5,13 @@ import * as generalController from "../controllers/generalController";
 import multer from "multer";
 import { Error } from "mongoose";
 import { ProductSize } from "../schemas/productSizeModel";
+import path from 'path';
+
+const imagesPath = path.resolve(__dirname, '../..', 'public', 'images', 'products');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "/Users/bartek/Documents/Praca dyplomowa/equip-master/backend/public/images/products");
+        cb(null, imagesPath);
     },
     filename(req: e.Request, file: Express.Multer.File, callback: (error: (Error | null), filename: string) => void) {
         console.log(file)

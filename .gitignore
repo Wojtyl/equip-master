@@ -8,3 +8,5 @@ backend/.DS_Store
 */.nx
 backend/uploads
 backend/public/images
+
+backend/.env
